@@ -1,16 +1,13 @@
 import "./App.css";
-import { Avatar, AvatarFallback, AvatarImage } from "./components/ui/avatar";
-import { Button } from "./components/ui/button";
+import ServiceOrder from "@/features/ServiceOrder";
+import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
-    <div className="flex">
-      <Avatar className="mr-3">
-          <AvatarImage src="https://github.com/thailonlucas.png" alt="@shadcn" />
-          <AvatarFallback>TL</AvatarFallback>
-      </Avatar>
-      <Button>Olá mundo!</Button>
-    </div>
+    <>
+      <ServiceOrder/>
+      <Toaster position="top-right" richColors/>
+    </>
   );
 }
 
