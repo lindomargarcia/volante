@@ -24,9 +24,9 @@ function ServiceOrder() {
           <Badge className="h-8 rounded-full" onClick={() => setShow(!show)}>Em aberto</Badge>
         </div>
 
-        <div className="flex mb-4">
-          <DetailCard side={"left"} title="Cliente" subtitle="Clique aqui para selecionar" fallback={<User fill={"#94A3B8"}/>}/>
-          <DetailCard side={"right"} title="Veículo" subtitle="Clique aqui para selecionar" fallback={<Car fill={"#94A3B8"}/>}/>
+        <div className="flex mb-4 flex-wrap">
+          <DetailCard side={"left"} title="Cliente" subtitle="Clique aqui para selecionar" fallback={<User fill={"#94A3B8"}/>} className="min-w-[300px]"/>
+          <DetailCard side={"right"} title="Veículo" subtitle="Clique aqui para selecionar" fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>
         </div>
 
         <div className="flex items-end gap-3">
@@ -36,7 +36,7 @@ function ServiceOrder() {
           </span>
           <span>
             <Label htmlFor="price">Valor</Label>
-            <Input id="price" placeholder="0,00" type="number"/>
+            <Input id="price" placeholder="0,00"/>
           </span>
           <Button>Adicionar</Button>
         </div>
@@ -63,12 +63,12 @@ function ServiceOrder() {
         <div className="flex flex-1 flex-col gap-3">
           <span>
             <Label htmlFor="insurance">Seguradora</Label>
-            <SelectOption placeholder="Selecione uma seguradora..." options={['Não há', 'Porto Seguro', 'Azul']}/>
+            <SelectOption placeholder="Selecione uma seguradora..." options={['Não há', 'Allianz', 'Azul', 'Porto Seguro']}/>
           </span>
           <span>
             <Label htmlFor="duration">Duraçao Aproximada</Label>
             <span className="flex gap-1">
-              <Input id="duration" placeholder="0" type="number" className="w-[100px]"/>
+              <Input id="duration" placeholder="0" className="w-[100px]"/>
               <SelectOption placeholder="Selecione..." options={['Horas', 'Dias', 'Semanas', 'Meses', 'Anos']}/>
             </span>
           </span>

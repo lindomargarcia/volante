@@ -21,11 +21,12 @@ interface DetailCardProps extends ButtonHTMLAttributes<HTMLButtonElement>, Varia
     subtitle?: string,
     src?: string,
     fallback?: string | any,
+    className?: string
 }
 
-function DetailCard({title, subtitle, src, fallback, side, ...props}: DetailCardProps) {
+function DetailCard({title, subtitle, src, fallback, side, className, ...props}: DetailCardProps) {
     return ( 
-        <button {...props} className={cn(DetailCardVariants({side}))}>
+        <button {...props} className={cn(DetailCardVariants({side, className}))}>
             <Avatar className="mr-3">
                 <AvatarImage src={src}/>
                 <AvatarFallback>{fallback}</AvatarFallback>
