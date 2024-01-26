@@ -1,13 +1,14 @@
-import { Car, MoreOne, User } from "@icon-park/react";
+import { MoreOne } from "@icon-park/react";
 import { Badge } from "@/components/ui/badge";
 import PriceTag from "@/components/ui/priceTag";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import DetailCard from "@/components/ui/detailCard";
 import SelectOption from "@/components/ui/selectOptions";
 import FileSelect from "@/components/ui/fileSelect";
+import { CustomerSheet } from "./CustomerSheet";
+import { VehicleSheet } from "./VehicleSheet";
 
 function ServiceOrder() {
   const [show, setShow] = useState(false)
@@ -15,7 +16,7 @@ function ServiceOrder() {
   return (
     <div className="flex flex-1 flex-row p-8 gap-10">
       {/* Left Side */}
-      <div className="flex flex-1 flex-col basis-3/5">
+      <div className="flex flex-1 flex-col basis-2/5">
         <div className="flex flex-row justify-items-center items-center mb-8">
           <div className="flex-col flex-1">
             <h3 className="text-2xl font-semibold">Novo orçamento</h3>
@@ -25,8 +26,8 @@ function ServiceOrder() {
         </div>
 
         <div className="flex mb-4 flex-wrap">
-          <DetailCard side={"left"} title="Cliente" subtitle="Clique aqui para selecionar" fallback={<User fill={"#94A3B8"}/>} className="min-w-[300px]"/>
-          <DetailCard side={"right"} title="Veículo" subtitle="Clique aqui para selecionar" fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>
+          <CustomerSheet/>
+          <VehicleSheet/>
         </div>
 
         <div className="flex items-end gap-3">

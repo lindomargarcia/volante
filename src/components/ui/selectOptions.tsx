@@ -2,13 +2,14 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 
 interface SelectOptionProps {
     placeholder?: string,
-    options: string[]
+    options: string[],
+    className?: string
 }
  
-const SelectOption = ({placeholder,options}: SelectOptionProps) => {
+const SelectOption = ({placeholder,options, className}: SelectOptionProps) => {
     return ( 
         <Select>
-            <SelectTrigger className="">
+            <SelectTrigger className={className}>
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
