@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import SelectOption from "@/components/ui/selectOptions";
 import FileSelect from "@/components/ui/fileSelect";
 import { CustomerSheet } from "../components/CustomerSheet/CustomerSheet";
-import { VehicleSheet } from "../components/VehicleSheet";
+import { VehicleSheet } from "../components/VehicleSheet/VehicleSheet";
 import DetailCard from "@/components/ui/detailCard";
 
 function ServiceOrder() {

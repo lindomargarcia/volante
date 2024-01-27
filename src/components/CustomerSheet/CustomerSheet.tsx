@@ -5,7 +5,7 @@ import { ReactComponentElement, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "../ui/form"
-import FormInput from "../FormInput"
+import { FormInput } from "../FormInput"
 import { CustomerSheetSchema, customerSheetSchema, defaultCustomerValues } from "./schema"
 
 interface ICustomerSheetsProps {
