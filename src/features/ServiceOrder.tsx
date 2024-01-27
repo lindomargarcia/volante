@@ -1,4 +1,4 @@
-import { MoreOne } from "@icon-park/react";
+import { MoreOne, User } from "@icon-park/react";
 import { Badge } from "@/components/ui/badge";
 import PriceTag from "@/components/ui/priceTag";
 import { useState } from "react";
@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SelectOption from "@/components/ui/selectOptions";
 import FileSelect from "@/components/ui/fileSelect";
-import { CustomerSheet } from "./CustomerSheet";
-import { VehicleSheet } from "./VehicleSheet";
+import { CustomerSheet } from "../components/CustomerSheet/CustomerSheet";
+import { VehicleSheet } from "../components/VehicleSheet";
+import DetailCard from "@/components/ui/detailCard";
 
 function ServiceOrder() {
   const [show, setShow] = useState(false)
@@ -26,7 +27,9 @@ function ServiceOrder() {
         </div>
 
         <div className="flex mb-4 flex-wrap">
-          <CustomerSheet/>
+          <CustomerSheet trigger={
+            <DetailCard side={"left"} title="Cliente" subtitle="Clique aqui para selecionar" fallback={<User fill={"#94A3B8"}/>} className="min-w-[300px]"/>
+          }/>
           <VehicleSheet/>
         </div>
 

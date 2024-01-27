@@ -3,16 +3,7 @@ import DetailCard from "@/components/ui/detailCard"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import SelectOption from "@/components/ui/selectOptions"
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
+import { Sheet,SheetClose,SheetContent,SheetDescription,SheetFooter,SheetHeader,SheetTitle,SheetTrigger } from "@/components/ui/sheet"
 import { Car } from "@icon-park/react"
 
 export function VehicleSheet() {
@@ -24,7 +15,7 @@ export function VehicleSheet() {
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
+      <SheetTrigger className="flex-1">
         <DetailCard side={"right"} title="Veículo" subtitle="Clique aqui para selecionar" fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>
       </SheetTrigger>
       <SheetContent>
