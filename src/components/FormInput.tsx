@@ -41,7 +41,7 @@ const FormSelect = ({name, label, form, options, placeholder}: FormSelectProps) 
             render={({ field }) => (
             <FormItem className="flex items-center">
                 <FormLabel className="w-[70px] text-right pr-3">{label}</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
                 <FormControl>
                     <SelectTrigger>
                     <SelectValue placeholder={placeholder} />

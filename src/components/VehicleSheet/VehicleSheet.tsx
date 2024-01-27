@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import DetailCard from "@/components/ui/detailCard"
-import { Sheet,SheetContent,SheetDescription,SheetHeader,SheetTitle,SheetTrigger } from "@/components/ui/sheet"
+import { Sheet,SheetContent,SheetDescription,SheetFooter,SheetHeader,SheetTitle,SheetTrigger } from "@/components/ui/sheet"
 import { Car } from "@icon-park/react"
 import { Form } from "../ui/form"
 import { useForm } from "react-hook-form"
@@ -20,6 +20,11 @@ export function VehicleSheet() {
 
   const handleOnSubmit = (data: VehicleSheetSchema) => {
     console.log(data)
+  }
+
+  const handleOnClean = (e: any) => {
+    e.preventDefault()
+    form.reset()
   }
 
   return (
@@ -43,7 +48,10 @@ export function VehicleSheet() {
             <FormInput name='year' label="Ano" type="text" placeholder="2024" form={form}/>
             <FormSelect name="color" label="Cor" options={['Azul', 'Branco','Vermelho', 'Prata', 'Preto']} form={form} placeholder="Selecione..." />
 
-            <Button type="submit">Salvar</Button>
+            <SheetFooter className="mt-4">
+              <Button variant={"outline"} onClick={handleOnClean}>Limpar</Button>
+              <Button type="submit">Salvar</Button>
+            </SheetFooter>
           </form>
         </Form>
 
