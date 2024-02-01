@@ -1,4 +1,4 @@
-import { MoreOne, User } from "@icon-park/react";
+import { Car, MoreOne, User } from "@icon-park/react";
 import { Badge } from "@/components/ui/badge";
 import PriceTag from "@/components/ui/priceTag";
 import { useState } from "react";
@@ -27,10 +27,8 @@ function ServiceOrder() {
         </div>
 
         <div className="flex mb-4 flex-wrap">
-          <CustomerSheet trigger={
-            <DetailCard side={"left"} title="Cliente" subtitle="Clique aqui para selecionar" fallback={<User fill={"#94A3B8"}/>} className="min-w-[300px]"/>
-          }/>
-          <VehicleSheet/>
+          <CustomerSheet trigger={<DetailCard side={"left"} title="Cliente" subtitle="Clique aqui para selecionar" fallback={<User fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
+          <VehicleSheet trigger={<DetailCard side={"right"} title="Veículo" subtitle="Clique aqui para selecionar" fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
         </div>
 
         <div className="flex items-end gap-3">
