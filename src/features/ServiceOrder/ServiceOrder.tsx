@@ -13,16 +13,27 @@ import DetailCard from "@/components/ui/detailCard";
 import { DataTable } from "@/components/DataTable/DataTable";
 import { columns } from "./columns";
 import { ServiceOrder } from "./types";
+import { useForm } from "react-hook-form";
 
 function ServiceOrderPage() {
   const [show, setShow] = useState(false)
+  // const { register, handleSubmit } = useForm()
   const [serviceOrder, setServiceOrder] = useState<ServiceOrder>({
     id: "006263",
     status: "pending",
     created_at: "2024-02-02T16:50:04.793Z",
     last_saved_at: "2024-02-02T16:50:04.793Z",
-    customer: {},
-    vehicle: {},
+    customer: {
+      // name: "Thailon Lucas",
+      // cpf: "155.511.848-89"
+    },
+    vehicle: {
+      // plate: "DRN3J65",
+      // description: "Honda Fit",
+      // brand: "Honda",
+      // model: "Fit",
+      // year: "2014"
+    },
     items: [
       {
         "id": "0021",
@@ -79,20 +90,20 @@ function ServiceOrderPage() {
         <div className="flex flex-row justify-items-center items-center mb-8">
           <div className="flex-col flex-1">
             <h3 className="text-2xl font-semibold">Novo orçamento</h3>
-            <p className="text-sm text-muted-foreground">Último salvo {serviceOrder.last_saved_at}</p>
+            <p className="text-sm text-muted-foreground">Último salvo {new Date(serviceOrder.last_saved_at).toLocaleString()}</p>
           </div>
           <Badge className="h-8 rounded-full" onClick={() => setShow(!show)}>{serviceOrder.status}</Badge>
         </div>
 
         <div className="flex mb-4 flex-wrap">
-          <CustomerSheet trigger={<DetailCard side={"left"} title="Cliente" subtitle="Clique aqui para selecionar" fallback={<User fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
-          <VehicleSheet trigger={<DetailCard side={"right"} title="Veículo" subtitle="Clique aqui para selecionar" fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
+          <CustomerSheet trigger={<DetailCard side={"left"} title={serviceOrder.customer.name || "Cliente"} subtitle={serviceOrder.customer.cpf || "Clique aqui para selecionar"} fallback={<User fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
+          <VehicleSheet trigger={<DetailCard side={"right"} title={serviceOrder.vehicle.description || "Veículo"} subtitle={serviceOrder.vehicle.plate || "Clique aqui para selecionar"} fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
         </div>
 
         <div className="flex items-end gap-3">
           <span className="flex-1">
             <Label htmlFor="item">Item</Label>
-            <Input id="price" placeholder="Digite aqui..."/>
+            <Input id="description" placeholder="Digite aqui..." />
           </span>
           <span>
             <Label htmlFor="price">Valor</Label>
