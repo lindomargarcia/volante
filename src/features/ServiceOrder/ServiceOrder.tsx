@@ -7,23 +7,81 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import SelectOption from "@/components/ui/selectOptions";
 import FileSelect from "@/components/ui/fileSelect";
-import { CustomerSheet } from "../components/CustomerSheet/CustomerSheet";
-import { VehicleSheet } from "../components/VehicleSheet/VehicleSheet";
+import { CustomerSheet } from "../../components/CustomerSheet/CustomerSheet";
+import { VehicleSheet } from "../../components/VehicleSheet/VehicleSheet";
 import DetailCard from "@/components/ui/detailCard";
+import { DataTable } from "@/components/DataTable/DataTable";
+import { columns } from "./columns";
+import { ServiceOrder } from "./types";
 
-function ServiceOrder() {
+function ServiceOrderPage() {
   const [show, setShow] = useState(false)
+  const [serviceOrder, setServiceOrder] = useState<ServiceOrder>({
+    id: "006263",
+    status: "pending",
+    created_at: "2024-02-02T16:50:04.793Z",
+    last_saved_at: "2024-02-02T16:50:04.793Z",
+    customer: {},
+    vehicle: {},
+    items: [
+      {
+        "id": "0021",
+        "tag": "recuperada",
+        "description": "Parachoque T",
+        "type": "part",
+        "quantity": 1,
+        "value": 1500,
+        "discount": 20,
+        "insurance_coverage": 0,
+        "total": 1480
+      },
+      {
+        "id": "0022",
+        "tag": "nova",
+        "description": "Lanterna LD",
+        "type": "part",
+        "quantity": 1,
+        "value": 1500,
+        "discount": 0,
+        "insurance_coverage": 0,
+        "total": 1480
+      },
+      {
+        "id": "0023",
+        "tag": "funilaria",
+        "description": "Recuperar Painel Traseiro",
+        "type": "service",
+        "quantity": 1,
+        "value": 1500,
+        "discount": 0,
+        "insurance_coverage": 0,
+        "total": 1480
+      },
+      {
+        "id": "0024",
+        "tag": "pintura",
+        "description": "Pintura",
+        "type": "service",
+        "quantity": 1,
+        "value": 1500,
+        "discount": 20,
+        "insurance_coverage": 0,
+        "total": 1480
+      }
+    ]
+  })
+  
 
   return (
     <div className="flex flex-1 flex-row p-8 gap-10">
       {/* Left Side */}
-      <div className="flex flex-1 flex-col basis-2/5">
+      <div className="flex flex-1 flex-col basis-3/5">
         <div className="flex flex-row justify-items-center items-center mb-8">
           <div className="flex-col flex-1">
             <h3 className="text-2xl font-semibold">Novo orçamento</h3>
-            <p className="text-sm text-muted-foreground">Último salvo 20/01/2024</p>
+            <p className="text-sm text-muted-foreground">Último salvo {serviceOrder.last_saved_at}</p>
           </div>
-          <Badge className="h-8 rounded-full" onClick={() => setShow(!show)}>Em aberto</Badge>
+          <Badge className="h-8 rounded-full" onClick={() => setShow(!show)}>{serviceOrder.status}</Badge>
         </div>
 
         <div className="flex mb-4 flex-wrap">
@@ -43,15 +101,18 @@ function ServiceOrder() {
           <Button>Adicionar</Button>
         </div>
 
-        <div className="border radius flex-1 rounded-lg mt-4 mb-3"></div>
+        <DataTable columns={columns} data={serviceOrder.items} className={"mt-4 mb-4 flex-1 overflow-scroll"}/>
 
-        <div className="flex">
+        <div className="flex justify-between">
           <span className="flex flex-1 gap-8">
             <PriceTag id='pieces-price' label='Peças' value='R$0,00' />
             <PriceTag id='services-price' label='Serviços' value='R$0,00' />
             <PriceTag id='discounts-price' label='Descontos' value='R$0,00' />
           </span>
-          <PriceTag id='total-price' label='Total' value='R$0,00' className="text-right" />
+          <span className="flex gap-8">
+            {/* <PriceTag id='insurance-price' label='Seguro' value='-R$0,00' className="text-right" /> */}
+            <PriceTag id='total-price' label='Total' value='R$0,00' className="text-right" />
+          </span>
         </div>
       
       </div>
@@ -87,4 +148,4 @@ function ServiceOrder() {
   );
 }
 
-export default ServiceOrder;
+export default ServiceOrderPage;

@@ -1,11 +1,11 @@
 import "./App.css";
-import ServiceOrder from "@/features/ServiceOrder";
+import ServiceOrderPage from "@/features/ServiceOrder/ServiceOrder";
 import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
     <>
-      <ServiceOrder/>
+      <ServiceOrderPage/>
       <Toaster position="top-right" richColors/>
     </>
   );
