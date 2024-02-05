@@ -1,20 +1,19 @@
-import { Sheet,SheetContent,SheetDescription,SheetFooter,SheetHeader,SheetTitle,SheetTrigger } from "@/components/ui/sheet"
-import { useState } from "react"
+import { Sheet,SheetContent,SheetDescription,SheetHeader,SheetTitle,SheetTrigger } from "@/components/ui/sheet"
 
 interface SheetContainerProps {
   title: string,
   description: string,
   icon: React.ReactElement,
   trigger: React.ReactElement,
-  children: React.ReactElement
+  children: React.ReactElement,
+  isOpen?: boolean
+  onIsOpenChange: (state: boolean) => void
 }
 
-export function SheetContainer({title, description,icon, trigger, children}: SheetContainerProps) {
-  const [isOpen, setIsOpen] = useState(false)
-
+export function SheetContainer({title, description, icon, trigger, isOpen, onIsOpenChange,  children}: SheetContainerProps) {
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger className="flex-1"  onClick={() => setIsOpen(true)}>
+    <Sheet open={isOpen} onOpenChange={onIsOpenChange}>
+      <SheetTrigger className="flex-1"  onClick={() => onIsOpenChange(true)}>
         {trigger}
       </SheetTrigger>
       <SheetContent side={'left'}>

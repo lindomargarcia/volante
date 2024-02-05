@@ -12,49 +12,21 @@ import { VehicleSheet } from "../../components/VehicleSheet/VehicleSheet";
 import DetailCard from "@/components/ui/detailCard";
 import { DataTable } from "@/components/DataTable/DataTable";
 import { columns } from "./columns";
-import { ServiceOrder } from "./types";
 import { useForm } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
+import { getServiceOrder } from "@/data/ServiceOrder";
 
 function ServiceOrderPage() {
   const [show, setShow] = useState(false)
   const { register, handleSubmit } = useForm()
-  const [serviceOrder, setServiceOrder] = useState<ServiceOrder>({
-    id: "006263",
-    status: "pending",
-    created_at: "2024-02-02T16:50:04.793Z",
-    last_saved_at: "2024-02-02T16:50:04.793Z",
-    customer: {
-      name: "Thailon Lucas",
-      cpf: "155.511.848-89"
-    },
-    vehicle: {
-      plate: "DRN-3J65",
-      description: "Honda Fit",
-      brand: "Honda",
-      model: "Fit",
-      year: "2014"
-    },
-    items: []
+  const { data: serviceOrder } = useQuery({
+    queryFn: getServiceOrder,
+    queryKey: ['service-order']
   })
 
   const onSubmit = ({description, value}: any) => {
-    console.log(description)
-    const newSO = serviceOrder
-    newSO.items.push({
-      "id": "0025",
-      "tag": "pintura",
-      description,
-      "type": "service",
-      "quantity": 1,
-      value,
-      "discount": 0,
-      "insurance_coverage": 0,
-      "total": value
-    })
-    setServiceOrder({...newSO})
-    console.log(newSO)
+
   }
-  
 
   return (
     <div className="flex flex-1 flex-row p-8 gap-10">
@@ -63,14 +35,14 @@ function ServiceOrderPage() {
         <div className="flex flex-row justify-items-center items-center mb-8">
           <div className="flex-col flex-1">
             <h3 className="text-2xl font-semibold">Novo orçamento</h3>
-            <p className="text-sm text-muted-foreground">Último salvo {new Date(serviceOrder.last_saved_at).toLocaleString()}</p>
+            <p className="text-sm text-muted-foreground">Último salvo {serviceOrder?.last_saved_at ? new Date(serviceOrder?.last_saved_at).toLocaleString() : '...'}</p>
           </div>
-          <Badge className="h-8 rounded-full" onClick={() => setShow(!show)}>{serviceOrder.status}</Badge>
+          <Badge className="h-8 rounded-full" onClick={() => setShow(!show)}>{serviceOrder?.status || 'buscando...'}</Badge>
         </div>
 
         <div className="flex mb-4 flex-wrap">
-          <CustomerSheet trigger={<DetailCard side={"left"} title={serviceOrder.customer.name || "Cliente"} subtitle={serviceOrder.customer.cpf || "Clique aqui para selecionar"} fallback={<User fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
-          <VehicleSheet trigger={<DetailCard side={"right"} title={serviceOrder.vehicle.description || "Veículo"} subtitle={serviceOrder.vehicle.plate || "Clique aqui para selecionar"} fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
+          <CustomerSheet customer={serviceOrder?.customer} trigger={<DetailCard side={"left"} title={serviceOrder?.customer.name || "Cliente"} subtitle={serviceOrder?.customer.cpf || "Clique aqui para selecionar"} fallback={<User fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
+          <VehicleSheet vehicle={serviceOrder?.vehicle} trigger={<DetailCard side={"right"} title={serviceOrder?.vehicle.brand || "Veículo"} subtitle={serviceOrder?.vehicle.plate || "Clique aqui para selecionar"} fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex items-end gap-3">
@@ -85,7 +57,7 @@ function ServiceOrderPage() {
           <Button type="submit">Adicionar</Button>
         </form>
 
-        <DataTable columns={columns} data={[...serviceOrder.items]} className={"mt-4 mb-4 flex-1 overflow-y-scroll"}/>
+        <DataTable columns={columns} data={serviceOrder?.items || []} className={"mt-4 mb-4 flex-1 overflow-y-scroll"}/>
         
         <div className="flex justify-between">
           <span className="flex flex-1 gap-8">

@@ -1,23 +1,51 @@
 import { Button } from "@/components/ui/button"
 import { SheetFooter } from "@/components/ui/sheet"
 import { User } from "@icon-park/react"
-import { ReactComponentElement } from "react"
+import { ReactComponentElement, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "../ui/form"
 import { FormInput } from "../FormInput"
 import { CustomerSheetSchema, customerSheetSchema, defaultCustomerValues } from "./schema"
 import { SheetContainer } from "../SheetContainer/SheetContainer"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { putServiceOrderCustomer } from "@/data/ServiceOrder"
+import { ServiceOrder } from "@/features/ServiceOrder/types"
 
 interface ICustomerSheetsProps {
-  trigger: ReactComponentElement<any>
+  trigger: ReactComponentElement<any>,
+  customer?: CustomerSheetSchema
 }
 
-export function CustomerSheet({trigger}: ICustomerSheetsProps) {
-  const form = useForm<CustomerSheetSchema>({resolver: zodResolver(customerSheetSchema), defaultValues: defaultCustomerValues})
+export function CustomerSheet({trigger, customer}: ICustomerSheetsProps) {
+  const queryClient = useQueryClient()
+  const [isOpen, setIsOpen] = useState(false)
+  const form = useForm<CustomerSheetSchema>({
+    resolver: zodResolver(customerSheetSchema),
+    defaultValues: defaultCustomerValues
+  })
+
+  useEffect(() => {
+    form.setValue('name', customer?.name || '')
+    form.setValue('cpf', customer?.cpf  || '')
+    form.setValue('phone', customer?.phone  || '')
+    form.setValue('email', customer?.email  || '')
+  }, [customer])
+
+  const { mutateAsync: putServiceOrderCustomerFn, isPending } = useMutation({
+    mutationFn: putServiceOrderCustomer,
+    onSuccess(__, variables) {
+      queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
+        const newSO = {...data}
+        newSO.customer = variables
+        setIsOpen(false)
+        return newSO
+      })
+    },
+  })
 
   const onFormSubmit = (data: CustomerSheetSchema) => {
-    console.log(data)
+    putServiceOrderCustomerFn(data)
   }
 
   const handleOnClean = (e: any) => {
@@ -28,6 +56,8 @@ export function CustomerSheet({trigger}: ICustomerSheetsProps) {
   return (
     <SheetContainer
       title="Cliente"
+      isOpen={isOpen}
+      onIsOpenChange={setIsOpen}
       description="Adicione aqui os dados do solicitante do orçamento. Clique em 'salvar' quando finalizar."
       icon={<User className="p-1"/>}
       trigger={trigger}>
@@ -39,8 +69,8 @@ export function CustomerSheet({trigger}: ICustomerSheetsProps) {
             <FormInput name="email" label="E-mail" type="email" placeholder="funilaria@contato.com" form={form}/>
 
             <SheetFooter className="mt-4">
-              <Button variant={"outline"} onClick={handleOnClean}>Limpar</Button>
-              <Button type="submit">Salvar</Button>
+              <Button variant={"outline"} disabled={isPending} onClick={handleOnClean}>Limpar</Button>
+              <Button type="submit" disabled={isPending}>Salvar</Button>
             </SheetFooter>
           </form>
         </Form>
