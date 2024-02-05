@@ -17,70 +17,43 @@ import { useForm } from "react-hook-form";
 
 function ServiceOrderPage() {
   const [show, setShow] = useState(false)
-  // const { register, handleSubmit } = useForm()
+  const { register, handleSubmit } = useForm()
   const [serviceOrder, setServiceOrder] = useState<ServiceOrder>({
     id: "006263",
     status: "pending",
     created_at: "2024-02-02T16:50:04.793Z",
     last_saved_at: "2024-02-02T16:50:04.793Z",
     customer: {
-      // name: "Thailon Lucas",
-      // cpf: "155.511.848-89"
+      name: "Thailon Lucas",
+      cpf: "155.511.848-89"
     },
     vehicle: {
-      // plate: "DRN3J65",
-      // description: "Honda Fit",
-      // brand: "Honda",
-      // model: "Fit",
-      // year: "2014"
+      plate: "DRN-3J65",
+      description: "Honda Fit",
+      brand: "Honda",
+      model: "Fit",
+      year: "2014"
     },
-    items: [
-      {
-        "id": "0021",
-        "tag": "recuperada",
-        "description": "Parachoque T",
-        "type": "part",
-        "quantity": 1,
-        "value": 1500,
-        "discount": 20,
-        "insurance_coverage": 0,
-        "total": 1480
-      },
-      {
-        "id": "0022",
-        "tag": "nova",
-        "description": "Lanterna LD",
-        "type": "part",
-        "quantity": 1,
-        "value": 1500,
-        "discount": 0,
-        "insurance_coverage": 0,
-        "total": 1480
-      },
-      {
-        "id": "0023",
-        "tag": "funilaria",
-        "description": "Recuperar Painel Traseiro",
-        "type": "service",
-        "quantity": 1,
-        "value": 1500,
-        "discount": 0,
-        "insurance_coverage": 0,
-        "total": 1480
-      },
-      {
-        "id": "0024",
-        "tag": "pintura",
-        "description": "Pintura",
-        "type": "service",
-        "quantity": 1,
-        "value": 1500,
-        "discount": 20,
-        "insurance_coverage": 0,
-        "total": 1480
-      }
-    ]
+    items: []
   })
+
+  const onSubmit = ({description, value}: any) => {
+    console.log(description)
+    const newSO = serviceOrder
+    newSO.items.push({
+      "id": "0025",
+      "tag": "pintura",
+      description,
+      "type": "service",
+      "quantity": 1,
+      value,
+      "discount": 0,
+      "insurance_coverage": 0,
+      "total": value
+    })
+    setServiceOrder({...newSO})
+    console.log(newSO)
+  }
   
 
   return (
@@ -100,20 +73,20 @@ function ServiceOrderPage() {
           <VehicleSheet trigger={<DetailCard side={"right"} title={serviceOrder.vehicle.description || "Veículo"} subtitle={serviceOrder.vehicle.plate || "Clique aqui para selecionar"} fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
         </div>
 
-        <div className="flex items-end gap-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex items-end gap-3">
           <span className="flex-1">
             <Label htmlFor="item">Item</Label>
-            <Input id="description" placeholder="Digite aqui..." />
+            <Input id="description" placeholder="Digite aqui..." {...register("description")} />
           </span>
           <span>
             <Label htmlFor="price">Valor</Label>
-            <Input id="price" placeholder="0,00"/>
+            <Input id="price" placeholder="0,00" {...register("value")}/>
           </span>
-          <Button>Adicionar</Button>
-        </div>
+          <Button type="submit">Adicionar</Button>
+        </form>
 
-        <DataTable columns={columns} data={serviceOrder.items} className={"mt-4 mb-4 flex-1 overflow-scroll"}/>
-
+        <DataTable columns={columns} data={[...serviceOrder.items]} className={"mt-4 mb-4 flex-1 overflow-y-scroll"}/>
+        
         <div className="flex justify-between">
           <span className="flex flex-1 gap-8">
             <PriceTag id='pieces-price' label='Peças' value='R$0,00' />
