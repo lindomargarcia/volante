@@ -56,7 +56,7 @@ export function DataTable<TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="absolute w-full h-full flex flex-col justify-center items-center text-gray-400">
+              <TableCell colSpan={columns.length} className="absolute w-full h-[calc(100%-45px)] flex flex-col justify-center items-center text-gray-400">
                 <span className="flex">
                   <RoadCone size={32}/>
                   <Car size={32}/>

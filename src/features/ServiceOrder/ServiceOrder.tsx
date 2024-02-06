@@ -32,7 +32,7 @@ function ServiceOrderPage() {
   }
 
   return (
-    <div className="flex flex-1 flex-row p-8 gap-10">
+    <div className="flex flex-1 flex-row flex-wrap p-8 gap-10">
       {/* Left Side */}
       <div className="flex flex-1 flex-col basis-3/5">
         <div className="flex flex-row justify-items-center items-center mb-8">
@@ -73,7 +73,7 @@ function ServiceOrderPage() {
           <FileSelect label="Imagens"/>
         </div>
 
-        <div className="flex justify-end gap-3">
+        <div className="flex justify-end gap-3 mb-4">
           <Button variant={"outline"}>Compartilhar</Button>
           <Button>Salvar</Button>
         </div>

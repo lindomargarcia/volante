@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { ServiceOrderItem } from "./types"
+import { ServiceOrderItem } from "../types"
 import { currencyFormat } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 
@@ -11,10 +11,10 @@ const TAG_BADGE_COLORS = {
 }
 
 export const columns: ColumnDef<ServiceOrderItem>[] = [
-  {
-    accessorKey: "id",
-    header: "ID",
-  },
+  // {
+  //   accessorKey: "id",
+  //   header: "ID",
+  // },
   {
     accessorKey: "tag",
     header: "Tag",

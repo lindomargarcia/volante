@@ -66,7 +66,7 @@ export function CustomerSheet({trigger, customer}: ICustomerSheetsProps) {
       trigger={trigger}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onFormSubmit)} className="grid gap-4 py-4">
-            <FormInput name="name" label="Nome" type="text" placeholder="Digite aqui..." form={form}/>
+            <FormInput name="name" label="Nome" type="text" placeholder="Digite aqui..." form={form} direction={"col"}/>
             <FormInput name="cpf" label="CPF" type="text" placeholder="000.000.000-00" form={form}/>
             <FormInput name="phone" label="Telefone" type="phone"  placeholder="(00) 00000-0000" form={form}/>
             <FormInput name="email" label="E-mail" type="email" placeholder="funilaria@contato.com" form={form}/>
