@@ -15,6 +15,7 @@ import { columns } from "./columns";
 import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { getServiceOrder } from "@/data/ServiceOrder";
+import { VehicleSheetSchema } from "@/components/VehicleSheet/schema";
 
 function ServiceOrderPage() {
   const [show, setShow] = useState(false)
@@ -25,7 +26,17 @@ function ServiceOrderPage() {
   })
 
   const onSubmit = ({description, value}: any) => {
+    console.log(description, value)
+  }
 
+  const getVehicleSheetTriggerTitle = (vehicle?: VehicleSheetSchema) => {
+    if(vehicle?.brand && vehicle?.model){
+      return `${vehicle.brand} ${vehicle.model}`
+    }else if(vehicle?.brand){
+      return vehicle.brand
+    }else{
+      return 'Veículo'
+    }
   }
 
   return (
@@ -41,8 +52,8 @@ function ServiceOrderPage() {
         </div>
 
         <div className="flex mb-4 flex-wrap">
-          <CustomerSheet customer={serviceOrder?.customer} trigger={<DetailCard side={"left"} title={serviceOrder?.customer.name || "Cliente"} subtitle={serviceOrder?.customer.cpf || "Clique aqui para selecionar"} fallback={<User fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
-          <VehicleSheet vehicle={serviceOrder?.vehicle} trigger={<DetailCard side={"right"} title={serviceOrder?.vehicle.brand || "Veículo"} subtitle={serviceOrder?.vehicle.plate || "Clique aqui para selecionar"} fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
+          <CustomerSheet customer={serviceOrder?.customer} trigger={<DetailCard side={"left"} title={serviceOrder?.customer.name || "Cliente"} subtitle={serviceOrder?.customer.phone || "Clique aqui para selecionar"} fallback={<User fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
+          <VehicleSheet vehicle={serviceOrder?.vehicle} trigger={<DetailCard side={"right"} title={getVehicleSheetTriggerTitle(serviceOrder?.vehicle)} subtitle={serviceOrder?.vehicle.plate.toLocaleUpperCase() || "Clique aqui para selecionar"} fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex items-end gap-3">

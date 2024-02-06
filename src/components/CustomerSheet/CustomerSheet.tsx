@@ -26,11 +26,14 @@ export function CustomerSheet({trigger, customer}: ICustomerSheetsProps) {
   })
 
   useEffect(() => {
+    if(!isOpen) return
+    form.clearErrors()
     form.setValue('name', customer?.name || '')
     form.setValue('cpf', customer?.cpf  || '')
     form.setValue('phone', customer?.phone  || '')
-    form.setValue('email', customer?.email  || '')
-  }, [customer])
+    form.setValue('email', customer?.email || '')
+  }, [customer, isOpen])
+
 
   const { mutateAsync: putServiceOrderCustomerFn, isPending } = useMutation({
     mutationFn: putServiceOrderCustomer,

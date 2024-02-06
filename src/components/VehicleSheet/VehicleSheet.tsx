@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { FormInput, FormSelect } from "../FormInput"
 import { VehicleSheetSchema, defaultVehicleValues, vehicleSheetSchema } from "./schema"
 import { SheetContainer } from "../SheetContainer/SheetContainer"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { putServiceOrderVehicle } from "@/data/ServiceOrder"
 import { ServiceOrder } from "@/features/ServiceOrder/types"
@@ -23,9 +23,18 @@ export function VehicleSheet({vehicle, trigger}: IVehicleSheetsProps) {
 
   const form = useForm<VehicleSheetSchema>({
     resolver: zodResolver(vehicleSheetSchema),
-    defaultValues:defaultVehicleValues,
-    values: vehicle
+    defaultValues:defaultVehicleValues
   })
+
+  useEffect(() => {
+    if(!isOpen) return
+    form.clearErrors()
+    form.setValue('plate', vehicle?.plate || '')
+    form.setValue('brand', vehicle?.brand  || '')
+    form.setValue('model', vehicle?.model  || '')
+    form.setValue('year', vehicle?.year || '')
+    form.setValue('color', vehicle?.color || 'preto')
+  }, [vehicle, isOpen])
 
   const { mutateAsync: putServiceOrderVehicleFn, isPending } = useMutation({
     mutationFn: putServiceOrderVehicle,
@@ -65,7 +74,7 @@ export function VehicleSheet({vehicle, trigger}: IVehicleSheetsProps) {
       trigger={trigger}>
         <Form {...form}>
           <form className="grid gap-4 py-4" onSubmit={form.handleSubmit(handleOnSubmit)}>
-            <FormInput name='plate' label="Placa" type="text" placeholder="ABC-1D23" form={form}/>
+            <FormInput name='plate' label="Placa" type="text" placeholder="ABC-1D23" form={form} className={'uppercase'}/>
             <FormSelect name="brand" label="Marca" options={brandsList} form={form} placeholder="Selecione..." />
             <FormInput name='model' label="Modelo" type="text" placeholder="Digite aqui..." form={form}/>
             <FormInput name='year' label="Ano" type="text" placeholder="2024" form={form}/>
