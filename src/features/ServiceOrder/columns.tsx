@@ -4,10 +4,10 @@ import { currencyFormat } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 
 const TAG_BADGE_COLORS = {
-  nova: "bg-amber-400",
-  recuperada: "bg-gray-400",
-  funilaria: "bg-blue-400",
-  pintura: "bg-purple-400"
+  "nova": "bg-amber-400",
+  "recuperada": "bg-gray-400",
+  "funilaria": "bg-blue-400",
+  "pintura": "bg-purple-400"
 }
 
 export const columns: ColumnDef<ServiceOrderItem>[] = [
@@ -18,7 +18,7 @@ export const columns: ColumnDef<ServiceOrderItem>[] = [
   {
     accessorKey: "tag",
     header: "Tag",
-    cell: ({row}) => <Badge className={`${TAG_BADGE_COLORS[row.getValue("tag")]} shadow-none`}>{row.getValue("tag")}</Badge>
+    cell: ({row}) => <Badge className={`${TAG_BADGE_COLORS["nova"]} shadow-none`}>{row.getValue("tag")}</Badge>
   },
   {
     accessorKey: "description",

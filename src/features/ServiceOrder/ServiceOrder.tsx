@@ -1,6 +1,5 @@
 import { Car, MoreOne, User } from "@icon-park/react";
 import { Badge } from "@/components/ui/badge";
-import PriceTag from "@/components/ui/priceTag";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -10,24 +9,17 @@ import FileSelect from "@/components/ui/fileSelect";
 import { CustomerSheet } from "../../components/CustomerSheet/CustomerSheet";
 import { VehicleSheet } from "../../components/VehicleSheet/VehicleSheet";
 import DetailCard from "@/components/ui/detailCard";
-import { DataTable } from "@/components/DataTable/DataTable";
-import { columns } from "./columns";
-import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { getServiceOrder } from "@/data/ServiceOrder";
 import { VehicleSheetSchema } from "@/components/VehicleSheet/schema";
+import ItemsDataTable from "./ItemsDataTable/ItemsDataTable";
 
 function ServiceOrderPage() {
   const [show, setShow] = useState(false)
-  const { register, handleSubmit } = useForm()
   const { data: serviceOrder } = useQuery({
     queryFn: getServiceOrder,
     queryKey: ['service-order']
   })
-
-  const onSubmit = ({description, value}: any) => {
-    console.log(description, value)
-  }
 
   const getVehicleSheetTriggerTitle = (vehicle?: VehicleSheetSchema) => {
     if(vehicle?.brand && vehicle?.model){
@@ -56,31 +48,7 @@ function ServiceOrderPage() {
           <VehicleSheet vehicle={serviceOrder?.vehicle} trigger={<DetailCard side={"right"} title={getVehicleSheetTriggerTitle(serviceOrder?.vehicle)} subtitle={serviceOrder?.vehicle.plate.toLocaleUpperCase() || "Clique aqui para selecionar"} fallback={<Car fill={"#94A3B8"}/>} className="min-w-[300px]"/>}/>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex items-end gap-3">
-          <span className="flex-1">
-            <Label htmlFor="item">Item</Label>
-            <Input id="description" placeholder="Digite aqui..." {...register("description")} />
-          </span>
-          <span>
-            <Label htmlFor="price">Valor</Label>
-            <Input id="price" placeholder="0,00" {...register("value")}/>
-          </span>
-          <Button type="submit">Adicionar</Button>
-        </form>
-
-        <DataTable columns={columns} data={serviceOrder?.items || []} className={"mt-4 mb-4 flex-1 overflow-y-scroll"}/>
-        
-        <div className="flex justify-between">
-          <span className="flex flex-1 gap-8">
-            <PriceTag id='pieces-price' label='Peças' value='R$0,00' />
-            <PriceTag id='services-price' label='Serviços' value='R$0,00' />
-            <PriceTag id='discounts-price' label='Descontos' value='R$0,00' />
-          </span>
-          <span className="flex gap-8">
-            {/* <PriceTag id='insurance-price' label='Seguro' value='-R$0,00' className="text-right" /> */}
-            <PriceTag id='total-price' label='Total' value='R$0,00' className="text-right" />
-          </span>
-        </div>
+        <ItemsDataTable data={serviceOrder?.items || []}/>
       
       </div>
 
