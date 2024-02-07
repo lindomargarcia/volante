@@ -26,11 +26,29 @@ export enum CAR_SERVICES {
   // ALIGNMENT_AND_BALANCING = "Alinhamento e Balanceamento"
 }
 
+const BADGE_COLORS: Record<CAR_SERVICES, string> = {
+  "Funilaria": "bg-blue-500",
+  "Pintura": "bg-violet-500",
+  "Peças": "bg-pink-500",
+  "Ar Condicionado": "bg-indigo-300",
+  "Borracharia": "bg-gray-500",
+  "Elétrica": "bg-amber-500",
+  "Estética": "bg-pink-400",
+  "Martelinho": "bg-blue-400",
+  "Mecânica": "bg-green-500",
+  "Revisão": "bg-red-400",
+  "Tapeçaria": "bg-amber-700",
+  "Vidraçaria": "bg-blue-300",
+}
+
 export const columns: ColumnDef<ServiceOrderItem>[] = [
   {
     accessorKey: "type",
     header: "Tipo",
-    cell: ({row}) => <Badge>{row.getValue("type")}</Badge>
+    cell: ({row}) => {
+      const type:CAR_SERVICES = row.getValue("type");
+      return <Badge className={`${BADGE_COLORS[type]} shadow-none`}>{row.getValue("type")}</Badge>
+    }
   },
   {
     accessorKey: "description",
