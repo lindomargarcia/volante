@@ -30,7 +30,7 @@ const FileSelect = ({label}: FileSelectProps) => {
 
     return ( 
         <span>
-            <Label htmlFor="file">{label} <span className="text-muted-foreground">{`${fileList.length}/12`}</span></Label>
+            <Label htmlFor="file" className="font-bold">{label} <span className="text-muted-foreground">{`${fileList.length}/12`}</span></Label>
             <Input ref={e => fileInput.current = e} className="hidden" id="file" type="file" multiple onChange={e => onInputChangeHandle(e)} accept=".png,.jpeg"/>
             <span className="flex flex-wrap gap-2 mt-2">
                 {fileList && fileList.map((file:any) => {

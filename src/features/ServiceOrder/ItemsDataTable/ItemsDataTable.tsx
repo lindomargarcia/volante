@@ -74,9 +74,9 @@ const ItemsDataTable = ({data}: ItemsDataTableProps) => {
                 <Button type="submit"><AddOne className="mr-2"/>Adicionar</Button>
             </form>
 
-            <DataTable columns={columns} data={data || []} className={"mt-4 mb-4 flex-1 overflow-y-scroll min-h-[500px]"}/>
+            <DataTable columns={columns} data={data || []} className={"mt-4 flex-1 overflow-y-scroll min-h-[500px]"}/>
             
-            <div className="flex justify-between">
+            <div className="flex justify-between border rounded p-3 mt-[-1px]">
                 <span className="flex flex-1 gap-8">
                     <PriceTag id='pieces-price' label='Peças' value={currencyFormat(total_parts, "currency")} />
                     <PriceTag id='services-price' label='Serviços' value={currencyFormat(total_services, "currency")} />

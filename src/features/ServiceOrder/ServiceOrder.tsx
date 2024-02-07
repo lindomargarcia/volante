@@ -91,12 +91,12 @@ function ServiceOrderPage() {
             onChange={putServiceOrderCustomer}
             isPending={isCustomerPending}
             customer={serviceOrder?.customer}
-            trigger={<DetailCard side={"left"} title={serviceOrder?.customer.name || "Cliente"} subtitle={serviceOrder?.customer.phone || "Clique aqui para selecionar"} fallback={<User size={"20px"}/>} className="min-w-[300px]"/>}/>
+            trigger={<DetailCard side={"left"} title={serviceOrder?.customer.name || "Cliente"} ready={serviceOrder?.customer.name ? true : false} subtitle={serviceOrder?.customer.phone || "Clique aqui para selecionar"} fallback={<User size={"20px"}/>} className="min-w-[300px]"/>}/>
           <VehicleSheet 
-            onChange={putServiceOrderVehicle} 
+            onChange={putServiceOrderVehicle}
             isPending={isVehiclePending}
             vehicle={serviceOrder?.vehicle}
-            trigger={<DetailCard side={"right"} title={getVehicleSheetTriggerTitle(serviceOrder?.vehicle)} subtitle={serviceOrder?.vehicle.plate.toLocaleUpperCase() || "Clique aqui para selecionar"} fallback={<Car size={"20px"}/>} className="min-w-[300px]"/>}/>
+            trigger={<DetailCard side={"right"} title={getVehicleSheetTriggerTitle(serviceOrder?.vehicle)} ready={serviceOrder?.vehicle.plate ? true : false}  subtitle={serviceOrder?.vehicle.plate.toLocaleUpperCase() || "Clique aqui para selecionar"} fallback={<Car size={"20px"}/>} className="min-w-[300px]"/>}/>
         </div>
 
         <ItemsDataTable data={serviceOrder?.items || []}/>
@@ -114,7 +114,7 @@ function ServiceOrderPage() {
             <div className="flex flex-1 flex-col gap-3">
                 <FormSelect label="Seguradora" name="insurance_company" form={form} options={['Não há', 'Allianz', 'Azul', 'Porto Seguro']} placeholder="Selecione..." containerClassName="w-[150px]" direction={"col"}/>
                 <span>
-                  <Label htmlFor="duration">Duraçao Aproximada</Label>
+                  <Label htmlFor="duration" className="font-bold">Duraçao Aproximada</Label>
                   <span className="flex gap-1">
                     <FormInput form={form} name="duration_quantity" placeholder="0" type="number" key={"duration_quantity"} containerClassName="w-[70px]"/>
                     <FormSelect name="duration_type" form={form} options={['Horas', 'Dias', 'Semanas', 'Meses', 'Anos']} placeholder="Selecione..." className="flex-1"/>
@@ -124,7 +124,7 @@ function ServiceOrderPage() {
             </div>
 
             <div className="flex justify-end gap-3">
-              <Button variant={"outline"}><Send className="mr-2"/>Compartilhar</Button>
+              <Button variant="outline"><Send className="mr-2"/>Compartilhar</Button>
               <Button type="submit"><Download className="mr-2"/>Salvar</Button>
             </div>
           </form>

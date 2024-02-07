@@ -33,7 +33,7 @@ const FormInput = ({name, label, placeholder, type, className, containerClassNam
         <FormField control={form.control} name={name} render={({field}) => (
             <FormItem className={cn(FormInputVariants({direction, className: containerClassName}))}>
                 {/* text-right pr-3 w-[60px] vai abaixo no FormLabel */}
-                {label && <FormLabel>{label}</FormLabel> }
+                {label && <FormLabel className="font-bold">{label}</FormLabel> }
                 <span className="flex-1 h-[40px]">
                     <FormControl>
                         {input ? input(field) : <Input placeholder={placeholder} className={className} min={1} type={type} {...field}/>}
@@ -56,7 +56,7 @@ const FormSelect = ({name, label, form, options, placeholder, direction, classNa
             name={name}
             render={({ field }) => (
             <FormItem className={cn(FormInputVariants({direction, className}))}>
-                {label && <FormLabel>{label}</FormLabel>}
+                {label && <FormLabel className="font-bold">{label}</FormLabel>}
                 <span>
                     <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
                         <FormControl>

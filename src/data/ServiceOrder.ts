@@ -12,7 +12,8 @@ export async function getServiceOrderAPI(): Promise<ServiceOrder>{
         vehicle: defaultVehicleValues,
         images: [],
         insurance_company: '',
-        duration: { quantity: 0, type: "day" },
+        duration_quantity: 0,
+        duration_type: 'day',
         items: []
     }
 }
