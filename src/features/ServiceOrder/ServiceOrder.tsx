@@ -1,4 +1,4 @@
-import { Car, MoreOne, User } from "@icon-park/react";
+import { Car, Download, MoreOne, Send, User } from "@icon-park/react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
@@ -123,9 +123,9 @@ function ServiceOrderPage() {
                 <FileSelect label="Imagens"/>
             </div>
 
-            <div className="flex justify-end gap-3 mb-4">
-              <Button variant={"outline"}>Compartilhar</Button>
-              <Button type="submit">Salvar</Button>
+            <div className="flex justify-end gap-3">
+              <Button variant={"outline"}><Send className="mr-2"/>Compartilhar</Button>
+              <Button type="submit"><Download className="mr-2"/>Salvar</Button>
             </div>
           </form>
         </Form>
