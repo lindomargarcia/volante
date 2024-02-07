@@ -8,17 +8,14 @@ import { Form } from "../ui/form"
 import { FormInput } from "../FormInput"
 import { CustomerSheetSchema, customerSheetSchema, defaultCustomerValues } from "./schema"
 import { SheetContainer } from "../SheetContainer/SheetContainer"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { putServiceOrderCustomerAPI } from "@/data/ServiceOrder"
-import { ServiceOrder } from "@/features/ServiceOrder/types"
-
 interface ICustomerSheetsProps {
   trigger: ReactComponentElement<any>,
-  customer?: CustomerSheetSchema
+  customer?: CustomerSheetSchema,
+  onChange: (data: CustomerSheetSchema) => Promise<any>
+  isPending: boolean
 }
 
-export function CustomerSheet({trigger, customer}: ICustomerSheetsProps) {
-  const queryClient = useQueryClient()
+export function CustomerSheet({trigger, customer, onChange, isPending}: ICustomerSheetsProps) {
   const [isOpen, setIsOpen] = useState(false)
   const form = useForm<CustomerSheetSchema>({
     resolver: zodResolver(customerSheetSchema),
@@ -35,20 +32,10 @@ export function CustomerSheet({trigger, customer}: ICustomerSheetsProps) {
   }, [customer, isOpen])
 
 
-  const { mutateAsync: putServiceOrderCustomerFn, isPending } = useMutation({
-    mutationFn: putServiceOrderCustomerAPI,
-    onSuccess(__, variables) {
-      queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
-        const newSO = {...data}
-        newSO.customer = variables
-        setIsOpen(false)
-        return newSO
-      })
-    },
-  })
-
   const onFormSubmit = (data: CustomerSheetSchema) => {
-    putServiceOrderCustomerFn(data)
+    onChange(data).then(() => {
+      setIsOpen(false)
+    })
   }
 
   const handleOnClean = (e: any) => {

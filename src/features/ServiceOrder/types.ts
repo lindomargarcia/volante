@@ -9,6 +9,10 @@ export type ServiceOrder = {
     status: "pending" | "waiting_approval" | "approved" | "waiting_start" | "doing" | "done" | "paused"
     created_at: string,
     last_saved_at: string,
+    insurance_company?: string,
+    duration_quantity: number,
+    duration_type: "hour" | "day" | "week" | "month" | "year",
+    images: string[]
     customer: CustomerSheetSchema,
     vehicle: VehicleSheetSchema,
     items: ServiceOrderItem[] | []
@@ -16,7 +20,7 @@ export type ServiceOrder = {
 
 export type ServiceOrderItem = {
     id: string
-    tag: string
+    type: string
     description: string,
     quantity: number,
     value: number,

@@ -16,7 +16,7 @@ interface ItemsDataTableProps {
 }
 
 const defaultValuesServiceOrder: ServiceOrderItem = {
-    description: "", value: 0, discount: 0, quantity: 1,id: "", tag: CAR_SERVICES.BODYWORK, insurance_coverage: 0, total: 0
+    description: "", value: 0, discount: 0, quantity: 1,id: "", type: CAR_SERVICES.BODYWORK, insurance_coverage: 0, total: 0
 }
 
 const ItemsDataTable = ({data}: ItemsDataTableProps) => {
@@ -36,7 +36,7 @@ const ItemsDataTable = ({data}: ItemsDataTableProps) => {
     })
 
     const onSubmit = (data: ServiceOrderItem) => {
-        const {description, value, tag, discount, quantity} = data
+        const {description, value, type, discount, quantity} = data
         const totalValue: number = (value * quantity) - discount
 
         putServiceOrderItemFn({
@@ -47,7 +47,7 @@ const ItemsDataTable = ({data}: ItemsDataTableProps) => {
             discount: discount || 0,
             insurance_coverage: 0,
             total: totalValue,
-            tag
+            type
         })
         
         updateValues(data)
@@ -65,7 +65,7 @@ const ItemsDataTable = ({data}: ItemsDataTableProps) => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-end gap-3">
-            <FormSelect label="Tag" name="tag" form={form} options={Object.values(CAR_SERVICES)} placeholder="Selecione..." containerClassName="w-[150px]" direction={"col"}/>
+                <FormSelect label="Tipo" name="type" form={form} options={Object.values(CAR_SERVICES)} placeholder="Selecione..." containerClassName="w-[150px]" direction={"col"}/>
                 <FormInput form={form} name="description" label="Descrição" placeholder="Digite aqui..." key={"description"} direction={"col"} containerClassName="flex-1 min-w-[200px]"/>
                 <FormInput form={form} name="quantity" label="Qtd." placeholder="1" type="number" key={"quantity"} direction={"col"} containerClassName="w-[70px]"/>
                 <FormInput form={form} name="value" label="Valor" placeholder="R$0,00" key={"value"} direction={"col"} containerClassName="w-[100px]" className="last:text-right"/>

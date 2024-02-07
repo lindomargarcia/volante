@@ -2,7 +2,7 @@ import { CustomerSheetSchema, defaultCustomerValues } from "@/components/Custome
 import { VehicleSheetSchema, defaultVehicleValues } from "@/components/VehicleSheet/schema"
 import { ServiceOrder, ServiceOrderItem } from "@/features/ServiceOrder/types"
 
-export async function getServiceOrder(): Promise<ServiceOrder>{
+export async function getServiceOrderAPI(): Promise<ServiceOrder>{
     return {
         id: crypto.randomUUID(),
         status: "pending",
@@ -10,6 +10,9 @@ export async function getServiceOrder(): Promise<ServiceOrder>{
         last_saved_at: new Date().toJSON(),
         customer: defaultCustomerValues,
         vehicle: defaultVehicleValues,
+        images: [],
+        insurance_company: '',
+        duration: { quantity: 0, type: "day" },
         items: []
     }
 }
@@ -26,6 +29,6 @@ export async function putServiceOrderVehicleAPI(_data: VehicleSheetSchema){
     return 
 }
 
-export async function putServiceOrderAPI(_data: ServiceOrder){
+export async function putServiceOrderAPI(_data?: ServiceOrder){
     return 
 }

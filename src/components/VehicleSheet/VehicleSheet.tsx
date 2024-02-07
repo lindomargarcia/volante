@@ -8,18 +8,16 @@ import { FormInput, FormSelect } from "../FormInput"
 import { VehicleSheetSchema, defaultVehicleValues, vehicleSheetSchema } from "./schema"
 import { SheetContainer } from "../SheetContainer/SheetContainer"
 import { useEffect, useState } from "react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { putServiceOrderVehicleAPI } from "@/data/ServiceOrder"
-import { ServiceOrder } from "@/features/ServiceOrder/types"
 
 interface IVehicleSheetsProps {
   trigger: React.ReactElement
-  vehicle?: VehicleSheetSchema
+  vehicle?: VehicleSheetSchema,
+  onChange: (data: VehicleSheetSchema) => Promise<any>,
+  isPending: boolean
 }
 
-export function VehicleSheet({vehicle, trigger}: IVehicleSheetsProps) {
+export function VehicleSheet({vehicle, trigger, onChange, isPending}: IVehicleSheetsProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const queryClient = useQueryClient()
 
   const form = useForm<VehicleSheetSchema>({
     resolver: zodResolver(vehicleSheetSchema),
@@ -36,18 +34,6 @@ export function VehicleSheet({vehicle, trigger}: IVehicleSheetsProps) {
     form.setValue('color', vehicle?.color || 'preto')
   }, [vehicle, isOpen])
 
-  const { mutateAsync: putServiceOrderVehicleFn, isPending } = useMutation({
-    mutationFn: putServiceOrderVehicleAPI,
-    onSuccess(__, variables) {
-      queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
-        const newSO = {...data}
-        newSO.vehicle = variables
-        setIsOpen(false)
-        return newSO
-      })
-    },
-  })
-
   const brandsList = ["Acura", "Alfa Romeo", "Audi", "Bentley", "BMW", "Buick", "Cadillac", "Chevrolet", "Chrysler", "Dodge",
   "Ferrari", "Fiat", "Ford", "GMC", "Honda", "Hyundai", "Infiniti", "Jaguar", "Jeep", "Kia", "Lamborghini",
   "Land Rover", "Lexus", "Lincoln", "Mazda", "McLaren", "Mercedes-Benz", "Mini", "Mitsubishi", "Nissan",
@@ -56,7 +42,9 @@ export function VehicleSheet({vehicle, trigger}: IVehicleSheetsProps) {
   const colorsList = ['azul', 'branco','vermelho', 'verde', 'prata', 'preto']
 
   const handleOnSubmit = (data: VehicleSheetSchema) => {
-    putServiceOrderVehicleFn(data)
+    onChange(data).then(() => {
+      setIsOpen(false)
+    })
   }
 
   const handleOnClean = (e: any) => {

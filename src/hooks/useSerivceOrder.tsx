@@ -8,13 +8,13 @@ const useServiceOrder = () => {
     const [total_parts, setParts] = useState<number>(0)
     const [total_discount, setDiscounts] = useState<number>(0)
 
-    const updateValues = ({value, quantity, discount, tag}: ServiceOrderItem) => {
+    const updateValues = ({value, quantity, discount, type}: ServiceOrderItem) => {
         const totalValue: number = (value * quantity) - discount
 
         setTotal(total + totalValue)
         setDiscounts(total_discount + Number(discount))
 
-        if(tag === CAR_SERVICES.PARTS){
+        if(type === CAR_SERVICES.PARTS){
             setParts(total_parts + (value * quantity))
         }else{
             setServices(total_services + (value * quantity))

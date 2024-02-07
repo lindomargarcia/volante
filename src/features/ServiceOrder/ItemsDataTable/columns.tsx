@@ -28,9 +28,9 @@ export enum CAR_SERVICES {
 
 export const columns: ColumnDef<ServiceOrderItem>[] = [
   {
-    accessorKey: "tag",
-    header: "Tag",
-    cell: ({row}) => <Badge>{row.getValue("tag")}</Badge>
+    accessorKey: "type",
+    header: "Tipo",
+    cell: ({row}) => <Badge>{row.getValue("type")}</Badge>
   },
   {
     accessorKey: "description",
