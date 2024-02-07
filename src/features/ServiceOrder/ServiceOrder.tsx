@@ -18,7 +18,8 @@ function ServiceOrderPage() {
   const [show, setShow] = useState(false)
   const { data: serviceOrder } = useQuery({
     queryFn: getServiceOrder,
-    queryKey: ['service-order']
+    queryKey: ['service-order'],
+    refetchOnWindowFocus: false
   })
 
   const getVehicleSheetTriggerTitle = (vehicle?: VehicleSheetSchema) => {

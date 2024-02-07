@@ -14,18 +14,18 @@ export async function getServiceOrder(): Promise<ServiceOrder>{
     }
 }
 
-export async function putServiceOrderItem(_data: ServiceOrderItem){
+export async function putServiceOrderItemAPI(_data: ServiceOrderItem){
     return 
 }
 
-export async function putServiceOrderCustomer(_data: CustomerSheetSchema){
+export async function putServiceOrderCustomerAPI(_data: CustomerSheetSchema){
     return 
 }
 
-export async function putServiceOrderVehicle(_data: VehicleSheetSchema){
+export async function putServiceOrderVehicleAPI(_data: VehicleSheetSchema){
     return 
 }
 
-export async function putServiceOrder(_data: ServiceOrder){
+export async function putServiceOrderAPI(_data: ServiceOrder){
     return 
 }

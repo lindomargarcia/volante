@@ -22,15 +22,16 @@ interface FormInputProps extends VariantProps<typeof FormInputVariants> {
     label?: string,
     placeholder?: string,
     className?: string,
+    containerClassName?: string,
     type?: string,
     form: UseFormReturn<any>
     input?: (field: ControllerRenderProps<any, string>) => ReactElement<any>
 }
 
-const FormInput = ({name, label, placeholder, type, className, form, input, direction}: FormInputProps) => {
+const FormInput = ({name, label, placeholder, type, className, containerClassName, form, input, direction}: FormInputProps) => {
     return ( 
         <FormField control={form.control} name={name} render={({field}) => (
-            <FormItem className={cn(FormInputVariants({direction, className}))}>
+            <FormItem className={cn(FormInputVariants({direction, className: containerClassName}))}>
                 {/* text-right pr-3 w-[60px] vai abaixo no FormLabel */}
                 {label && <FormLabel>{label}</FormLabel> }
                 <span className="flex-1 h-[40px]">

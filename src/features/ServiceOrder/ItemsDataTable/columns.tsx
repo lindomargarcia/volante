@@ -3,31 +3,39 @@ import { ServiceOrderItem } from "../types"
 import { currencyFormat } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 
-const TAG_BADGE_COLORS = {
-  "nova": "bg-amber-400",
-  "recuperada": "bg-gray-400",
-  "funilaria": "bg-blue-400",
-  "pintura": "bg-purple-400"
+export enum CAR_SERVICES {
+  BODYWORK = "Funilaria",
+  PAINTING = "Pintura",
+  PARTS = "Peças",
+  AIR_CONDITIONING = "Ar Condicionado",
+  TIRE_REPAIR = "Borracharia",
+  ELECTRICAL = "Elétrica",
+  AESTHETICS = "Estética",
+  DENT_REPAIR = "Martelinho",
+  MECHANICAL = "Mecânica",
+  OVERHAUL = "Revisão",
+  UPHOLSTERY = "Tapeçaria",
+  GLASSWORK = "Vidraçaria",
+  // BATTERY_REPLACEMENT = "Troca de Bateria",
+  // BRAKE_SERVICE = "Serviço de Freio",
+  // ENGINE_OVERHAUL = "Revisão de Motor",
+  // OIL_AND_FILTER_CHANGE = "Troca de Óleo e Filtros",
+  // SUSPENSION_REPAIR = "Reparo de Suspensão",
+  // TRANSMISSION_REPAIR = "Reparo de Transmissão",
+  // WINDSHIELD_REPAIR = "Reparo de Para-brisa",
+  // ALIGNMENT_AND_BALANCING = "Alinhamento e Balanceamento"
 }
 
 export const columns: ColumnDef<ServiceOrderItem>[] = [
-  // {
-  //   accessorKey: "id",
-  //   header: "ID",
-  // },
   {
     accessorKey: "tag",
     header: "Tag",
-    cell: ({row}) => <Badge className={`${TAG_BADGE_COLORS["nova"]} shadow-none`}>{row.getValue("tag")}</Badge>
+    cell: ({row}) => <Badge>{row.getValue("tag")}</Badge>
   },
   {
     accessorKey: "description",
     header: "Item",
   },
-  // {
-  //   accessorKey: "type",
-  //   header: "Tipo",
-  // },
   {
     accessorKey: "quantity",
     header: "Qtd",
@@ -42,11 +50,6 @@ export const columns: ColumnDef<ServiceOrderItem>[] = [
     header: () => <div className="text-right">Desconto</div>,
     cell: ({row}) => <div className="text-right">{currencyFormat(row.getValue("discount"))}</div>
   },
-  // {
-  //   accessorKey: "insurance_coverage",
-  //   header: () => <div className="text-right">Seguro</div>,
-  //   cell: ({row}) => <div className="text-right">{currencyFormat(row.getValue("insurance_coverage"))}</div>
-  // },
   {
     accessorKey: "total",
     header: () => <div className="text-right">Total</div>,

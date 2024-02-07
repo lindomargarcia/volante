@@ -9,7 +9,7 @@ import { FormInput } from "../FormInput"
 import { CustomerSheetSchema, customerSheetSchema, defaultCustomerValues } from "./schema"
 import { SheetContainer } from "../SheetContainer/SheetContainer"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { putServiceOrderCustomer } from "@/data/ServiceOrder"
+import { putServiceOrderCustomerAPI } from "@/data/ServiceOrder"
 import { ServiceOrder } from "@/features/ServiceOrder/types"
 
 interface ICustomerSheetsProps {
@@ -36,7 +36,7 @@ export function CustomerSheet({trigger, customer}: ICustomerSheetsProps) {
 
 
   const { mutateAsync: putServiceOrderCustomerFn, isPending } = useMutation({
-    mutationFn: putServiceOrderCustomer,
+    mutationFn: putServiceOrderCustomerAPI,
     onSuccess(__, variables) {
       queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
         const newSO = {...data}
@@ -71,9 +71,9 @@ export function CustomerSheet({trigger, customer}: ICustomerSheetsProps) {
             <FormInput name="phone" label="Telefone" type="phone"  placeholder="(00) 00000-0000" form={form}/>
             <FormInput name="email" label="E-mail" type="email" placeholder="funilaria@contato.com" form={form}/>
 
-            <SheetFooter className="mt-4">
-              <Button variant={"outline"} disabled={isPending} onClick={handleOnClean}>Limpar</Button>
+            <SheetFooter>
               <Button type="submit" disabled={isPending}>Salvar</Button>
+              <Button variant={"outline"} disabled={isPending} onClick={handleOnClean}>Limpar</Button>
             </SheetFooter>
           </form>
         </Form>

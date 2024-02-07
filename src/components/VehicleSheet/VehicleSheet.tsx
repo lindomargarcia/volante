@@ -9,7 +9,7 @@ import { VehicleSheetSchema, defaultVehicleValues, vehicleSheetSchema } from "./
 import { SheetContainer } from "../SheetContainer/SheetContainer"
 import { useEffect, useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { putServiceOrderVehicle } from "@/data/ServiceOrder"
+import { putServiceOrderVehicleAPI } from "@/data/ServiceOrder"
 import { ServiceOrder } from "@/features/ServiceOrder/types"
 
 interface IVehicleSheetsProps {
@@ -37,7 +37,7 @@ export function VehicleSheet({vehicle, trigger}: IVehicleSheetsProps) {
   }, [vehicle, isOpen])
 
   const { mutateAsync: putServiceOrderVehicleFn, isPending } = useMutation({
-    mutationFn: putServiceOrderVehicle,
+    mutationFn: putServiceOrderVehicleAPI,
     onSuccess(__, variables) {
       queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
         const newSO = {...data}
@@ -80,8 +80,8 @@ export function VehicleSheet({vehicle, trigger}: IVehicleSheetsProps) {
             <FormInput name='year' label="Ano" type="text" placeholder="2024" form={form}/>
             <FormSelect name="color" label="Cor" options={colorsList} form={form} placeholder="Selecione..." />
             <SheetFooter className="mt-4">
+            <Button type="submit" disabled={isPending}>Salvar</Button>
               <Button variant={"outline"} onClick={handleOnClean} disabled={isPending}>Limpar</Button>
-              <Button type="submit" disabled={isPending}>Salvar</Button>
             </SheetFooter>
           </form>
         </Form>

@@ -18,7 +18,6 @@ export type ServiceOrderItem = {
     id: string
     tag: string
     description: string,
-    type: "part" | "service"
     quantity: number,
     value: number,
     discount: number,
