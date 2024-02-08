@@ -29,10 +29,10 @@ export enum CAR_SERVICES {
 const BADGE_COLORS: Record<CAR_SERVICES, string> = {
   "Funilaria": "bg-blue-500",
   "Pintura": "bg-violet-500",
-  "Peças": "bg-pink-500",
+  "Peças": "bg-amber-500",
   "Ar Condicionado": "bg-indigo-300",
   "Borracharia": "bg-gray-500",
-  "Elétrica": "bg-amber-500",
+  "Elétrica": "bg-pink-500",
   "Estética": "bg-pink-400",
   "Martelinho": "bg-blue-400",
   "Mecânica": "bg-green-500",
