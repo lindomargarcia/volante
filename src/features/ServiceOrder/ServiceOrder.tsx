@@ -86,7 +86,7 @@ function ServiceOrderPage() {
           <Badge className="h-8 rounded-full" onClick={() => setShow(!show)}>{serviceOrder?.status || 'buscando...'}</Badge>
         </div>
 
-        <div className="flex mb-4 flex-wrap">
+        <div className="flex mb-8 flex-wrap">
           <CustomerSheet 
             onChange={putServiceOrderCustomer}
             isPending={isCustomerPending}
@@ -104,10 +104,10 @@ function ServiceOrderPage() {
       </div>
 
       {/* Right Side */}
-      <div className="flex flex-1 flex-col basis-1/5">
+      <div className="flex flex-1 flex-col">
         
         <div className="flex justify-end h-[60px]">
-          <Button variant={"ghost"}><MoreOne size={22}/></Button>
+          {/* <Button variant={"ghost"}><MoreOne size={22}/></Button> */}
         </div>
         <Form {...form} >
           <form onSubmit={form.handleSubmit(onSubmitHandle)} className="flex flex-col flex-1">

@@ -64,7 +64,7 @@ const ItemsDataTable = ({data}: ItemsDataTableProps) => {
     }
 
     return (
-        <Form {...form}>
+        <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-end gap-3">
                 <FormSelect label="Tipo" name="type" form={form} options={Object.values(CAR_SERVICES)} placeholder="Selecione..." containerClassName="w-[150px]" direction={"col"}/>
                 <FormInput form={form} name="description" label="Descrição" placeholder="Digite aqui..." key={"description"} direction={"col"} containerClassName="flex-1 min-w-[200px]"/>
@@ -76,7 +76,7 @@ const ItemsDataTable = ({data}: ItemsDataTableProps) => {
 
             <DataTable columns={columns} data={data || []} className={"mt-4 flex-1 overflow-y-scroll min-h-[500px]"}/>
             
-            <div className="flex justify-between border rounded p-3 mt-[-1px]">
+            <div className="flex justify-between pl-3 pr-3 mt-4">
                 <span className="flex flex-1 gap-8">
                     <PriceTag id='pieces-price' label='Peças' value={currencyFormat(total_parts, "currency")} />
                     <PriceTag id='services-price' label='Serviços' value={currencyFormat(total_services, "currency")} />

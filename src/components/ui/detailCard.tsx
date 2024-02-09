@@ -2,6 +2,7 @@ import { VariantProps, cva } from "class-variance-authority";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { cn } from "@/lib/utils";
 import { Check } from "@icon-park/react";
+import { Card } from "./card";
 
 const DetailCardVariants = cva("relative flex flex-1 flex-row text-left items-center border p-4 hover:bg-gray-50", {
     variants:{
@@ -28,7 +29,7 @@ interface DetailCardProps extends VariantProps<typeof DetailCardVariants>{
 
 function DetailCard({title, subtitle, src, fallback, side, ready, className, ...props}: DetailCardProps) {
     return ( 
-        <div {...props} className={cn(DetailCardVariants({side, className}))}>
+        <Card {...props} className={cn(DetailCardVariants({side, className}))}>
             <Avatar className="mr-3 bg-muted">
                 <AvatarImage src={src}/>
                 <AvatarFallback>{fallback}</AvatarFallback>
@@ -38,7 +39,7 @@ function DetailCard({title, subtitle, src, fallback, side, ready, className, ...
                 {subtitle && <h2 className="text-sm text-muted-foreground">{subtitle}</h2>}
             </span>
             {ready && <Check className="absolute bottom-3 right-3 text-green-600"/>}
-        </div>
+        </Card>
     );
 }
 
