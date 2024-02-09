@@ -1,4 +1,4 @@
-import { Car, Download, MoreOne, Send, User } from "@icon-park/react";
+import { Car, Download, Send, User } from "@icon-park/react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
@@ -15,11 +15,18 @@ import { ServiceOrder } from "./types";
 import { FormInput, FormSelect } from "@/components/FormInput";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
+import { getCarServicesAPI } from "@/data/CarServices";
 
 function ServiceOrderPage() {
   const [show, setShow] = useState(false)
   const queryClient = useQueryClient()
   const form = useForm({ defaultValues: {duration_quantity: 0} })
+
+  const {data: carServices} = useQuery({
+    queryKey: ['car-services'],
+    queryFn: getCarServicesAPI,
+    refetchOnWindowFocus: false
+  })
 
   const { data: serviceOrder } = useQuery({
     queryFn: getServiceOrderAPI,
@@ -55,11 +62,13 @@ function ServiceOrderPage() {
   })
 
   const onSubmitHandle = (data: any) => {
-    queryClient.setQueryData(['service-order'], (serviceOrder: ServiceOrder) => {
-      return {...serviceOrder, ...data}
-    })
-    const newSO = queryClient.getQueryData<ServiceOrder>(['service-order'])
-    
+    //O .setQueryData() abaixo faz a tabela ser toda renderizada quando clica em salvar
+    // queryClient.setQueryData(['service-order'], (serviceOrder: ServiceOrder) => {
+    //   return {...serviceOrder, ...data}
+    // })
+
+    let newSO = queryClient.getQueryData<ServiceOrder>(['service-order'])
+    newSO = {...newSO, ...data}
     console.log(newSO)
     putServiceOrder(newSO)
   }
@@ -99,7 +108,7 @@ function ServiceOrderPage() {
             trigger={<DetailCard side={"right"} title={getVehicleSheetTriggerTitle(serviceOrder?.vehicle)} ready={serviceOrder?.vehicle.plate ? true : false}  subtitle={serviceOrder?.vehicle.plate.toLocaleUpperCase() || "Clique aqui para selecionar"} fallback={<Car size={"20px"}/>} className="min-w-[300px]"/>}/>
         </div>
 
-        <ItemsDataTable data={serviceOrder?.items || []}/>
+        <ItemsDataTable data={serviceOrder?.items || []} carServices={carServices || []}/>
       
       </div>
 
@@ -112,12 +121,12 @@ function ServiceOrderPage() {
         <Form {...form} >
           <form onSubmit={form.handleSubmit(onSubmitHandle)} className="flex flex-col flex-1">
             <div className="flex flex-1 flex-col gap-3">
-                <FormSelect label="Seguradora" name="insurance_company" form={form} options={['Não há', 'Allianz', 'Azul', 'Porto Seguro']} placeholder="Selecione..." containerClassName="w-[150px]" direction={"col"}/>
+                <FormSelect label="Seguradora" name="insurance_company" form={form} options={[{value: 'none', label: 'Não há'}, {value: 'blue', label: 'Azul'}]} placeholder="Selecione..." containerClassName="w-[150px]" direction={"col"}/>
                 <span>
                   <Label htmlFor="duration" className="font-bold">Duraçao Aproximada</Label>
                   <span className="flex gap-1">
                     <FormInput form={form} name="duration_quantity" placeholder="0" type="number" key={"duration_quantity"} containerClassName="w-[70px]"/>
-                    <FormSelect name="duration_type" form={form} options={['Horas', 'Dias', 'Semanas', 'Meses', 'Anos']} placeholder="Selecione..." className="flex-1"/>
+                    <FormSelect name="duration_type" form={form} options={[{label: 'Horas', value: "hour"}, {label: 'Dias', value: 'day'}, {label: 'Semanas', value: 'week'}, {label: 'Meses', value: 'month'}, {label: 'Anos', value: "year"}]} placeholder="Selecione..." className="flex-1"/>
                   </span>
                 </span>
                 <FileSelect label="Imagens"/>

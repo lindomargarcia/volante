@@ -1,4 +1,3 @@
-import { CAR_SERVICES } from "@/features/ServiceOrder/ItemsDataTable/columns"
 import { ServiceOrderItem } from "@/features/ServiceOrder/types"
 import { useState } from "react"
 
@@ -14,7 +13,7 @@ const useServiceOrder = () => {
         setTotal(total + totalValue)
         setDiscounts(total_discount + Number(discount))
 
-        if(type === CAR_SERVICES.PARTS){
+        if(type === "PARTS"){
             setParts(total_parts + (value * quantity))
         }else{
             setServices(total_services + (value * quantity))

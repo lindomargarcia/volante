@@ -1,6 +1,6 @@
 import { DataTable } from "@/components/DataTable/DataTable";
 import { Button } from "@/components/ui/button";
-import { CAR_SERVICES, columns } from "./columns";
+import { columns } from "./columns";
 import PriceTag from "@/components/ui/priceTag";
 import { useForm } from "react-hook-form";
 import { ServiceOrder, ServiceOrderItem } from "../types";
@@ -14,13 +14,14 @@ import { Plus } from "@icon-park/react";
 
 interface ItemsDataTableProps {
     data: ServiceOrderItem[]
+    carServices: any
 }
 
 const defaultValuesServiceOrder: ServiceOrderItem = {
-    description: "", value: 0, discount: 0, quantity: 1,id: "", type: CAR_SERVICES.BODYWORK, insurance_coverage: 0, total: 0
+    description: "", value: 0, discount: 0, quantity: 1,id: "", type: "BODYWORK", insurance_coverage: 0, total: 0
 }
 
-const ItemsDataTable = ({data}: ItemsDataTableProps) => {
+const ItemsDataTable = ({data, carServices}: ItemsDataTableProps) => {
     const { updateValues, total, total_discount, total_parts, total_services } = useServiceOrder()
     const form = useForm<ServiceOrderItem>({ defaultValues: defaultValuesServiceOrder})
     const queryClient = useQueryClient()
@@ -66,7 +67,7 @@ const ItemsDataTable = ({data}: ItemsDataTableProps) => {
     return (
         <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-end gap-3">
-                <FormSelect label="Tipo" name="type" form={form} options={Object.values(CAR_SERVICES)} placeholder="Selecione..." containerClassName="w-[150px]" direction={"col"}/>
+                <FormSelect label="Tipo" name="type" form={form} options={carServices} placeholder="Selecione..." containerClassName="w-[150px]" direction={"col"}/>
                 <FormInput form={form} name="description" label="Descrição" placeholder="Digite aqui..." key={"description"} direction={"col"} containerClassName="flex-1 min-w-[200px]"/>
                 <FormInput form={form} name="quantity" label="Qtd." placeholder="1" type="number" key={"quantity"} direction={"col"} containerClassName="w-[70px]"/>
                 <FormInput form={form} name="value" label="Valor" placeholder="R$0,00" key={"value"} direction={"col"} containerClassName="w-[100px]" className="last:text-right"/>

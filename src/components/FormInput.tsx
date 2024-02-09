@@ -46,8 +46,10 @@ const FormInput = ({name, label, placeholder, type, className, containerClassNam
 }
 
 interface FormSelectProps extends FormInputProps {
-    options: string[]
+    options: FormSelectOption[]
 }
+
+type FormSelectOption = {value: string, label: string, color?: string}
 
 const FormSelect = ({name, label, form, options, placeholder, direction, className}: FormSelectProps) => {
     return (
@@ -65,8 +67,13 @@ const FormSelect = ({name, label, form, options, placeholder, direction, classNa
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            {options.map((option: string) => (
-                                <SelectItem key={option} value={option}>{option}</SelectItem>
+                            {options.map((option: FormSelectOption) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                    <span className="flex items-center">
+                                        {option?.color && <div className={`w-2 h-2 rounded-full mr-1 ${option.color}`}></div>}
+                                        {option.label}
+                                    </span>
+                                </SelectItem>
                             ))}
                         </SelectContent>
                     </Select>

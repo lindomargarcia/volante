@@ -8,7 +8,22 @@ import { FormInput, FormSelect } from "../FormInput"
 import { VehicleSheetSchema, defaultVehicleValues, vehicleSheetSchema } from "./schema"
 import { SheetContainer } from "../SheetContainer/SheetContainer"
 import { useEffect, useState } from "react"
+import brandList from '../../data/brands.json'
 
+const colorsList = [
+  {'label': 'Branco', value: 'white', color: 'bg-white border'},
+  {'label': 'Azul', value: 'blue', color: 'bg-blue-500'},
+  {'label': 'Vermelho', value: 'red', color: 'bg-red-500'},
+  {'label': 'Verde', value: 'green', color: 'bg-green-500'},
+  {'label': 'Prata', value: 'silver', color: 'bg-gray-500'},
+  {'label': 'Preto', value: 'black', color: 'bg-black'},
+  {'label': 'Amarelo', 'value': 'yellow', 'color': 'bg-yellow-500'},
+  {'label': 'Rosa', 'value': 'pink', 'color': 'bg-pink-500'},
+  {'label': 'Roxo', 'value': 'purple', 'color': 'bg-purple-500'},
+  {'label': 'Laranja', 'value': 'orange', 'color': 'bg-orange-500'},
+  {'label': 'Cinza', 'value': 'gray', 'color': 'bg-gray-500'},
+  {'label': 'Marrom', 'value': 'brown', 'color': 'bg-amber-900'},
+  {'label': 'Outro', 'value': 'bronze', 'color': 'bg-gradient-to-tl from-indigo-400 via-fuchsia-200 to-purple-100'}]
 interface IVehicleSheetsProps {
   trigger: React.ReactElement
   vehicle?: VehicleSheetSchema,
@@ -31,15 +46,8 @@ export function VehicleSheet({vehicle, trigger, onChange, isPending}: IVehicleSh
     form.setValue('brand', vehicle?.brand  || '')
     form.setValue('model', vehicle?.model  || '')
     form.setValue('year', vehicle?.year || '')
-    form.setValue('color', vehicle?.color || 'preto')
+    form.setValue('color', vehicle?.color || 'black')
   }, [vehicle, isOpen])
-
-  const brandsList = ["Acura", "Alfa Romeo", "Audi", "Bentley", "BMW", "Buick", "Cadillac", "Chevrolet", "Chrysler", "Dodge",
-  "Ferrari", "Fiat", "Ford", "GMC", "Honda", "Hyundai", "Infiniti", "Jaguar", "Jeep", "Kia", "Lamborghini",
-  "Land Rover", "Lexus", "Lincoln", "Mazda", "McLaren", "Mercedes-Benz", "Mini", "Mitsubishi", "Nissan",
-  "Porsche", "Ram", "Smart", "Subaru", "Suzuki", "Tesla", "Toyota", "Volkswagen", "Volvo"]
-
-  const colorsList = ['azul', 'branco','vermelho', 'verde', 'prata', 'preto']
 
   const handleOnSubmit = (data: VehicleSheetSchema) => {
     onChange(data).then(() => {
@@ -63,7 +71,7 @@ export function VehicleSheet({vehicle, trigger, onChange, isPending}: IVehicleSh
         <Form {...form}>
           <form className="grid gap-4 py-4" onSubmit={form.handleSubmit(handleOnSubmit)}>
             <FormInput name='plate' label="Placa" type="text" placeholder="ABC-1D23" form={form} className={'uppercase'}/>
-            <FormSelect name="brand" label="Marca" options={brandsList} form={form} placeholder="Selecione..." />
+            <FormSelect name="brand" label="Marca" options={brandList} form={form} placeholder="Selecione..." />
             <FormInput name='model' label="Modelo" type="text" placeholder="Digite aqui..." form={form}/>
             <FormInput name='year' label="Ano" type="text" placeholder="2024" form={form}/>
             <FormSelect name="color" label="Cor" options={colorsList} form={form} placeholder="Selecione..." />
