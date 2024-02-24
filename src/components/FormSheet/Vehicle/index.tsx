@@ -9,7 +9,7 @@ import { VehicleSheetSchema, defaultVehicleValues, vehicleSheetSchema } from "./
 import { SheetContainer } from "../../SheetContainer/SheetContainer"
 import { useEffect, useState } from "react"
 import brandList from '@/data/json/brands.json'
-import colorList from '@/data/json/colors.json'
+import { COLORS } from '@/data/colors'
 
 interface IVehicleSheetsProps {
   trigger: React.ReactElement
@@ -61,7 +61,7 @@ export function VehicleFormSheet({data, trigger, onSubmit, isPending}: IVehicleS
             <FormSelect name="brand" label="Marca" options={brandList} form={form} placeholder="Selecione..." />
             <FormInput name='model' label="Modelo" type="text" placeholder="Digite aqui..." form={form}/>
             <FormInput name='year' label="Ano" type="text" placeholder="2024" form={form}/>
-            <FormSelect name="color" label="Cor" options={colorList} form={form} placeholder="Selecione..." />
+            <FormSelect name="color" label="Cor" options={COLORS} form={form} placeholder="Selecione..." />
             <SheetFooter className="mt-4">
             <Button type="submit" disabled={isPending}>Salvar</Button>
               <Button variant={"outline"} onClick={handleOnClean} disabled={isPending}>Limpar</Button>

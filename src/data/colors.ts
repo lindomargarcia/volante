@@ -1,4 +1,4 @@
-[
+export const COLORS = [
     {
       "label": "Branco",
       "value": "white",
@@ -32,22 +32,22 @@
     {
       "label": "Amarelo",
       "value": "yellow",
-      "color": "bg-yellow-500"
+      "color": "bg-amber-300"
     },
     {
       "label": "Rosa",
       "value": "pink",
-      "color": "bg-pink-500"
+      "color": "bg-pink-400"
     },
     {
       "label": "Roxo",
       "value": "purple",
-      "color": "bg-purple-500"
+      "color": "bg-violet-500"
     },
     {
       "label": "Laranja",
       "value": "orange",
-      "color": "bg-orange-500"
+      "color": "bg-amber-500"
     },
     {
       "label": "Cinza",
@@ -57,7 +57,7 @@
     {
       "label": "Marrom",
       "value": "brown",
-      "color": "bg-amber-900"
+      "color": "bg-amber-700"
     },
     {
       "label": "Outro",
