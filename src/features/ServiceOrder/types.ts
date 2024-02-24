@@ -1,8 +1,8 @@
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-import { CustomerSheetSchema } from "@/components/FormSheet/Customer/schema"
-import { VehicleSheetSchema } from "@/components/FormSheet/Vehicle/schema"
+import { CustomerSchema } from "@/components/FormSheet/Customer/schema"
+import { VehicleSchema } from "@/components/FormSheet/Vehicle/schema"
 
 export type ServiceOrder = {
     id: string
@@ -13,8 +13,8 @@ export type ServiceOrder = {
     duration_quantity: number,
     duration_type: "hour" | "day" | "week" | "month" | "year",
     images: string[]
-    customer: CustomerSheetSchema,
-    vehicle: VehicleSheetSchema,
+    customer: CustomerSchema,
+    vehicle: VehicleSchema,
     items: ServiceOrderItem[] | []
 }
 

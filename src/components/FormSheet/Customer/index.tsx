@@ -6,19 +6,19 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "../../ui/form"
 import { FormInput } from "../../FormInput"
-import { CustomerSheetSchema, customerSheetSchema, defaultCustomerValues } from "./schema"
+import { CustomerSchema, customerSchema, defaultCustomerValues } from "./schema"
 import { SheetContainer } from "../../SheetContainer/SheetContainer"
 interface ICustomerSheetsProps {
   trigger: ReactComponentElement<any>,
-  data?: CustomerSheetSchema,
-  onSubmit: (data: CustomerSheetSchema) => Promise<any>
+  data?: CustomerSchema,
+  onSubmit: (data: CustomerSchema) => Promise<any>
   isPending: boolean
 }
 
 export function CustomerFormSheet({trigger, data, onSubmit, isPending}: ICustomerSheetsProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const form = useForm<CustomerSheetSchema>({
-    resolver: zodResolver(customerSheetSchema),
+  const form = useForm<CustomerSchema>({
+    resolver: zodResolver(customerSchema),
     defaultValues: defaultCustomerValues
   })
 
@@ -32,7 +32,7 @@ export function CustomerFormSheet({trigger, data, onSubmit, isPending}: ICustome
   }, [data, isOpen])
 
 
-  const onFormSubmit = (data: CustomerSheetSchema) => {
+  const onFormSubmit = (data: CustomerSchema) => {
     onSubmit(data).then(() => {
       setIsOpen(false)
     })

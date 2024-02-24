@@ -9,7 +9,7 @@ const defaultVehicleValues = {
     color: ""
 }
 
-const vehicleSheetSchema = z.object({
+const vehicleSchema = z.object({
     plate: z.string().length(7),
     brand: z.string().min(1, {message: 'Campo obrigatório'}),
     model: z.string().min(1, {message: 'Campo obrigatório'}),
@@ -17,7 +17,7 @@ const vehicleSheetSchema = z.object({
     color: z.string().toLowerCase()
   })
   
-type VehicleSheetSchema = z.infer<typeof vehicleSheetSchema>
+type VehicleSchema = z.infer<typeof vehicleSchema>
 
-export { vehicleSheetSchema, defaultVehicleValues }
-export type { VehicleSheetSchema }
+export { vehicleSchema, defaultVehicleValues }
+export type { VehicleSchema }

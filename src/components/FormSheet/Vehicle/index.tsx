@@ -5,7 +5,7 @@ import { Form } from "../../ui/form"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FormInput, FormSelect } from "../../FormInput"
-import { VehicleSheetSchema, defaultVehicleValues, vehicleSheetSchema } from "./schema"
+import { VehicleSchema, defaultVehicleValues, vehicleSchema } from "./schema"
 import { SheetContainer } from "../../SheetContainer/SheetContainer"
 import { useEffect, useState } from "react"
 import brandList from '@/data/json/brands.json'
@@ -13,16 +13,16 @@ import { COLORS } from '@/data/colors'
 
 interface IVehicleSheetsProps {
   trigger: React.ReactElement
-  data?: VehicleSheetSchema,
-  onSubmit: (data: VehicleSheetSchema) => Promise<any>,
+  data?: VehicleSchema,
+  onSubmit: (data: VehicleSchema) => Promise<any>,
   isPending: boolean
 }
 
 export function VehicleFormSheet({data, trigger, onSubmit, isPending}: IVehicleSheetsProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const form = useForm<VehicleSheetSchema>({
-    resolver: zodResolver(vehicleSheetSchema),
+  const form = useForm<VehicleSchema>({
+    resolver: zodResolver(vehicleSchema),
     defaultValues:defaultVehicleValues
   })
 
@@ -36,7 +36,7 @@ export function VehicleFormSheet({data, trigger, onSubmit, isPending}: IVehicleS
     form.setValue('color', data?.color || 'black')
   }, [data, isOpen])
 
-  const handleOnSubmit = (data: VehicleSheetSchema) => {
+  const handleOnSubmit = (data: VehicleSchema) => {
     onSubmit(data).then(() => {
       setIsOpen(false)
     })

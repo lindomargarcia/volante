@@ -1,6 +1,6 @@
 import { z } from "@/lib/pt-zod"
 
-const customerSheetSchema = z.object({
+const customerSchema = z.object({
     name: z.string().min(3).max(2024),
     cpf: z.string().min(9).max(11).or(z.literal('')),
     phone: z.string().min(8).max(12),
@@ -14,7 +14,7 @@ const defaultCustomerValues = {
     email: ""
 }
   
-type CustomerSheetSchema = z.infer<typeof customerSheetSchema>
+type CustomerSchema = z.infer<typeof customerSchema>
 
-export { customerSheetSchema, defaultCustomerValues }
-export type { CustomerSheetSchema }
+export { customerSchema, defaultCustomerValues }
+export type { CustomerSchema }
