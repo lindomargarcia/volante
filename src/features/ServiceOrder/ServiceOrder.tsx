@@ -4,12 +4,12 @@ import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
-import { CustomerSheet } from "../../components/CustomerSheet/CustomerSheet";
-import { VehicleSheet } from "../../components/VehicleSheet/VehicleSheet";
+import { CustomerFormSheet } from "@/components/FormSheet/Customer";
+import { VehicleFormSheet } from "@/components/FormSheet/Vehicle";
 import DetailCard from "@/components/ui/detailCard";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getServiceOrderAPI, putServiceOrderAPI, putServiceOrderCustomerAPI, putServiceOrderVehicleAPI } from "@/data/ServiceOrder";
-import { VehicleSheetSchema } from "@/components/VehicleSheet/schema";
+import { VehicleSheetSchema } from "@/components/FormSheet/Vehicle/schema";
 import ItemsDataTable from "./ItemsDataTable/ItemsDataTable";
 import { ServiceOrder } from "./types";
 import { FormInput, FormSelect } from "@/components/FormInput";
@@ -96,16 +96,18 @@ function ServiceOrderPage() {
         </div>
 
         <div className="flex mb-8 flex-wrap">
-          <CustomerSheet 
-            onChange={putServiceOrderCustomer}
+          <CustomerFormSheet 
+            onSubmit={putServiceOrderCustomer}
             isPending={isCustomerPending}
-            customer={serviceOrder?.customer}
-            trigger={<DetailCard side={"left"} title={serviceOrder?.customer.name || "Cliente"} ready={serviceOrder?.customer.name ? true : false} subtitle={serviceOrder?.customer.phone || "Clique aqui para selecionar"} fallback={<User size={"20px"}/>} className="min-w-[300px]"/>}/>
-          <VehicleSheet 
-            onChange={putServiceOrderVehicle}
+            data={serviceOrder?.customer}
+            trigger={<DetailCard side={"left"} title={serviceOrder?.customer.name || "Cliente"} ready={serviceOrder?.customer.name ? true : false} subtitle={serviceOrder?.customer.phone || "Clique aqui para selecionar"} fallback={<User size={"20px"}/>} className="min-w-[300px]"/>}
+          />
+          <VehicleFormSheet 
+            onSubmit={putServiceOrderVehicle}
             isPending={isVehiclePending}
-            vehicle={serviceOrder?.vehicle}
-            trigger={<DetailCard side={"right"} title={getVehicleSheetTriggerTitle(serviceOrder?.vehicle)} ready={serviceOrder?.vehicle.plate ? true : false}  subtitle={serviceOrder?.vehicle.plate.toLocaleUpperCase() || "Clique aqui para selecionar"} fallback={<Car size={"20px"}/>} className="min-w-[300px]"/>}/>
+            data={serviceOrder?.vehicle}
+            trigger={<DetailCard side={"right"} title={getVehicleSheetTriggerTitle(serviceOrder?.vehicle)} ready={serviceOrder?.vehicle.plate ? true : false}  subtitle={serviceOrder?.vehicle.plate.toLocaleUpperCase() || "Clique aqui para selecionar"} fallback={<Car size={"20px"}/>} className="min-w-[300px]"/>}
+          />
         </div>
 
         <ItemsDataTable data={serviceOrder?.items || []} carServices={carServices || []}/>

@@ -1,0 +1,68 @@
+[
+    {
+      "label": "Branco",
+      "value": "white",
+      "color": "bg-white border"
+    },
+    {
+      "label": "Azul",
+      "value": "blue",
+      "color": "bg-blue-500"
+    },
+    {
+      "label": "Vermelho",
+      "value": "red",
+      "color": "bg-red-500"
+    },
+    {
+      "label": "Verde",
+      "value": "green",
+      "color": "bg-green-500"
+    },
+    {
+      "label": "Prata",
+      "value": "silver",
+      "color": "bg-gray-500"
+    },
+    {
+      "label": "Preto",
+      "value": "black",
+      "color": "bg-black"
+    },
+    {
+      "label": "Amarelo",
+      "value": "yellow",
+      "color": "bg-yellow-500"
+    },
+    {
+      "label": "Rosa",
+      "value": "pink",
+      "color": "bg-pink-500"
+    },
+    {
+      "label": "Roxo",
+      "value": "purple",
+      "color": "bg-purple-500"
+    },
+    {
+      "label": "Laranja",
+      "value": "orange",
+      "color": "bg-orange-500"
+    },
+    {
+      "label": "Cinza",
+      "value": "gray",
+      "color": "bg-gray-500"
+    },
+    {
+      "label": "Marrom",
+      "value": "brown",
+      "color": "bg-amber-900"
+    },
+    {
+      "label": "Outro",
+      "value": "bronze",
+      "color": "bg-gradient-to-tl from-indigo-400 via-fuchsia-200 to-purple-100"
+    }
+  ]
+  

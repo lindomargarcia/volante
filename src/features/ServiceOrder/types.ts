@@ -1,8 +1,8 @@
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-import { CustomerSheetSchema } from "@/components/CustomerSheet/schema"
-import { VehicleSheetSchema } from "@/components/VehicleSheet/schema"
+import { CustomerSheetSchema } from "@/components/FormSheet/Customer/schema"
+import { VehicleSheetSchema } from "@/components/FormSheet/Vehicle/schema"
 
 export type ServiceOrder = {
     id: string
