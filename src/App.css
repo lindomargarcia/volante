@@ -1,10 +1,18 @@
-#root, body, html{
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  min-height: 100vh;
-  max-height: 100vh;
-  width: 100vw;
+html{
+  height: 100%;
+  position: relative;
+}
+
+body{ 
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  height:100%;
+  position: relative;
+}
+
+#root{
+  height: 100%;
+  position: relative;
   display: flex;
-  flex: 1
 }

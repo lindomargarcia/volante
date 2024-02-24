@@ -79,9 +79,9 @@ function ServiceOrderPage() {
 
 
   return (
-    <div className="flex flex-col flex-1 p-8">
+    <div className="flex-1 flex flex-col px-10 pb-8">
  
-      <header className="flex items-center">
+      <header className="flex items-center py-10">
         <div className="flex-1">
           <h1 className="text-2xl font-semibold">Novo orçamento</h1>
           <p className="text-sm text-muted-foreground">
@@ -92,10 +92,10 @@ function ServiceOrderPage() {
         <Badge className="h-8 rounded-full" onClick={() => setShow(!show)}>{serviceOrder?.status || 'buscando...'}</Badge>
       </header>
 
-      <div className="flex flex-1 mt-8 gap-8 flex-wrap">
+      <div className="flex-1 flex gap-10">
 
         {/* Left Side */}
-        <div className="flex flex-1 flex-col basis-3/5">
+        <div className="flex-1 flex flex-col">
           <div className="flex mb-8 flex-wrap">
             <CustomerFormSheet 
               onSubmit={handleCustomerSubmit}
@@ -115,7 +115,7 @@ function ServiceOrderPage() {
         </div>
 
         {/* Right Side */}
-        <div className="flex flex-1 flex-col">
+        <div className="flex flex-col">
           <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmitHandle)} className="flex flex-col flex-1">
               

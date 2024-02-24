@@ -9,6 +9,7 @@ import { Form } from "@/components/ui/form";
 import { currencyFormat } from "@/lib/utils";
 import useSOPrices from "@/hooks/useSOPrices";
 import { Plus } from "@icon-park/react";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface ServiceOrderTableProps {
     data: ServiceOrderItem[]
@@ -51,7 +52,7 @@ const ServiceOrderTable = ({data, carServices, onAddItem}: ServiceOrderTableProp
                 <Button type="submit"><Plus className="mr-2"/>Adicionar</Button>
             </form>
 
-            <DataTable columns={columns} data={data || []} className={"mt-4"}/>
+            <DataTable columns={columns} data={data || []} className={"mt-4 flex-1 max-h-[calc(100vh-450px)]"}/>
             
             <div className="flex justify-between pl-3 pr-3 mt-4">
                 <span className="flex flex-1 gap-8">
