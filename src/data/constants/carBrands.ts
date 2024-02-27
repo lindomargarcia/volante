@@ -1,4 +1,4 @@
-[
+export const CAR_BRANDS = [
     {
         "value": "Acura",
         "label": "Acura"

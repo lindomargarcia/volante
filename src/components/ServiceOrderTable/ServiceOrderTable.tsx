@@ -9,7 +9,6 @@ import { Form } from "@/components/ui/form";
 import { currencyFormat } from "@/lib/utils";
 import useSOPrices from "@/hooks/useSOPrices";
 import { Plus } from "@icon-park/react";
-import { ScrollArea } from "../ui/scroll-area";
 
 interface ServiceOrderTableProps {
     data: ServiceOrderItem[]

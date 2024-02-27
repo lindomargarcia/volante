@@ -8,8 +8,8 @@ import { FormInput, FormSelect } from "../../FormInput"
 import { VehicleSchema, defaultVehicleValues, vehicleSchema } from "./schema"
 import { SheetContainer } from "../../SheetContainer/SheetContainer"
 import { useEffect, useState } from "react"
-import brandList from '@/data/json/brands.json'
-import { COLORS } from '@/data/colors'
+import { COLORS } from '@/data/constants/colors'
+import { CAR_BRANDS } from '@/data/constants/carBrands'
 
 interface IVehicleSheetsProps {
   trigger: React.ReactElement
@@ -20,7 +20,7 @@ interface IVehicleSheetsProps {
 
 export function VehicleFormSheet({data, trigger, onSubmit, isPending}: IVehicleSheetsProps) {
   const [isOpen, setIsOpen] = useState(false)
-
+  
   const form = useForm<VehicleSchema>({
     resolver: zodResolver(vehicleSchema),
     defaultValues:defaultVehicleValues
@@ -58,7 +58,7 @@ export function VehicleFormSheet({data, trigger, onSubmit, isPending}: IVehicleS
         <Form {...form}>
           <form className="grid gap-4 py-4" onSubmit={form.handleSubmit(handleOnSubmit)}>
             <FormInput name='plate' label="Placa" type="text" placeholder="ABC-1D23" form={form} className={'uppercase'}/>
-            <FormSelect name="brand" label="Marca" options={brandList} form={form} placeholder="Selecione..." />
+            <FormSelect name="brand" label="Marca" options={CAR_BRANDS || []} form={form} placeholder="Selecione..." />
             <FormInput name='model' label="Modelo" type="text" placeholder="Digite aqui..." form={form}/>
             <FormInput name='year' label="Ano" type="text" placeholder="2024" form={form}/>
             <FormSelect name="color" label="Cor" options={COLORS} form={form} placeholder="Selecione..." />
