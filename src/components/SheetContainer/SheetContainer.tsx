@@ -14,7 +14,7 @@ interface SheetContainerProps {
 export function SheetContainer({title, description, icon, side = 'left', trigger, isOpen, onIsOpenChange,  children}: SheetContainerProps) {
   return (
     <Sheet open={isOpen} onOpenChange={onIsOpenChange}>
-      <SheetTrigger className="flex-1"  onClick={() => onIsOpenChange(true)}>
+      <SheetTrigger onClick={() => onIsOpenChange(true)}>
         {trigger}
       </SheetTrigger>
       <SheetContent side={side}>

@@ -20,7 +20,7 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className={`overflow-scroll rounded-md relative border ${className}`}>
+    <div className={`overflow-y-scroll rounded-md relative border ${className}`}>
       <Table>
         <TableHeader className="sticky top-0 bg-white bg-opacity-50 backdrop-blur-lg">
           {table.getHeaderGroups().map((headerGroup) => (

@@ -20,6 +20,7 @@ import { z } from "zod";
 import { CustomerSchema } from "@/components/FormSheet/Customer/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { VehicleSchema } from "@/components/FormSheet/Vehicle/schema";
+import { toast } from "sonner";
 
 const ServiceOrderSchema = z.object({
   // customer: customerSchema
@@ -47,6 +48,7 @@ function ServiceOrderPage() {
 
   const onSubmitHandle = (data: any) => {
     console.log(serviceOrder)
+    toast.success('Salvo com sucesso', )
     // let newSO = queryClient.getQueryData<ServiceOrder>(['service-order'])
     // newSO = {...newSO, ...data}
     // console.log(newSO)
@@ -54,6 +56,7 @@ function ServiceOrderPage() {
   }
 
   const handleCustomerSubmit = async (customer: CustomerSchema) => {
+    toast.message("Cliente salvo com sucesso!")
     //Setar no form Geral
     queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
       return {...data, customer} 
@@ -61,6 +64,7 @@ function ServiceOrderPage() {
   }
 
   const handleVehicleSubmit = async (vehicle: VehicleSchema) => {
+    toast.message("Veículo salvo com sucesso!")
     //Setar no form Geral
     queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
       return {...data, vehicle}
@@ -89,28 +93,31 @@ function ServiceOrderPage() {
           </p>
         </div>
 
-        <Badge className="h-8 rounded-full" onClick={() => setShow(!show)}>{serviceOrder?.status || 'buscando...'}</Badge>
+        <Badge className="h-8 rounded-full bg-blue-500" onClick={() => setShow(!show)}>{serviceOrder?.status || 'buscando...'}</Badge>
       </header>
 
       <div className="flex-1 flex gap-10">
+        
+        {/* Left side */}
+        <div className="flex flex-col w-[300px] gap-4">
+          <VehicleFormSheet 
+            onSubmit={handleVehicleSubmit}
+            isPending={false}
+            data={serviceOrder?.vehicle}
+            trigger={<DetailCard title={generateVehicleDescription(serviceOrder?.vehicle)} ready={serviceOrder?.vehicle.plate ? true : false}  subtitle={serviceOrder?.vehicle.plate.toLocaleUpperCase() || "Clique aqui para selecionar"} fallback={<Car size={"25px"}/>} className="min-w-[200px] h-[110px]"/>}
+          />
+          <CustomerFormSheet 
+            onSubmit={handleCustomerSubmit}
+            isPending={false}
+            data={serviceOrder?.customer}
+            trigger={<DetailCard title={serviceOrder?.customer.name || "Cliente"} ready={serviceOrder?.customer.name ? true : false} subtitle={serviceOrder?.customer.phone || "Clique aqui para selecionar"} fallback={<User size={"25px"}/>} className="min-w-[200px] h-[110px]"/>}
+          />
+          
+          {/* <img src="https://i.ibb.co/t3vH68T/image-removebg-preview.png" className="flex-1 object-cover"/> */}
+        </div>
 
-        {/* Left Side */}
+        {/* center Side */}
         <div className="flex-1 flex flex-col">
-          <div className="flex mb-8 flex-wrap">
-            <CustomerFormSheet 
-              onSubmit={handleCustomerSubmit}
-              isPending={false}
-              data={serviceOrder?.customer}
-              trigger={<DetailCard side={"left"} title={serviceOrder?.customer.name || "Cliente"} ready={serviceOrder?.customer.name ? true : false} subtitle={serviceOrder?.customer.phone || "Clique aqui para selecionar"} fallback={<User size={"25px"}/>} className="min-w-[200px] h-[110px]"/>}
-            />
-            <VehicleFormSheet 
-              onSubmit={handleVehicleSubmit}
-              isPending={false}
-              data={serviceOrder?.vehicle}
-              trigger={<DetailCard side={"right"} title={generateVehicleDescription(serviceOrder?.vehicle)} ready={serviceOrder?.vehicle.plate ? true : false}  subtitle={serviceOrder?.vehicle.plate.toLocaleUpperCase() || "Clique aqui para selecionar"} fallback={<Car size={"25px"}/>} className="min-w-[200px] h-[110px]"/>}
-            />
-          </div>
-
           <ServiceOrderTable data={serviceOrder?.items || []} carServices={carServices || []} onAddItem={handleNewSOItem}/>
         </div>
 
@@ -122,7 +129,7 @@ function ServiceOrderPage() {
               <div className="flex flex-1 flex-col gap-3">
                   <FormSelect label="Seguradora" name="insurance_company" form={form} options={[{value: 'none', label: 'Não há'}, {value: 'blue', label: 'Azul'}]} placeholder="Selecione..." containerClassName="w-[150px]" direction={"col"}/>
                   <span>
-                    <Label htmlFor="duration" className="font-bold">Duraçao Aproximada</Label>
+                    <Label htmlFor="duration" className="font-bold">Duração Aproximada</Label>
                     <span className="flex gap-1">
                       <FormInput form={form} name="duration_quantity" placeholder="0" type="number" key={"duration_quantity"} containerClassName="w-[70px]"/>
                       <FormSelect name="duration_type" form={form} options={[{label: 'Horas', value: "hour"}, {label: 'Dias', value: 'day'}, {label: 'Semanas', value: 'week'}, {label: 'Meses', value: 'month'}, {label: 'Anos', value: "year"}]} placeholder="Selecione..." className="flex-1"/>
