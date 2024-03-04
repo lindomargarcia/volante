@@ -7,11 +7,10 @@ import { Card } from "./card";
 const DetailCardVariants = cva("relative flex flex-row text-left items-center border p-4 hover:bg-gray-50", {
     variants:{
         side:{
-            default: "rounded",
+            default: "rounded-lg",
             left: "rounded-tl-lg rounded-bl-lg",
             right: "rounded-tr-lg rounded-br-lg" 
         },
-
     },
     defaultVariants:{
         side: "default",

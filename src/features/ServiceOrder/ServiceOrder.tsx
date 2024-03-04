@@ -1,4 +1,4 @@
-import { Car, Download, Send, User } from "@icon-park/react";
+import { Car, Dot, Download, MoreOne, Send, User } from "@icon-park/react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
@@ -86,14 +86,19 @@ function ServiceOrderPage() {
     <div className="flex-1 flex flex-col px-10 pb-8">
  
       <header className="flex items-center py-10">
-        <div className="flex-1">
-          <h1 className="text-2xl font-semibold">Novo orçamento</h1>
-          <p className="text-sm text-muted-foreground">
-            Último salvo {serviceOrder?.last_saved_at ? new Date(serviceOrder?.last_saved_at).toLocaleString() : '...'}
-          </p>
+        <div className="flex gap-10 flex-1">
+          <div>
+            <h1 className="text-2xl font-semibold">Novo orçamento</h1>
+            <p className="text-sm text-muted-foreground">
+              Último salvo {serviceOrder?.last_saved_at ? new Date(serviceOrder?.last_saved_at).toLocaleString() : '...'}
+            </p>
+          </div>
+          <Badge className="h-8 rounded-full bg-blue-500" onClick={() => setShow(!show)}>{serviceOrder?.status || 'buscando...'}</Badge>
         </div>
 
-        <Badge className="h-8 rounded-full bg-blue-500" onClick={() => setShow(!show)}>{serviceOrder?.status || 'buscando...'}</Badge>
+        <Button variant={"link"}>
+          <MoreOne size={24}/>
+        </Button>
       </header>
 
       <div className="flex-1 flex gap-10">

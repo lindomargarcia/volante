@@ -15,6 +15,11 @@ module.exports = {
       screens: {
         "2xl": "1400px",
       },
+      extend: {
+        boxShadow: {
+          '3xl': '0px 4px 34px 0px rgba(0,0,0,1)',
+        }
+      }
     },
     extend: {
       colors: {
