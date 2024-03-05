@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { columns } from "./columns";
 import PriceTag from "@/components/ui/priceTag";
 import { useForm } from "react-hook-form";
-import { ServiceOrderItem } from "../../features/ServiceOrder/types";
+import { ServiceOrderItem } from "../../pages/ServiceOrder/types";
 import { FormInput, FormSelect } from "@/components/FormInput";
 import { Form } from "@/components/ui/form";
 import { currencyFormat } from "@/lib/utils";

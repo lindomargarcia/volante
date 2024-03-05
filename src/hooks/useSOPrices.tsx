@@ -1,4 +1,4 @@
-import { ServiceOrderItem } from "@/features/ServiceOrder/types"
+import { ServiceOrderItem } from "@/pages/ServiceOrder/types"
 import { useState } from "react"
 
 const useSOPrices = () => {

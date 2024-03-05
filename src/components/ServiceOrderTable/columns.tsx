@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { ServiceOrderItem } from "../../features/ServiceOrder/types"
+import { ServiceOrderItem } from "../../pages/ServiceOrder/types"
 import { currencyFormat } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 

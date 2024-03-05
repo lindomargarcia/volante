@@ -56,7 +56,7 @@ function ServiceOrderPage() {
   }
 
   const handleCustomerSubmit = async (customer: CustomerSchema) => {
-    toast.message("Cliente salvo com sucesso!")
+    toast.message("Cliente adicionado com sucesso!")
     //Setar no form Geral
     queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
       return {...data, customer} 
@@ -64,7 +64,7 @@ function ServiceOrderPage() {
   }
 
   const handleVehicleSubmit = async (vehicle: VehicleSchema) => {
-    toast.message("Veículo salvo com sucesso!")
+    toast.message("Veículo adicionado com sucesso!")
     //Setar no form Geral
     queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
       return {...data, vehicle}
@@ -83,9 +83,8 @@ function ServiceOrderPage() {
 
 
   return (
-    <div className="flex-1 flex flex-col px-10 pb-8">
- 
-      <header className="flex items-center py-10">
+    <div className="h-full flex flex-col p-4 pl-8 pt-8">
+      <header className="flex items-center pb-8">
         <div className="flex gap-10 flex-1">
           <div>
             <h1 className="text-2xl font-semibold">Novo orçamento</h1>

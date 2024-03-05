@@ -1,6 +1,6 @@
 import { CustomerSchema, defaultCustomerValues } from "@/components/FormSheet/Customer/schema"
 import { VehicleSchema, defaultVehicleValues } from "@/components/FormSheet/Vehicle/schema"
-import { ServiceOrder, ServiceOrderItem } from "@/features/ServiceOrder/types"
+import { ServiceOrder, ServiceOrderItem } from "@/pages/ServiceOrder/types"
 
 export async function getServiceOrderAPI(): Promise<ServiceOrder>{
     return {
