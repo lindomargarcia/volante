@@ -36,7 +36,9 @@
       {
         "fullscreen": true,
         "resizable": true,
-        "title": "volante"
+        "title": "Volante - Gerenciador de Orçamentos",
+        "titleBarStyle": "Transparent",
+        "theme": "Dark"
       }
     ]
   }
