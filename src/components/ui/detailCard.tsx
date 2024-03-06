@@ -1,7 +1,7 @@
 import { VariantProps, cva } from "class-variance-authority";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { cn } from "@/lib/utils";
-import { Check } from "@icon-park/react";
+import { Check } from "lucide-react";
 import { Card } from "./card";
 
 const DetailCardVariants = cva("relative flex flex-row text-left items-center border p-4 hover:bg-gray-50", {

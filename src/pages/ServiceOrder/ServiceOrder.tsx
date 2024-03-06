@@ -1,4 +1,4 @@
-import { Car, Dot, Download, MoreOne, Send, User } from "@icon-park/react";
+import { Car, Download, MoreVertical, Send, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
@@ -92,11 +92,11 @@ function ServiceOrderPage() {
               Último salvo {serviceOrder?.last_saved_at ? new Date(serviceOrder?.last_saved_at).toLocaleString() : '...'}
             </p>
           </div>
-          <Badge className="h-8 rounded-full bg-blue-500" onClick={() => setShow(!show)}>{serviceOrder?.status || 'buscando...'}</Badge>
+          <Badge className="h-8 rounded-full bg-violet-500" onClick={() => setShow(!show)}>{serviceOrder?.status || 'buscando...'}</Badge>
         </div>
 
         <Button variant={"link"}>
-          <MoreOne size={24}/>
+          <MoreVertical size={18}/>
         </Button>
       </header>
 
@@ -143,8 +143,8 @@ function ServiceOrderPage() {
               </div>
 
               <div className="flex justify-end gap-3">
-                <Button variant="outline"><Send className="mr-2"/>Compartilhar</Button>
-                <Button type="submit"><Download className="mr-2"/>Salvar</Button>
+                <Button variant="outline"><Send size={18} className="mr-2"/>Compartilhar</Button>
+                <Button type="submit"><Download size={18} className="mr-2"/>Salvar</Button>
               </div>
             </form>
           </Form>

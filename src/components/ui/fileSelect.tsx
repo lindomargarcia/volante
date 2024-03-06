@@ -1,7 +1,7 @@
 import { ChangeEvent, useRef, useState } from "react";
 import { Input } from "./input";
 import { Label } from "./label";
-import { FileAdditionOne } from "@icon-park/react";
+import { FilePlus2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "./button";
 
@@ -39,7 +39,7 @@ const FileSelect = ({label}: FileSelectProps) => {
                     )
                 })}
                 <button onClick={() => fileInput.current.click()} className="w-[86px] h-[86px] border-dashed flex items-center justify-center border object-cover rounded-lg">
-                    <FileAdditionOne fill={"#94A3B8"} size={21}/>
+                    <FilePlus2 color={"#94A3B8"} size={21}/>
                 </button>
             </span>
             <Button onClick={onCleanHandle} size={"sm"} variant={"outline"} className="mt-3">Limpar</Button>

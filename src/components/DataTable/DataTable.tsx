@@ -1,6 +1,6 @@
 import {ColumnDef,flexRender,getCoreRowModel,useReactTable} from "@tanstack/react-table"
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/components/ui/table"
-import { Car, RoadCone } from "@icon-park/react"
+import { CarFront, TrafficCone } from "lucide-react"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -58,9 +58,9 @@ export function DataTable<TData, TValue>({
             <TableRow>
               <TableCell colSpan={columns.length} className="absolute w-full h-[calc(100%-45px)] flex flex-col justify-center items-center text-gray-400">
                 <span className="flex">
-                  <RoadCone size={32}/>
-                  <Car size={32}/>
-                  <RoadCone size={32}/>
+                  <TrafficCone size={42}/>
+                  <CarFront size={42}/>
+                  <TrafficCone size={42}/>
                 </span>
                 Nenhum resultado encontrado
               </TableCell>

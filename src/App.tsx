@@ -4,44 +4,44 @@ import { Toaster } from "./components/ui/sonner";
 import { createBrowserRouter, Link, Outlet, RouterProvider } from "react-router-dom";
 import Menu from "./components/Menu/Menu";
 import { ROUTER_PATHS } from "./data/routes/routes";
-import { Car, FileAdditionOne, Home, SettingTwo, Tool, User } from "@icon-park/react";
+import { Car, FilePlus, Hammer, Home, Settings2, User } from "lucide-react";
 
 const MENU_LINKS = [
   {
     path: ROUTER_PATHS.HOME,
     element: <div>home</div>,
     label: 'Início',
-    icon: <Home size={21}/>
+    icon: <Home size={23}/>
   },
   {
     path: ROUTER_PATHS.SERVICE_ORDER,
     element: <ServiceOrderPage/>,
     label: 'Novo',
-    icon: <FileAdditionOne size={21}/>
+    icon: <FilePlus size={23}/>
   },
   {
     path: ROUTER_PATHS.VEHICLE,
     element: <h1>Veículos</h1>,
     label: 'Veículos',
-    icon: <Car size={21}/>
+    icon: <Car size={23}/>
   },
   {
     path: ROUTER_PATHS.CUSTOMER,
     element: <h1>Clientes</h1>,
     label: 'Clientes',
-    icon: <User size={21}/>
+    icon: <User size={23}/>
   },
   {
     path: ROUTER_PATHS.CATALOG,
     element: <h1>Catálogo</h1>,
     label: 'Catálogo',
-    icon: <Tool size={21}/>
+    icon: <Hammer size={23}/>
   },
   {
     path: ROUTER_PATHS.CONFIG,
     element: <h1>Configurações</h1>,
-    label: 'Config',
-    icon: <SettingTwo size={21}/>
+    label: 'Ajustes',
+    icon: <Settings2 size={23}/>
   }
 ]
 
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
     element: 
       <div className="flex-1 flex bg-zinc-50">
         <Menu links={MENU_LINKS}/>
-        <div className="rounded-2xl ml-0 m-2 flex-1">
+        <div className="rounded-2xl ml-0 border border-zinc-300 m-2 flex-1">
           <Outlet/>
         </div>
       </div>,

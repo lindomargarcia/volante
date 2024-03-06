@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { SheetFooter } from "@/components/ui/sheet"
-import { User } from "@icon-park/react"
+import { User } from "lucide-react"
 import { ReactComponentElement, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -49,7 +49,7 @@ export function CustomerFormSheet({trigger, data, onSubmit, isPending}: ICustome
       isOpen={isOpen}
       onIsOpenChange={setIsOpen}
       description="Adicione aqui os dados do solicitante do orçamento. Clique em 'salvar' quando finalizar."
-      icon={<User className="p-1"/>}
+      icon={<User size={30} className="p-1"/>}
       trigger={trigger}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onFormSubmit)} className="grid gap-4 py-4">

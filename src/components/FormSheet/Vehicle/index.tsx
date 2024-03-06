@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { SheetFooter} from "@/components/ui/sheet"
-import { Car } from "@icon-park/react"
+import { Car } from "lucide-react"
 import { Form } from "../../ui/form"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -53,7 +53,7 @@ export function VehicleFormSheet({data, trigger, onSubmit, isPending}: IVehicleS
       isOpen={isOpen}
       onIsOpenChange={setIsOpen}
       description="Adicione aqui os dados do veículo. Clique em 'salvar' quando finalizar."
-      icon={<Car className="p-1"/>}
+      icon={<Car size={30} className="p-1"/>}
       trigger={trigger}>
         <Form {...form}>
           <form className="grid gap-4 py-4" onSubmit={form.handleSubmit(handleOnSubmit)}>
