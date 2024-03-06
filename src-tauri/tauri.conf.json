@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "volante",
+    "productName": "Volante",
     "version": "0.0.0"
   },
   "tauri": {

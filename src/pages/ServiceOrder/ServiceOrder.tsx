@@ -47,7 +47,7 @@ function ServiceOrderPage() {
   })
 
   const onSubmitHandle = (data: any) => {
-    console.log(serviceOrder)
+    console.log(serviceOrder, data)
     toast.success('Salvo com sucesso', )
     // let newSO = queryClient.getQueryData<ServiceOrder>(['service-order'])
     // newSO = {...newSO, ...data}
