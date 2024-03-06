@@ -8,7 +8,6 @@ import { FormInput, FormSelect } from "@/components/FormInput";
 import { Form } from "@/components/ui/form";
 import { currencyFormat } from "@/lib/utils";
 import useSOPrices from "@/hooks/useSOPrices";
-import { Plus } from "lucide-react";
 
 interface ServiceOrderTableProps {
     data: ServiceOrderItem[]
