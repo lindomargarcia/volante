@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import { Card } from "./card";
 
-const DetailCardVariants = cva("relative flex flex-row text-left items-center border p-4 hover:bg-gray-50", {
+const DetailCardVariants = cva("relative flex flex-row text-left items-center p-4 hover:bg-gray-50", {
     variants:{
         side:{
             default: "rounded-lg",

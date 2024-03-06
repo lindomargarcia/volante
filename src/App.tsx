@@ -9,7 +9,7 @@ import { Car, FilePlus, Hammer, Home, Settings2, User } from "lucide-react";
 const MENU_LINKS = [
   {
     path: ROUTER_PATHS.HOME,
-    element: <div>home</div>,
+    element: <h1 className="h-full w-full align-text-middle text-zinc-400 text-center py-[33%]">home</h1>,
     label: 'Início',
     icon: <Home size={23}/>
   },
@@ -21,25 +21,25 @@ const MENU_LINKS = [
   },
   {
     path: ROUTER_PATHS.VEHICLE,
-    element: <h1>Veículos</h1>,
+    element: <h1 className="h-full w-full align-text-middle text-zinc-400 text-center py-[33%]">Veículos</h1>,
     label: 'Veículos',
     icon: <Car size={23}/>
   },
   {
     path: ROUTER_PATHS.CUSTOMER,
-    element: <h1>Clientes</h1>,
+    element: <h1 className="h-full w-full align-text-middle text-zinc-400 text-center py-[33%]">Clientes</h1>,
     label: 'Clientes',
     icon: <User size={23}/>
   },
   {
     path: ROUTER_PATHS.CATALOG,
-    element: <h1>Catálogo</h1>,
+    element: <h1 className="h-full w-full align-text-middle text-zinc-400 text-center py-[33%]">Catálogo</h1>,
     label: 'Catálogo',
     icon: <Hammer size={23}/>
   },
   {
     path: ROUTER_PATHS.CONFIG,
-    element: <h1>Configurações</h1>,
+    element: <h1 className="h-full w-full align-text-middle text-zinc-400 text-center py-[33%]">Ajustes</h1>,
     label: 'Ajustes',
     icon: <Settings2 size={23}/>
   }
