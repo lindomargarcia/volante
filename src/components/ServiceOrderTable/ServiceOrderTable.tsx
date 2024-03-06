@@ -48,7 +48,7 @@ const ServiceOrderTable = ({data, carServices, onAddItem}: ServiceOrderTableProp
                 <FormInput form={form} name="quantity" label="Qtd." placeholder="1" type="number" key={"quantity"} direction={"col"} containerClassName="w-[70px]"/>
                 <FormInput form={form} name="value" label="Valor" placeholder="R$0,00" key={"value"} direction={"col"} containerClassName="w-[100px]" className="last:text-right"/>
                 <FormInput form={form} name="discount" label="Desconto" placeholder="R$0,00" key={"discount"} direction={"col"} containerClassName="w-[100px]" className="last:text-right"/>
-                <Button type="submit"><Plus className="mr-2"/>Adicionar</Button>
+                <Button type="submit">Adicionar</Button>
             </form>
 
             <DataTable columns={columns} data={data || []} className={"mt-4 flex-1 max-h-[calc(100vh-300px)]"}/>

@@ -51,7 +51,7 @@ const router = createBrowserRouter([
     element: 
       <div className="flex-1 flex bg-zinc-50">
         <Menu links={MENU_LINKS}/>
-        <div className="rounded-2xl ml-0 border border-zinc-300 m-2 flex-1">
+        <div className="rounded-2xl ml-0 border-zinc-300 m-2 p-4 pt-8 flex-1">
           <Outlet/>
         </div>
       </div>,

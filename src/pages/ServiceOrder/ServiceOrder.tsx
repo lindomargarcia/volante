@@ -83,7 +83,7 @@ function ServiceOrderPage() {
 
 
   return (
-    <div className="h-full flex flex-col p-4 pl-8 pt-8">
+    <div className="h-full flex flex-col">
       <header className="flex items-center pb-8">
         <div className="flex gap-10 flex-1">
           <div>

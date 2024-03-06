@@ -14,7 +14,7 @@ interface SheetContainerProps {
 export function SheetContainer({title, description, icon, side = 'left', trigger, isOpen, onIsOpenChange,  children}: SheetContainerProps) {
   return (
     <Sheet open={isOpen} onOpenChange={onIsOpenChange}>
-      <SheetTrigger onClick={() => onIsOpenChange(true)}>
+      <SheetTrigger onClick={() => onIsOpenChange(true)} className="focus:outline-dashed focus:outline-1 focus:outline-violet-400">
         {trigger}
       </SheetTrigger>
       <SheetContent side={side}>

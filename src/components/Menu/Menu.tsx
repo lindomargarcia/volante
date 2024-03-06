@@ -37,7 +37,7 @@ const Menu = ({links}: MenuProps) => {
             ))}
         </ol>
         <Button variant={"link"} className="bg-transparent text-zinc-400">
-            <LogOut size={23} className="pr-2"/> Sair
+            <LogOut size={25} className="pr-2"/> Sair
         </Button>
     </nav>
   );
