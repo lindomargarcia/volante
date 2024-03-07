@@ -67,7 +67,7 @@ const FormSelect = ({name, label, form, options, placeholder, direction, classNa
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            {options.map((option: FormSelectOption) => (
+                            {options && options.map((option: FormSelectOption) => (
                                 <SelectItem key={option.value} value={option.value}>
                                     <span className="flex items-center">
                                         {option?.color && <div className={`w-3 h-3 rounded-full mr-1 ${option.color}`}></div>}

@@ -1,4 +1,4 @@
-import { Car, Download, MoreVertical, Send, User } from "lucide-react";
+import { Download, MoreVertical, Send } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Label } from "@/components/ui/label";
@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
 import { CustomerFormSheet } from "@/components/FormSheet/Customer";
 import { VehicleFormSheet } from "@/components/FormSheet/Vehicle";
-import DetailCard from "@/components/ui/detailCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getServiceOrderAPI } from "@/data/ServiceOrder";
 import ServiceOrderCard from "../../components/ServiceOrderTable/ServiceOrderTable";
@@ -15,12 +14,12 @@ import { FormInput, FormSelect } from "@/components/FormInput";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { getCarServicesAPI } from "@/data/CarServices";
-import { generateVehicleDescription } from "@/components/FormSheet/Vehicle/utils";
 import { z } from "zod";
 import { CustomerSchema } from "@/components/FormSheet/Customer/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { VehicleSchema } from "@/components/FormSheet/Vehicle/schema";
 import { toast } from "sonner";
+import { VehicleDetailCard, CustomerDetailCard } from "@/components/DetailCard/DetailCard";
 
 const ServiceOrderSchema = z.object({
   // customer: customerSchema
@@ -108,16 +107,14 @@ function ServiceOrderPage() {
             onSubmit={handleVehicleSubmit}
             isPending={false}
             data={serviceOrder?.vehicle}
-            trigger={<DetailCard title={generateVehicleDescription(serviceOrder?.vehicle)} ready={serviceOrder?.vehicle.plate ? true : false}  subtitle={serviceOrder?.vehicle.plate.toLocaleUpperCase() || "Clique aqui para selecionar"} fallback={<Car size={"25px"}/>} className="min-w-[200px] h-[110px]"/>}
+            trigger={<VehicleDetailCard vehicle={serviceOrder?.vehicle}/>}
           />
           <CustomerFormSheet 
             onSubmit={handleCustomerSubmit}
             isPending={false}
             data={serviceOrder?.customer}
-            trigger={<DetailCard title={serviceOrder?.customer.name || "Cliente"} ready={serviceOrder?.customer.name ? true : false} subtitle={serviceOrder?.customer.phone || "Clique aqui para selecionar"} fallback={<User size={"25px"}/>} className="min-w-[200px] h-[110px]"/>}
+            trigger={<CustomerDetailCard customer={serviceOrder?.customer}/>}
           />
-          
-          {/* <img src="https://i.ibb.co/t3vH68T/image-removebg-preview.png" className="flex-1 object-cover"/> */}
         </div>
 
         {/* center Side */}
