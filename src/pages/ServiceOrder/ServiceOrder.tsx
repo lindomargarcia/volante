@@ -9,7 +9,7 @@ import { VehicleFormSheet } from "@/components/FormSheet/Vehicle";
 import DetailCard from "@/components/ui/detailCard";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getServiceOrderAPI } from "@/data/ServiceOrder";
-import ServiceOrderTable from "../../components/ServiceOrderTable/ServiceOrderTable";
+import ServiceOrderCard from "../../components/ServiceOrderTable/ServiceOrderTable";
 import { ServiceOrder, ServiceOrderItem } from "./types";
 import { FormInput, FormSelect } from "@/components/FormInput";
 import { useForm } from "react-hook-form";
@@ -122,7 +122,7 @@ function ServiceOrderPage() {
 
         {/* center Side */}
         <div className="flex-1 flex flex-col">
-          <ServiceOrderTable data={serviceOrder?.items || []} carServices={carServices || []} onAddItem={handleNewSOItem}/>
+          <ServiceOrderCard data={serviceOrder?.items || []} carServices={carServices || []} onAddItem={handleNewSOItem}/>
         </div>
 
         {/* Right Side */}

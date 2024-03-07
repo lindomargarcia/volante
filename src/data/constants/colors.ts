@@ -66,3 +66,18 @@ export const COLORS = [
     }
   ]
   
+  export const BADGE_COLORS: Record<string, string> = {
+    "BODYWORK": "bg-blue-500", 
+    "PAINTING": "bg-violet-500",
+    "PARTS": "bg-amber-500",
+    "AIR_CONDITIONING": "bg-indigo-300",
+    "TIRE_REPAIR": "bg-gray-500",
+    "ELECTRICAL": "bg-pink-500",
+    "AESTHETICS": "bg-pink-400",
+    "DENT_REPAIR": "bg-blue-400",
+    "MECHANICAL": "bg-green-500",
+    "OVERHAUL": "bg-red-400",
+    "UPHOLSTERY": "bg-amber-700",
+    "GLASSWORK": "bg-blue-300",
+    "OTHER": "bg-pink-800"
+  }
