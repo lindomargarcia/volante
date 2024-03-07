@@ -38,8 +38,8 @@ const FileSelect = ({label}: FileSelectProps) => {
                         <img key={file.name} src={URL.createObjectURL(file)} className="w-[86px] h-[86px] border object-cover rounded-lg hover:scale-95"/>
                     )
                 })}
-                <button onClick={() => fileInput.current.click()} className="w-[86px] h-[86px] border-dashed flex items-center justify-center border object-cover rounded-lg">
-                    <FilePlus2 color={"#94A3B8"} size={21}/>
+                <button onClick={() => fileInput.current.click()} className="w-[86px] h-[86px] border-dashed hover:border-[--theme-highlight] hover:text-[--theme-highlight] flex items-center justify-center border object-cover rounded-lg border-zinc-400 text-zinc-400">
+                    <FilePlus2 size={21}/>
                 </button>
             </span>
             <Button onClick={onCleanHandle} size={"sm"} variant={"outline"} className="mt-3">Limpar</Button>
