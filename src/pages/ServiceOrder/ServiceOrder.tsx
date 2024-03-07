@@ -1,7 +1,6 @@
-import { Download, MoreVertical, Send } from "lucide-react";
+import { MoreVertical, Save, Send } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
 import { CustomerFormSheet } from "@/components/FormSheet/Customer";
@@ -10,13 +9,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getServiceOrderAPI } from "@/data/ServiceOrder";
 import ServiceOrderCard from "../../components/ServiceOrderTable/ServiceOrderTable";
 import { ServiceOrder, ServiceOrderItem } from "./types";
-import { FormInput, FormSelect } from "@/components/FormInput";
-import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/form";
 import { getCarServicesAPI } from "@/data/CarServices";
 import { z } from "zod";
 import { CustomerSchema } from "@/components/FormSheet/Customer/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { VehicleSchema } from "@/components/FormSheet/Vehicle/schema";
 import { toast } from "sonner";
 import { VehicleDetailCard, CustomerDetailCard } from "@/components/DetailCard/DetailCard";
@@ -28,10 +23,10 @@ const ServiceOrderSchema = z.object({
 function ServiceOrderPage() {
   const [show, setShow] = useState(false)
   const queryClient = useQueryClient()
-  const form = useForm({ resolver: zodResolver(ServiceOrderSchema), defaultValues: {
-    duration_quantity: 1,
-    customer: {name: "", cpf: "", phone: "", email: ""}
-  } })
+  // const form = useForm({ resolver: zodResolver(ServiceOrderSchema), defaultValues: {
+  //   duration_quantity: 1,
+  //   customer: {name: "", cpf: "", phone: "", email: ""}
+  // } })
 
   const {data: carServices} = useQuery({
     queryKey: ['car-services'],
@@ -45,14 +40,14 @@ function ServiceOrderPage() {
     refetchOnWindowFocus: false
   })
 
-  const onSubmitHandle = (data: any) => {
-    console.log(serviceOrder, data)
-    toast.success('Salvo com sucesso', )
-    // let newSO = queryClient.getQueryData<ServiceOrder>(['service-order'])
-    // newSO = {...newSO, ...data}
-    // console.log(newSO)
-    // putServiceOrder(newSO)
-  }
+  // const onSubmitHandle = (data: any) => {
+  //   console.log(serviceOrder, data)
+  //   toast.success('Salvo com sucesso', )
+  //   // let newSO = queryClient.getQueryData<ServiceOrder>(['service-order'])
+  //   // newSO = {...newSO, ...data}
+  //   // console.log(newSO)
+  //   // putServiceOrder(newSO)
+  // }
 
   const handleCustomerSubmit = async (customer: CustomerSchema) => {
     toast.message("Cliente adicionado com sucesso!")
@@ -115,15 +110,20 @@ function ServiceOrderPage() {
             data={serviceOrder?.customer}
             trigger={<CustomerDetailCard customer={serviceOrder?.customer}/>}
           />
+          <FileSelect label="Imagens"/>
         </div>
 
         {/* center Side */}
         <div className="flex-1 flex flex-col">
           <ServiceOrderCard data={serviceOrder?.items || []} carServices={carServices || []} onAddItem={handleNewSOItem}/>
+          <div className="flex mt-6 justify-end items-end gap-3">
+            <Button variant="outline"><Send size={18} className="mr-2"/>Enviar</Button>
+            <Button type="submit"><Save size={18} className="mr-2"/>Salvar</Button>
+          </div>
         </div>
 
         {/* Right Side */}
-        <div className="flex flex-col">
+        {/* <div className="flex flex-col">
           <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmitHandle)} className="flex flex-col flex-1">
               
@@ -136,17 +136,10 @@ function ServiceOrderPage() {
                       <FormSelect name="duration_type" form={form} options={[{label: 'Horas', value: "hour"}, {label: 'Dias', value: 'day'}, {label: 'Semanas', value: 'week'}, {label: 'Meses', value: 'month'}, {label: 'Anos', value: "year"}]} placeholder="Selecione..." className="flex-1"/>
                     </span>
                   </span>
-                  <FileSelect label="Imagens"/>
-              </div>
-
-              <div className="flex justify-end gap-3">
-                <Button variant="outline"><Send size={18} className="mr-2"/>Compartilhar</Button>
-                <Button type="submit"><Download size={18} className="mr-2"/>Salvar</Button>
               </div>
             </form>
           </Form>
-
-        </div>
+        </div> */}
       </div>
     </div>
   );
