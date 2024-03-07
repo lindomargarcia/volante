@@ -18,16 +18,21 @@ const FileSelect = ({label}: FileSelectProps) => {
         const allFiles = [...fileList, ...newFiles]
 
         if(allFiles.length > 12){
-            toast.error('Selecione no maximo 12 arquivos.')
+            toast.error('Máximo de 12 arquivos.')
         }else{
             setFileList(allFiles)
         }
     }
 
-    const onCleanHandle = () => {
+    const onCleanHandle = (e:any) => {
+        e.preventDefault()
         setFileList([])
     }
 
+    const dispatchClick = (e: any) => {
+        e.preventDefault()
+        fileInput.current.click()
+    }
     return ( 
         <span>
             <Label htmlFor="file" className="font-bold">{label} <span className="text-muted-foreground">{`${fileList.length}/12`}</span></Label>
@@ -38,7 +43,7 @@ const FileSelect = ({label}: FileSelectProps) => {
                         <img key={file.name} src={URL.createObjectURL(file)} className="w-[86px] h-[86px] border object-cover rounded-lg hover:scale-95"/>
                     )
                 })}
-                <button onClick={() => fileInput.current.click()} className="w-[86px] h-[86px] border-dashed hover:border-[--theme-highlight] hover:text-[--theme-highlight] flex items-center justify-center border object-cover rounded-lg border-zinc-400 text-zinc-400">
+                <button onClick={dispatchClick} className="w-[86px] h-[86px] border-dashed hover:border-[--theme-highlight] hover:text-[--theme-highlight] flex items-center justify-center border object-cover rounded-lg border-zinc-400 text-zinc-400">
                     <FilePlus2 size={21}/>
                 </button>
             </span>

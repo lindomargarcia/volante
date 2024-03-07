@@ -130,7 +130,7 @@ function ServiceOrderPage() {
           <Form {...form} >
             <form onSubmit={form.handleSubmit(onSubmitHandle)} className="flex flex-col flex-1">
               
-              <div className="flex flex-1 flex-col gap-3">
+              <div className="flex flex-1 flex-col gap-3 w-[300px]">
                   <FormSelect label="Seguradora" name="insurance_company" form={form} options={[{value: 'none', label: 'Não há'}, {value: 'blue', label: 'Azul'}]} placeholder="Selecione..." containerClassName="w-[150px]" direction={"col"}/>
                   <span>
                     <Label htmlFor="duration" className="font-bold">Duração Aproximada</Label>
