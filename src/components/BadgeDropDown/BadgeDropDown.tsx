@@ -1,7 +1,6 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Badge } from "../ui/badge";
 import { STATUS_SERVICE_ORDER } from "@/pages/ServiceOrder/types";
-
 interface StatusDropDownProps {
     title: string,
     value: string | undefined,
@@ -12,7 +11,6 @@ export default function StatusDropDown({title, value, options, onChange}: Status
     const selected = options.find(item => item.value === value)
     const linked = options.filter(({value}) => selected?.linked ? selected?.linked.includes(value) : false)
 
-    console.log(linked)
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className="focus:outline-none">
