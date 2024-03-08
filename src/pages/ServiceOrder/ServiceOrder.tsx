@@ -1,5 +1,4 @@
 import { MoreVertical, Save, Send } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
@@ -15,6 +14,8 @@ import { CustomerSchema } from "@/components/FormSheet/Customer/schema";
 import { VehicleSchema } from "@/components/FormSheet/Vehicle/schema";
 import { toast } from "sonner";
 import { VehicleDetailCard, CustomerDetailCard } from "@/components/DetailCard/DetailCard";
+import StatusDropDown from "@/components/BadgeDropDown/BadgeDropDown";
+import { SO_STATUS_LIST } from "@/data/constants/utils";
 
 const ServiceOrderSchema = z.object({
   // customer: customerSchema
@@ -23,6 +24,7 @@ const ServiceOrderSchema = z.object({
 function ServiceOrderPage() {
   const [show, setShow] = useState(false)
   const queryClient = useQueryClient()
+  const [status, setStatus] = useState('pending')
   // const form = useForm({ resolver: zodResolver(ServiceOrderSchema), defaultValues: {
   //   duration_quantity: 1,
   //   customer: {name: "", cpf: "", phone: "", email: ""}
@@ -86,7 +88,9 @@ function ServiceOrderPage() {
               Último salvo {serviceOrder?.last_saved_at ? new Date(serviceOrder?.last_saved_at).toLocaleString() : '...'}
             </p>
           </div>
-          <Badge className="h-8 rounded-full bg-violet-500" onClick={() => setShow(!show)}>{serviceOrder?.status || 'buscando...'}</Badge>
+
+          <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={setStatus}/>
+          
         </div>
 
         <Button variant={"link"}>

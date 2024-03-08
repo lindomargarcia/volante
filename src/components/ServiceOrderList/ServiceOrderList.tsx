@@ -22,7 +22,7 @@ export default function ServiceOrderList({data}: ServiceOrderListProps) {
 
 function ServiceOrderListItem({item}: {item: ServiceOrderItem}){
     return (
-        <li className="flex gap-2 py-4 rounded-md pr-4 hover:bg-zinc-100">
+        <li className="flex gap-2 py-2 rounded-md pr-4 hover:bg-zinc-100">
             <span className={`w-[10px] h-[10px] ml-4 mt-[6px] ${BADGE_COLORS[item.type]} rounded-full`} />
             <div className="flex-1">
                 <h1 className="font-medium">{item.description}</h1>

@@ -30,7 +30,7 @@ const Menu = ({links}: MenuProps) => {
         <img src={logo} className="w-[65px]"/>
         <ol className="flex-1 my-6 px-6 mt-12 flex flex-col gap-4">
             {links.map(({path, label, icon}) => (
-                <NavLink to={path} className={({isActive}) => cn(MenuNavLinkVariant({isActive}))}>
+                <NavLink key={path} to={path} className={({isActive}) => cn(MenuNavLinkVariant({isActive}))}>
                     {icon}
                     {label}
                 </NavLink>

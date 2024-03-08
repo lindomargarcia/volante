@@ -6,7 +6,7 @@ import { VehicleSchema } from "@/components/FormSheet/Vehicle/schema"
 
 export type ServiceOrder = {
     id: string
-    status: "pending" | "waiting_approval" | "approved" | "waiting_start" | "doing" | "done" | "paused"
+    status: STATUS_SERVICE_ORDER,
     created_at: string,
     last_saved_at: string,
     insurance_company?: string,
@@ -35,4 +35,18 @@ export type ServiceOrderVehicle = {
     brand: string,
     model: string,
     year: string
+}
+
+export enum STATUS_SERVICE_ORDER {
+    PENDING = "pending",
+    WAITING_APPROVAL = "waiting_approval",
+    SCHEDULED = 'scheduled',
+    APPROVED = "approved",
+    TODO = "todo",
+    DOING = "doing",
+    READY = "ready",
+    DONE = "done",
+    BLOCKED = "blocked",
+    CANCELLED = "cancelled",
+    REJECTED = "rejected"
 }
