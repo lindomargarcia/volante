@@ -6,7 +6,7 @@ import { CustomerFormSheet } from "@/components/FormSheet/Customer";
 import { VehicleFormSheet } from "@/components/FormSheet/Vehicle";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getServiceOrderAPI } from "@/data/ServiceOrder";
-import ServiceOrderCard from "../../components/ServiceOrderTable/ServiceOrderTable";
+import ServiceOrderCard from "../../components/ServiceOrderCard/ServiceOrderCard";
 import { ServiceOrder, ServiceOrderItem } from "./types";
 import { getCarServicesAPI } from "@/data/CarServices";
 import { z } from "zod";

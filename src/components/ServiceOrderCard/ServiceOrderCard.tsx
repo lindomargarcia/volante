@@ -9,7 +9,7 @@ import useSOPrices from "@/hooks/useSOPrices";
 import { Card } from "../ui/card";
 import ServiceOrderList from "../ServiceOrderList/ServiceOrderList";
 
-interface ServiceOrderTableProps {
+interface ServiceOrderCardProps {
     data: ServiceOrderItem[]
     carServices: any
     onAddItem: (newItem: ServiceOrderItem) => Promise<any>
@@ -19,7 +19,7 @@ const defaultServiceOrder: ServiceOrderItem = {
     description: "", value: 0, discount: 0, quantity: 1, id: "", type: "BODYWORK", insurance_coverage: 0, total: 0
 }
 
-const ServiceOrderCard = ({data, carServices, onAddItem}: ServiceOrderTableProps) => {
+const ServiceOrderCard = ({data, carServices, onAddItem}: ServiceOrderCardProps) => {
     const { updatePrices, totalPrice, totalDiscountPrice, totalPartsPrice, totalServicesPrice } = useSOPrices()
     const form = useForm<ServiceOrderItem>({ defaultValues: defaultServiceOrder})
 
