@@ -17,7 +17,7 @@ function VehicleDetailCard({vehicle}: {vehicle?: VehicleSchema}) {
     return (
         <DetailCard
             title={generateVehicleDescription(vehicle)}
-            subtitle={vehicle?.plate.toLocaleUpperCase() || 'Clique aqui para adicionar'}
+            subtitle={vehicle?.plate?.toLocaleUpperCase() || 'Clique aqui para adicionar'}
             ready={Boolean(vehicle?.plate)}
             fallback={vehicle?.brand ? vehicle?.brand.substring(0,1) : <Car size={"25px"}/>}
             className="min-w-[180px] min-h-[110px]"

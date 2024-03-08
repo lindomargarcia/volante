@@ -10,15 +10,17 @@ import { SheetContainer } from "../../SheetContainer/SheetContainer"
 import { useEffect, useState } from "react"
 import { COLORS } from '@/data/constants/colors'
 import { CAR_BRANDS } from '@/data/constants/carBrands'
+import ConfirmButton from "@/components/ConfirmButton/ConfirmButton"
 
 interface IVehicleSheetsProps {
   trigger: React.ReactElement
   data?: VehicleSchema,
   onSubmit: (data: VehicleSchema) => Promise<any>,
+  onDelete: (data?: VehicleSchema) => Promise<any>
   isPending: boolean
 }
 
-export function VehicleFormSheet({data, trigger, onSubmit, isPending}: IVehicleSheetsProps) {
+export function VehicleFormSheet({data, trigger, onSubmit, onDelete, isPending}: IVehicleSheetsProps) {
   const [isOpen, setIsOpen] = useState(false)
   
   const form = useForm<VehicleSchema>({
@@ -42,9 +44,10 @@ export function VehicleFormSheet({data, trigger, onSubmit, isPending}: IVehicleS
     })
   }
 
-  const handleOnClean = (e: any) => {
-    e.preventDefault()
-    form.reset()
+  const handleOnDelete = (data: VehicleSchema) => {
+    onDelete(data).then(() => {
+      setIsOpen(false)
+    })
   }
 
   return (
@@ -62,9 +65,16 @@ export function VehicleFormSheet({data, trigger, onSubmit, isPending}: IVehicleS
             <FormInput name='model' label="Modelo" type="text" placeholder="Digite aqui..." form={form}/>
             <FormInput name='year' label="Ano" type="text" placeholder="2024" form={form}/>
             <FormSelect name="color" label="Cor" options={COLORS} form={form} placeholder="Selecione..." />
-            <SheetFooter className="mt-4">
-            <Button type="submit" disabled={isPending}>Salvar</Button>
-              <Button variant={"outline"} onClick={handleOnClean} disabled={isPending}>Limpar</Button>
+            <SheetFooter className="mt-4 justify-between">
+              <Button type="submit" disabled={isPending}>Salvar</Button>
+              {data?.plate && <ConfirmButton
+                  onConfirm={() => handleOnDelete(data)}
+                  variant={"destructive"}
+                  disabled={isPending}
+                  title="Remover veículo"
+                  message="Deseja realmente remover o veículo desse orçamento?">
+                    Remover
+                </ConfirmButton>}
             </SheetFooter>
           </form>
         </Form>

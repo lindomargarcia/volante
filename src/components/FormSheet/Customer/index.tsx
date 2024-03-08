@@ -8,14 +8,16 @@ import { Form } from "../../ui/form"
 import { FormInput } from "../../FormInput"
 import { CustomerSchema, customerSchema, defaultCustomerValues } from "./schema"
 import { SheetContainer } from "../../SheetContainer/SheetContainer"
+import ConfirmButton from "@/components/ConfirmButton/ConfirmButton"
 interface ICustomerSheetsProps {
   trigger: ReactComponentElement<any>,
   data?: CustomerSchema,
   onSubmit: (data: CustomerSchema) => Promise<any>
+  onDelete: (data?: CustomerSchema) => Promise<any>
   isPending: boolean
 }
 
-export function CustomerFormSheet({trigger, data, onSubmit, isPending}: ICustomerSheetsProps) {
+export function CustomerFormSheet({trigger, data, onSubmit, onDelete, isPending}: ICustomerSheetsProps) {
   const [isOpen, setIsOpen] = useState(false)
   const form = useForm<CustomerSchema>({
     resolver: zodResolver(customerSchema),
@@ -38,9 +40,10 @@ export function CustomerFormSheet({trigger, data, onSubmit, isPending}: ICustome
     })
   }
 
-  const handleOnClean = (e: any) => {
-    e.preventDefault()
-    form.reset()
+  const handleOnDelete = (data: CustomerSchema) => {
+    onDelete(data).then(() => {
+      setIsOpen(false)
+    })
   }
 
   return (
@@ -58,9 +61,16 @@ export function CustomerFormSheet({trigger, data, onSubmit, isPending}: ICustome
             <FormInput name="phone" label="Telefone" type="phone"  placeholder="(00) 00000-0000" form={form}/>
             <FormInput name="email" label="E-mail" type="email" placeholder="funilaria@contato.com" form={form}/>
 
-            <SheetFooter>
+            <SheetFooter className="mt-4 justify-between">
               <Button type="submit" disabled={isPending}>Salvar</Button>
-              <Button variant={"outline"} disabled={isPending} onClick={handleOnClean}>Limpar</Button>
+              {data?.name && <ConfirmButton 
+                  onConfirm={() => handleOnDelete(data)}
+                  variant={"destructive"}
+                  disabled={isPending}
+                  title="Remover cliente"
+                  message="Deseja realmente remover o cliente desse orçamento?">
+                    Remover
+                </ConfirmButton>}
             </SheetFooter>
           </form>
         </Form>

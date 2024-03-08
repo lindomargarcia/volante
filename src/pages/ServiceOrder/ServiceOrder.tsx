@@ -77,6 +77,18 @@ function ServiceOrderPage() {
     })
   }
 
+  const handleVehicleDelete = async (data?: VehicleSchema) => {
+    queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
+      return {...data, vehicle: {}}
+    })
+  }
+
+  const handleCustomerDelete = async (data?: CustomerSchema) => {
+    queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
+      return {...data, customer: {}}
+    })
+  }
+
 
   return (
     <div className="h-full flex flex-col">
@@ -104,12 +116,14 @@ function ServiceOrderPage() {
         <div className="flex flex-col w-[300px] gap-4">
           <VehicleFormSheet 
             onSubmit={handleVehicleSubmit}
+            onDelete={handleVehicleDelete}
             isPending={false}
             data={serviceOrder?.vehicle}
             trigger={<VehicleDetailCard vehicle={serviceOrder?.vehicle}/>}
           />
           <CustomerFormSheet 
             onSubmit={handleCustomerSubmit}
+            onDelete={handleCustomerDelete}
             isPending={false}
             data={serviceOrder?.customer}
             trigger={<CustomerDetailCard customer={serviceOrder?.customer}/>}
