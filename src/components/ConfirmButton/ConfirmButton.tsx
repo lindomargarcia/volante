@@ -15,7 +15,7 @@ interface ConfirmButtonProps{
 export default function ConfirmButton({title, message, children, onConfirm, variant, disabled}: ConfirmButtonProps) {
   return (
     <Popover>
-        <PopoverTrigger>
+        <PopoverTrigger asChild>
             <Button type="button" variant={variant} disabled={disabled}>{children}</Button>
         </PopoverTrigger>
         <PopoverContent>

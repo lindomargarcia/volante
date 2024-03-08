@@ -12,7 +12,7 @@ export default function ServiceOrderList({data}: ServiceOrderListProps) {
     <ol className="relative flex border m-[-17px] flex-col p-4 mt-4 flex-1">
         <div className="overflow-y-scroll max-h-[calc(100vh-360px)] flex-1">
             {data.map((item) => (
-                <ServiceOrderListItem item={item}/>
+                <ServiceOrderListItem key={item.id} item={item}/>
             ))}
         </div>
         <span className="w-full h-[80px] pointer-events-none absolute bottom-0 left-0 bg-gradient-to-t from-white"/>
