@@ -77,13 +77,13 @@ function ServiceOrderPage() {
     })
   }
 
-  const handleVehicleDelete = async (data?: VehicleSchema) => {
+  const handleVehicleDelete = async () => {
     queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
       return {...data, vehicle: {}}
     })
   }
 
-  const handleCustomerDelete = async (data?: CustomerSchema) => {
+  const handleCustomerDelete = async () => {
     queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
       return {...data, customer: {}}
     })
@@ -139,25 +139,6 @@ function ServiceOrderPage() {
             <Button type="submit"><Save size={18} className="mr-2"/>Salvar</Button>
           </div>
         </div>
-
-        {/* Right Side */}
-        {/* <div className="flex flex-col">
-          <Form {...form} >
-            <form onSubmit={form.handleSubmit(onSubmitHandle)} className="flex flex-col flex-1">
-              
-              <div className="flex flex-1 flex-col gap-3 w-[300px]">
-                  <FormSelect label="Seguradora" name="insurance_company" form={form} options={[{value: 'none', label: 'Não há'}, {value: 'blue', label: 'Azul'}]} placeholder="Selecione..." containerClassName="w-[150px]" direction={"col"}/>
-                  <span>
-                    <Label htmlFor="duration" className="font-bold">Duração Aproximada</Label>
-                    <span className="flex gap-1">
-                      <FormInput form={form} name="duration_quantity" placeholder="0" type="number" key={"duration_quantity"} containerClassName="w-[70px]"/>
-                      <FormSelect name="duration_type" form={form} options={[{label: 'Horas', value: "hour"}, {label: 'Dias', value: 'day'}, {label: 'Semanas', value: 'week'}, {label: 'Meses', value: 'month'}, {label: 'Anos', value: "year"}]} placeholder="Selecione..." className="flex-1"/>
-                    </span>
-                  </span>
-              </div>
-            </form>
-          </Form>
-        </div> */}
       </div>
     </div>
   );

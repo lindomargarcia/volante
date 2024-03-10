@@ -4,13 +4,14 @@ import { Car } from "lucide-react"
 import { Form } from "../../ui/form"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { FormInput, FormSelect } from "../../FormInput"
+import { FormInputNew, FormSelect } from "../../FormInput"
 import { VehicleSchema, defaultVehicleValues, vehicleSchema } from "./schema"
 import { SheetContainer } from "../../SheetContainer/SheetContainer"
 import { useEffect, useState } from "react"
 import { COLORS } from '@/data/constants/colors'
 import { CAR_BRANDS } from '@/data/constants/carBrands'
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton"
+import { Input } from "@/components/ui/input"
 
 interface IVehicleSheetsProps {
   trigger: React.ReactElement
@@ -60,11 +61,18 @@ export function VehicleFormSheet({data, trigger, onSubmit, onDelete, isPending}:
       trigger={trigger}>
         <Form {...form}>
           <form className="grid gap-4 py-4" onSubmit={form.handleSubmit(handleOnSubmit)}>
-            <FormInput name='plate' label="Placa" type="text" placeholder="ABC-1D23" form={form} className={'uppercase'}/>
+            <FormInputNew name='plate' label="Placa" form={form}>
+              {field => <Input placeholder="ABC-1D23"  className={'uppercase'} {...field}/>}
+            </FormInputNew>
             <FormSelect name="brand" label="Marca" options={CAR_BRANDS} form={form} placeholder="Selecione..." />
-            <FormInput name='model' label="Modelo" type="text" placeholder="Digite aqui..." form={form}/>
-            <FormInput name='year' label="Ano" type="text" placeholder="2024" form={form}/>
+            <FormInputNew  name='model' label="Modelo" form={form}>
+              {field => <Input  placeholder="Digite aqui..." {...field}/>}
+            </FormInputNew>
+            <FormInputNew name='year' label="Ano" form={form}>
+              {field => <Input placeholder="2024"  {...field}/>}
+            </FormInputNew>
             <FormSelect name="color" label="Cor" options={COLORS} form={form} placeholder="Selecione..." />
+            
             <SheetFooter className="mt-4 justify-between">
               <Button type="submit" disabled={isPending}>Salvar</Button>
               {data?.plate && <ConfirmButton

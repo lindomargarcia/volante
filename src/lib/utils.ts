@@ -11,3 +11,21 @@ export const currencyFormat = (value: number, style?:string, currency: string = 
   minimumFractionDigits: 2,
   maximumFractionDigits: 2
 }).format(value)
+
+export const MASKS = {
+  PLATE: "###-####",
+  CPF: "###.###.###-##",
+  PHONE: "(##)#########",
+  CELL_PHONE: "(##) #####-####"
+}
+
+export function validateCPF(cpf: string): boolean {
+  cpf = cpf.replace(/[^\d]+/g, '');
+  if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+  const validateDigit = (index: number) => {
+      const sum = cpf.substring(0, index).split('').map(Number).reduce((acc, value, idx) => acc + value * (index + 1 - idx), 0);
+      let remainder = sum % 11;
+      return parseInt(cpf[index]) === (remainder < 2 ? 0 : 11 - remainder);
+  };
+  return validateDigit(9) && validateDigit(10);
+}

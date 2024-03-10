@@ -26,11 +26,16 @@ function VehicleDetailCard({vehicle}: {vehicle?: VehicleSchema}) {
 }
 
 function CustomerDetailCard({customer}: {customer?: CustomerSchema}) {
+    const getSubtitle = (customer?: CustomerSchema) => {
+        if(!customer?.phone && !customer?.email)
+            return "Clique aqui para adicionar"
+        return customer?.phone || customer.email
+    }
     return (
         <DetailCard
             title={customer?.name || "Cliente"}
             ready={Boolean(customer?.name)}
-            subtitle={customer?.phone || "Clique aqui para adicionar"}
+            subtitle={getSubtitle(customer)}
             fallback={customer?.name ? customer?.name.substring(0,1) : <User size={"25px"}/>}
             className="min-w-[180px] min-h-[110px]"
         />

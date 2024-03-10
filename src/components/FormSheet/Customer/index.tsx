@@ -5,10 +5,13 @@ import { ReactComponentElement, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "../../ui/form"
-import { FormInput } from "../../FormInput"
+import { FormInputNew } from "../../FormInput"
 import { CustomerSchema, customerSchema, defaultCustomerValues } from "./schema"
 import { SheetContainer } from "../../SheetContainer/SheetContainer"
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton"
+import MaskedInput from "@/components/MaskedInput/MaskedInput"
+import { MASKS } from "@/lib/utils"
+import { Input } from "@/components/ui/input"
 interface ICustomerSheetsProps {
   trigger: ReactComponentElement<any>,
   data?: CustomerSchema,
@@ -35,6 +38,7 @@ export function CustomerFormSheet({trigger, data, onSubmit, onDelete, isPending}
 
 
   const onFormSubmit = (data: CustomerSchema) => {
+    console.log(data)
     onSubmit(data).then(() => {
       setIsOpen(false)
     })
@@ -56,10 +60,18 @@ export function CustomerFormSheet({trigger, data, onSubmit, onDelete, isPending}
       trigger={trigger}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onFormSubmit)} className="grid gap-4 py-4">
-            <FormInput name="name" label="Nome" type="text" placeholder="Digite aqui..." form={form} direction={"col"}/>
-            <FormInput name="cpf" label="CPF" type="text" placeholder="000.000.000-00" form={form}/>
-            <FormInput name="phone" label="Telefone" type="phone"  placeholder="(00) 00000-0000" form={form}/>
-            <FormInput name="email" label="E-mail" type="email" placeholder="funilaria@contato.com" form={form}/>
+            <FormInputNew name='name' label="Nome" form={form}>
+              {(field) => <Input type="text" placeholder="Digite aqui..." {...field}/>}
+            </FormInputNew>
+            <FormInputNew name="cpf" label='CPF' form={form}>
+              {(field) => <MaskedInput mask={MASKS.CPF} placeholder='000.000.000-00' {...field}/>}
+            </FormInputNew>
+            <FormInputNew name="phone" label='Telefone' form={form}>
+              {(field) => <MaskedInput mask={MASKS.PHONE} maskChar="" placeholder='(00) 00000-0000' {...field}/>}
+            </FormInputNew>
+            <FormInputNew name="email" label="E-mail" form={form}>
+              {(field) => <Input type="email" placeholder="Digite aqui..." {...field}/>}
+            </FormInputNew>
 
             <SheetFooter className="mt-4 justify-between">
               <Button type="submit" disabled={isPending}>Salvar</Button>
