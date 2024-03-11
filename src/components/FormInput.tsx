@@ -67,4 +67,4 @@ const FormSelect = ({name, label, form, options, placeholder, className}: FormSe
     )
 }
  
-export { FormSelect, FormInput as FormInputNew };
+export { FormSelect, FormInput };

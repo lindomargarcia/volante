@@ -10,7 +10,7 @@ interface ServiceOrderListProps {
 export default function ServiceOrderList({data}: ServiceOrderListProps) {
   return (
     <ol className="relative flex border m-[-17px] flex-col p-4 mt-4 flex-1">
-        <div className="overflow-y-scroll max-h-[calc(100vh-360px)] flex-1">
+        <div className="overflow-y-scroll max-h-[calc(100vh-420px)] flex-1">
             {data.map((item) => (
                 <ServiceOrderListItem key={item.id} item={item}/>
             ))}

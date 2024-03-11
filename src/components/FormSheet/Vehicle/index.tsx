@@ -4,7 +4,7 @@ import { Car } from "lucide-react"
 import { Form } from "../../ui/form"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { FormInputNew, FormSelect } from "../../FormInput"
+import { FormInput, FormSelect } from "../../FormInput"
 import { VehicleSchema, defaultVehicleValues, vehicleSchema } from "./schema"
 import { SheetContainer } from "../../SheetContainer/SheetContainer"
 import { useEffect, useState } from "react"
@@ -61,16 +61,16 @@ export function VehicleFormSheet({data, trigger, onSubmit, onDelete, isPending}:
       trigger={trigger}>
         <Form {...form}>
           <form className="grid gap-4 py-4" onSubmit={form.handleSubmit(handleOnSubmit)}>
-            <FormInputNew name='plate' label="Placa" form={form}>
+            <FormInput name='plate' label="Placa" form={form}>
               {field => <Input placeholder="ABC-1D23"  className={'uppercase'} {...field}/>}
-            </FormInputNew>
+            </FormInput>
             <FormSelect name="brand" label="Marca" options={CAR_BRANDS} form={form} placeholder="Selecione..." />
-            <FormInputNew  name='model' label="Modelo" form={form}>
+            <FormInput  name='model' label="Modelo" form={form}>
               {field => <Input  placeholder="Digite aqui..." {...field}/>}
-            </FormInputNew>
-            <FormInputNew name='year' label="Ano" form={form}>
+            </FormInput>
+            <FormInput name='year' label="Ano" form={form}>
               {field => <Input placeholder="2024"  {...field}/>}
-            </FormInputNew>
+            </FormInput>
             <FormSelect name="color" label="Cor" options={COLORS} form={form} placeholder="Selecione..." />
             
             <SheetFooter className="mt-4 justify-between">

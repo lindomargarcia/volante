@@ -2,13 +2,14 @@ import { Button } from "@/components/ui/button";
 import PriceTag from "@/components/ui/priceTag";
 import { useForm } from "react-hook-form";
 import { ServiceOrderItem } from "../../pages/ServiceOrder/types";
-import { FormInputNew, FormSelect } from "@/components/FormInput";
+import { FormInput, FormSelect } from "@/components/FormInput";
 import { Form } from "@/components/ui/form";
 import { currencyFormat } from "@/lib/utils";
 import useSOPrices from "@/hooks/useSOPrices";
 import { Card } from "../ui/card";
 import ServiceOrderList from "../ServiceOrderList/ServiceOrderList";
 import { Input } from "../ui/input";
+import MoneyInput from "../ui/money-input";
 
 interface ServiceOrderCardProps {
     data: ServiceOrderItem[]
@@ -44,19 +45,15 @@ const ServiceOrderCard = ({data, carServices, onAddItem}: ServiceOrderCardProps)
         <Card className="rounded-lg p-4 flex-1 flex flex-col">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-end gap-3">
-                    <FormInputNew form={form} name="description" label="Descrição" className="flex-1">
+                    <FormInput form={form} name="description" label="Descrição" className="flex-1">
                         {field => <Input placeholder="Digite aqui..." className="flex-1 min-w-[200px]" {...field}/>}
-                    </FormInputNew>
+                    </FormInput>
                     <FormSelect label="Tipo" name="type" form={form} options={carServices} placeholder="Selecione..." className="w-[150px]"/>
-                    <FormInputNew form={form} name="quantity" label="Qtd." >
+                    <FormInput form={form} name="quantity" label="Qtd." >
                         {field => <Input placeholder="1" type="number" className="w-[70px]" {...field}/>}
-                    </FormInputNew>
-                    <FormInputNew form={form} name="value" label="Valor">
-                        {field => <Input placeholder="R$0,00" className="w-[100px] text-right" {...field}/>}
-                    </FormInputNew>
-                    <FormInputNew form={form} name="discount" label="Desconto">
-                        {field => <Input placeholder="R$0,00" className="w-[100px] text-right" {...field}/>}
-                    </FormInputNew>
+                    </FormInput>
+                    <MoneyInput form={form} label="Valor" name="value" placeholder="R$ 0,00" className="w-[100px]"/>
+                    <MoneyInput form={form} label="Desconto" name="discount" placeholder="R$ 0,00" className="w-[100px]"/>
                     <Button type="submit">Adicionar</Button>
                 </form>
 

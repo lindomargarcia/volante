@@ -10,7 +10,7 @@ const customerSchema = z.object({
     if (email === '' && phone === '' ) {
       return refinementContext.addIssue({
         code: z.ZodIssueCode.custom,
-        message: "Forneça pelo menos uma forma de contactar o cliente",
+        message: "Forneça uma forma de contactar o cliente",
         path: ['email'],
       });
     }
