@@ -1,16 +1,19 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { ReactElement } from "react"
+import { ReactElement, useState } from "react"
  
 interface ModalProps{
     title: string,
     subtitle: string,
     trigger: ReactElement,
-    children: any
+    children: any,
+    className: string
 }
 
-export function Modal({title, subtitle, trigger, children}: ModalProps) {
-  return (
-    <Dialog>
+export function Modal({title, subtitle, trigger, children, className}: ModalProps) {
+  const [isOpen, setIsOpen] = useState(false)
+
+    return (
+    <Dialog onOpenChange={state => setTimeout(() => setIsOpen(state), 500)}>
       <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>
@@ -19,8 +22,8 @@ export function Modal({title, subtitle, trigger, children}: ModalProps) {
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{subtitle}</DialogDescription>
         </DialogHeader>
-        <div className="flex items-center space-x-2">
-          {children}
+        <div className={`flex items-center space-x-2 ${className}`}>
+          {isOpen && children}
         </div>
         {/* <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
