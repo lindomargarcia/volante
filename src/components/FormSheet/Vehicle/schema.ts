@@ -10,7 +10,7 @@ const defaultVehicleValues = {
 }
 
 const vehicleSchema = z.object({
-    plate: z.string().length(7),
+    plate: z.string().length(7).toUpperCase(),
     brand: z.string().min(1, {message: 'Campo obrigatório'}),
     model: z.string().min(1, {message: 'Campo obrigatório'}),
     year: z.string().or(z.literal("")),

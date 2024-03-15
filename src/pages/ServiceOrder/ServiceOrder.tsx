@@ -1,4 +1,4 @@
-import { MoreVertical, Save, Send } from "lucide-react";
+import { File, MoreVertical, Save, Send } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
@@ -16,6 +16,9 @@ import { toast } from "sonner";
 import { VehicleDetailCard, CustomerDetailCard } from "@/components/DetailCard/DetailCard";
 import StatusDropDown from "@/components/BadgeDropDown/BadgeDropDown";
 import { SO_STATUS_LIST } from "@/data/constants/utils";
+import { PDFViewer } from "@react-pdf/renderer";
+import { ServiceOrderPDF } from "@/components/PDF/ServiceOrderPDF";
+import { Modal } from "@/components/Modal/Modal";
 
 const ServiceOrderSchema = z.object({
   // customer: customerSchema
@@ -135,7 +138,14 @@ function ServiceOrderPage() {
         <div className="flex-1 flex flex-col">
           <ServiceOrderCard data={serviceOrder?.items || []} carServices={carServices || []} onAddItem={handleNewSOItem}/>
           <div className="flex mt-6 justify-end items-end gap-3">
-            <Button variant="outline"><Send size={18} className="mr-2"/>Enviar</Button>
+            <Modal 
+              trigger={<Button variant="outline"><File size={18} className="mr-2"/>PDF</Button>}
+              title='Orçamento'
+              subtitle='Envie ou imprima para seu cliente'>
+                <PDFViewer className="w-full min-h-[calc(100vh-200px)]">
+                  <ServiceOrderPDF data={serviceOrder}/>
+                </PDFViewer>
+            </Modal>
             <Button type="submit"><Save size={18} className="mr-2"/>Salvar</Button>
           </div>
         </div>
