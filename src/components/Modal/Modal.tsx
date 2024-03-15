@@ -6,14 +6,15 @@ interface ModalProps{
     subtitle: string,
     trigger: ReactElement,
     children: any,
-    className: string
+    className: string,
+    async?: boolean
 }
 
-export function Modal({title, subtitle, trigger, children, className}: ModalProps) {
+export function Modal({title, subtitle, trigger, children, className, async}: ModalProps) {
   const [isOpen, setIsOpen] = useState(false)
 
     return (
-    <Dialog onOpenChange={state => setTimeout(() => setIsOpen(state), 500)}>
+    <Dialog onOpenChange={state => setTimeout(() => setIsOpen(state), async ? 500 : 0)}>
       <DialogTrigger asChild>
         {trigger}
       </DialogTrigger>

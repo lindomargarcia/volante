@@ -142,7 +142,8 @@ function ServiceOrderPage() {
               trigger={<Button variant="outline"><File size={18} className="mr-2"/>PDF</Button>}
               title='Orçamento'
               subtitle='Envie ou imprima para seu cliente'
-              className="min-h-[calc(100vh-180px)]">
+              className="min-h-[calc(100vh-180px)]"
+              async={true}>
                 <PDFViewer className="w-full min-h-[calc(100vh-180px)]">
                   <ServiceOrderPDF data={serviceOrder}/>
                 </PDFViewer>
