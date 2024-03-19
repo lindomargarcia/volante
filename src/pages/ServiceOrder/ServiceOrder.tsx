@@ -9,7 +9,6 @@ import { getServiceOrderAPI } from "@/data/ServiceOrder";
 import ServiceOrderCard from "../../components/ServiceOrderCard/ServiceOrderCard";
 import { ServiceOrder, ServiceOrderItem } from "./types";
 import { getCarServicesAPI } from "@/data/CarServices";
-import { z } from "zod";
 import { CustomerSchema } from "@/components/FormSheet/Customer/schema";
 import { VehicleSchema } from "@/components/FormSheet/Vehicle/schema";
 import { toast } from "sonner";
@@ -20,12 +19,7 @@ import { PDFViewer } from "@react-pdf/renderer";
 import { ServiceOrderPDF } from "@/components/PDF/ServiceOrderPDF";
 import { Modal } from "@/components/Modal/Modal";
 
-const ServiceOrderSchema = z.object({
-  // customer: customerSchema
-})
-
 function ServiceOrderPage() {
-  const [show, setShow] = useState(false)
   const queryClient = useQueryClient()
   const [status, setStatus] = useState('pending')
   // const form = useForm({ resolver: zodResolver(ServiceOrderSchema), defaultValues: {
