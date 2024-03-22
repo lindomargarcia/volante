@@ -1,4 +1,4 @@
-import { useGLTF } from "@react-three/drei"
+import { MeshReflectorMaterial, useGLTF } from "@react-three/drei"
 import { ThreeEvent } from "@react-three/fiber"
 import { useRef, useState } from "react"
 import { Group, Object3DEventMap } from "three"
@@ -25,9 +25,8 @@ enum CAR_PARTS {
 type CarPartsObject = Partial<Record<CAR_PARTS, boolean>>;
 
 function CarModel() {
-    const { nodes, materials }: any = useGLTF('src/assets/3d/car.glb')
+    const { nodes }: any = useGLTF('src/assets/3d/car.glb')
     const [selectedCarParts, setSelectedCarParts] = useState<CarPartsObject>({})
-    let selectedMaterial = materials['tras']
     const carMesh = useRef<Group<Object3DEventMap> | null>(null)
 
     const handleOnSelectCarPart = (e:ThreeEvent<any>) => {
@@ -43,6 +42,10 @@ function CarModel() {
             return newSelectedCarParts;
         });
     }
+    
+    const getMaterial = (selected: boolean | undefined): any => {
+      return <MeshReflectorMaterial mirror={0} roughness={selected ? 0.01 : 1} color={selected ? '#FFF' : '#A1A1AA'}/>
+    }
 
     return (
     <group dispose={null} ref={carMesh}>
@@ -50,106 +53,120 @@ function CarModel() {
           <mesh
             name={CAR_PARTS.TUDO}
             geometry={nodes.Cube001.geometry}
-            material={materials.clay}
-          />
+          >{getMaterial(false)}</mesh>
 
           <mesh
             name={CAR_PARTS.CAPO}
             geometry={nodes.Cube001_1.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts.capo ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts.capo)
+          }</mesh>
           <mesh
             name={CAR_PARTS.FRENTE_CIMA}
             geometry={nodes.Cube001_2.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.FRENTE_CIMA] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.FRENTE_CIMA])
+          }</mesh>
           <mesh
             name={CAR_PARTS.FRENTE}
             geometry={nodes.Cube001_3.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.FRENTE] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.FRENTE])
+          }</mesh>
           <mesh
             name={CAR_PARTS.FRENTE_BAIXO}
             geometry={nodes.Cube001_4.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.FRENTE_BAIXO] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.FRENTE_BAIXO])
+          }</mesh>
           <mesh
             name={CAR_PARTS.PORTA_FRENTE_ESQ}
             geometry={nodes.Cube001_5.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.PORTA_FRENTE_ESQ] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.PORTA_FRENTE_ESQ])
+          }</mesh>
           <mesh
             name={CAR_PARTS.PORTA_TRAS_ESQ}
             geometry={nodes.Cube001_6.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.PORTA_TRAS_ESQ] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.PORTA_TRAS_ESQ])
+          }</mesh>
           <mesh
             name={CAR_PARTS.FRENTE_ESQ}
             geometry={nodes.Cube001_7.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.FRENTE_ESQ] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.FRENTE_ESQ])
+          }</mesh>
           <mesh
             name={CAR_PARTS.PORTA_FRENTE_DIR}
             geometry={nodes.Cube001_8.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.PORTA_FRENTE_DIR] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.PORTA_FRENTE_DIR])
+          }</mesh>
           <mesh
             name={CAR_PARTS.FRENTE_DIR}
             geometry={nodes.Cube001_9.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.FRENTE_DIR] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.FRENTE_DIR])
+          }</mesh>
           <mesh
             name={CAR_PARTS.PORTA_TRAS_DIR}
             geometry={nodes.Cube001_10.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.PORTA_TRAS_DIR] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.PORTA_TRAS_DIR])
+          }</mesh>
           <mesh
             name={CAR_PARTS.TETO}
             geometry={nodes.Cube001_11.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.TETO] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.TETO])
+          }</mesh>
           <mesh
             name={CAR_PARTS.TRAS}
             geometry={nodes.Cube001_12.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.TRAS] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.TRAS])
+          }</mesh>
           <mesh
             name={CAR_PARTS.PORTA_MALAS}
             geometry={nodes.Cube001_13.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.PORTA_MALAS] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.PORTA_MALAS])
+          }</mesh>
           <mesh
             name={CAR_PARTS.PARABRISA}
             geometry={nodes.Cube001_14.geometry}
-            // onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.PARABRISA] ? selectedMaterial : materials.clay}
-          />
+          >{getMaterial(false)}</mesh>
           <mesh
             name={CAR_PARTS.TRAS_DIR}
             geometry={nodes.Cube001_15.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.TRAS_DIR] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.TRAS_DIR])
+          }</mesh>
           <mesh
             name={CAR_PARTS.TRAS_ESQ}
             geometry={nodes.Cube001_16.geometry}
             onPointerDown ={(e) => handleOnSelectCarPart(e)}
-            material={selectedCarParts[CAR_PARTS.TRAS_ESQ] ? selectedMaterial : materials.clay}
-          />
+          >{
+            getMaterial(selectedCarParts[CAR_PARTS.TRAS_ESQ])
+          }</mesh>
+          
         </group>
+        
       </group>
       )
 }

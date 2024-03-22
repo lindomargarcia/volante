@@ -4,7 +4,7 @@ import CarModel from "./CarModel"
 
 function CarScene() {
   return (
-    <Canvas  resize={{scroll: false}} camera={{zoom: 50}} orthographic={true} className="rounded-md border bg-background" style={{width: 300, height: 300}}>
+    <Canvas frameloop="demand" resize={{scroll: false}} camera={{zoom: 50}} orthographic={true} className="" style={{width: 300, height: 200}}>
       <Environment preset="warehouse"/>
       <OrbitControls maxDistance={4} dampingFactor={0.05} enableZoom={false} enablePan={false}/>
       <CarModel/>
