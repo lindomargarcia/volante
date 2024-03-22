@@ -5,11 +5,12 @@ import { createBrowserRouter, Link, Outlet, RouterProvider } from "react-router-
 import Menu from "./components/Menu/Menu";
 import { ROUTER_PATHS } from "./data/routes/routes";
 import { Car, FilePlus, Hammer, Home, Settings2, User } from "lucide-react";
+import GaragePage from "./pages/Garage";
 
 const MENU_LINKS = [
   {
     path: ROUTER_PATHS.HOME,
-    element: <h1 className="h-full w-full align-text-middle text-zinc-400 text-center py-[33%]">home</h1>,
+    element: <GaragePage/>,
     label: 'Início',
     icon: <Home size={23}/>
   },

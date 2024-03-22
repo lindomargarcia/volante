@@ -18,6 +18,7 @@ import { SO_STATUS_LIST } from "@/data/constants/utils";
 import { PDFViewer } from "@react-pdf/renderer";
 import { ServiceOrderPDF } from "@/components/PDF/ServiceOrderPDF";
 import { Modal } from "@/components/Modal/Modal";
+import CarScene from "@/components/3D/CarScene";
 
 function ServiceOrderPage() {
   const queryClient = useQueryClient()
@@ -108,9 +109,10 @@ function ServiceOrderPage() {
       </header>
 
       <div className="flex-1 flex gap-10">
-        
         {/* Left side */}
         <div className="flex flex-col w-[300px] gap-4">
+          <h1 className="text-sm font-bold">Áreas danificadas</h1>
+          <CarScene/>
           <VehicleFormSheet 
             onSubmit={handleVehicleSubmit}
             onDelete={handleVehicleDelete}
