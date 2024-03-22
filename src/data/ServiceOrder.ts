@@ -1,11 +1,11 @@
 import { CustomerSchema, defaultCustomerValues } from "@/components/FormSheet/Customer/schema"
 import { VehicleSchema, defaultVehicleValues } from "@/components/FormSheet/Vehicle/schema"
-import { ServiceOrder, ServiceOrderItem } from "@/pages/ServiceOrder/types"
+import { STATUS_SERVICE_ORDER, ServiceOrder, ServiceOrderItem } from "@/pages/ServiceOrder/types"
 
 export async function getServiceOrderAPI(): Promise<ServiceOrder>{
     return {
         id: crypto.randomUUID(),
-        status: "pending",
+        status: STATUS_SERVICE_ORDER.PENDING,
         created_at: new Date().toJSON(),
         last_saved_at: new Date().toJSON(),
         customer: defaultCustomerValues,

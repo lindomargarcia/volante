@@ -1,6 +1,6 @@
 import CarScene from "@/components/3D/CarScene"
 
-function GaragePage(props: any) {
+function GaragePage() {
 
   return (
     <CarScene/>

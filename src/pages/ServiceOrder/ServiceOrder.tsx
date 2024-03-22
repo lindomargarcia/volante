@@ -1,4 +1,4 @@
-import { File, MoreVertical, Save, Send } from "lucide-react";
+import { File, MoreVertical, Save } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
