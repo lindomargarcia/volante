@@ -54,7 +54,7 @@ const ServiceOrderCard = ({data, carServices, onAddItem}: ServiceOrderCardProps)
                     </FormInput>
                     <MoneyInput form={form} label="Valor" name="value" placeholder="R$ 0,00" className="w-[100px]"/>
                     <MoneyInput form={form} label="Desconto" name="discount" placeholder="R$ 0,00" className="w-[100px]"/>
-                    <Button type="submit">Adicionar</Button>
+                    <Button type="submit">+</Button>
                 </form>
 
                 <ServiceOrderList data={data}/>

@@ -110,10 +110,10 @@ function ServiceOrderPage() {
 
       <div className="flex-1 flex gap-10">
         {/* Left side */}
-        <div className="flex flex-col w-[300px] gap-4">
+        <div className="flex flex-1 flex-col gap-4">
           <h1 className="text-sm font-bold">Áreas danificadas</h1>
           <CarScene/>
-          <VehicleFormSheet 
+          {/* <VehicleFormSheet 
             onSubmit={handleVehicleSubmit}
             onDelete={handleVehicleDelete}
             isPending={false}
@@ -127,11 +127,11 @@ function ServiceOrderPage() {
             data={serviceOrder?.customer}
             trigger={<CustomerDetailCard customer={serviceOrder?.customer}/>}
           />
-          <FileSelect label="Imagens"/>
+          <FileSelect label="Imagens"/> */}
         </div>
 
-        {/* center Side */}
-        <div className="flex-1 flex flex-col">
+        {/* right Side */}
+        <div className="flex flex-col">
           <ServiceOrderCard data={serviceOrder?.items || []} carServices={carServices || []} onAddItem={handleNewSOItem}/>
           <div className="flex mt-6 justify-end items-end gap-3">
             <Modal 
