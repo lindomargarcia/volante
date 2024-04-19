@@ -1,25 +1,45 @@
 import { MeshReflectorMaterial, useGLTF } from "@react-three/drei"
 import { ThreeEvent } from "@react-three/fiber"
 import { useState } from "react"
-import { Group, Object3DEventMap } from "three"
+import { useControls } from "leva"
 
 enum CAR_PARTS {
-    TUDO = "Cube001",
-    CAPO = "capo",
-    FRENTE_CIMA = "frente_cima",
-    PARACHOQUE_DIANTEIRO = "frente",
-    PORTA_DIANTEIRO_ESQUERDO = "porta_frente_esq",
-    PORTA_TRASEIRO_ESQUERDO = "porta_tras_esq",
-    PARALAMA_DIANTEIRO_ESQUERDO = "frente_esq",
-    PORTA_DIANTEIRA_DIREITO = "porta_frente_dir",
-    PARALAMA_DIANTEIRO_DIREITO = "frente_dir",
-    PORTA_TRASEIRO_DIREITO = "porta_tras_dir",
-    TETO = "teto",
-    PARACHOQUE_TRASEIRO = "tras",
-    TAMPA_TRASEIRA = "porta_malas",
-    PARABRISA = "parabrisa",
-    LATERAL_TRASEIRO_DIREITO = "tras_dir",
-    LATERAL_TRASEIRO_ESQUERDO = "tras_esq",
+  // TUDO = "Cube001"
+  ALL = "Cube001",
+  // CAPO = "capo"
+  HOOD = "hood",
+  // FRENTE_CIMA = "frente_cima"
+  FRONT_TOP = "front_top",
+  // PARACHOQUE_DIANTEIRO = "frente"
+  FRONT_BUMPER = "front",
+  // PORTA_DIANTEIRO_ESQUERDO = "porta_frente_esq"
+  LEFT_FRONT_DOOR = "front_left_door",
+  // PORTA_TRASEIRO_ESQUERDO = "porta_tras_esq"
+  LEFT_REAR_DOOR = "rear_left_door",
+  // PARALAMA_DIANTEIRO_ESQUERDO = "frente_esq"
+  LEFT_FRONT_FENDER = "front_left_fender",
+  // PORTA_DIANTEIRA_DIREITO = "porta_frente_dir"
+  RIGHT_FRONT_DOOR = "front_right_door",
+  // PARALAMA_DIANTEIRO_DIREITO = "frente_dir"
+  RIGHT_FRONT_FENDER = "front_right_fender",
+  // PORTA_TRASEIRO_DIREITO = "porta_tras_dir"
+  RIGHT_REAR_DOOR = "rear_right_door",
+  // TETO = "teto"
+  ROOF = "roof",
+  // PARACHOQUE_TRASEIRO = "tras"
+  REAR_BUMPER = "rear",
+  // TAMPA_TRASEIRA = "porta_malas"
+  REAR_DOOR = "trunk",
+  // PARABRISA = "parabrisa"
+  WINDSHIELD = "windshield",
+  // LATERAL_TRASEIRO_DIREITO = "tras_dir"
+  RIGHT_REAR_SIDE = "rear_right_side",
+  // LATERAL_TRASEIRO_ESQUERDO = "tras_esq"
+  LEFT_REAR_SIDE = "rear_left_side",
+  // RETROVISOR_ESQUERDO = "retrovisor_esq"
+  LEFT_MIRROR = "left_mirror",
+  // RETROVISOR_DIREITO = "retrovisor_dir"
+  RIGHT_MIRROR = "right_mirror",
 }
 
 type CarPartsObject = Partial<Record<CAR_PARTS, boolean>>;
@@ -27,6 +47,7 @@ type CarPartsObject = Partial<Record<CAR_PARTS, boolean>>;
 function CarModel() {
     const { nodes,materials }: any = useGLTF('src/assets/3d/carMesh.glb')
     const [selectedCarParts, setSelectedCarParts] = useState<CarPartsObject>({})
+    const materialControls = useControls({color: '#FF0000'})
 
     const handleOnSelectCarPart = (e:ThreeEvent<any>) => {
         e.stopPropagation()
@@ -43,117 +64,99 @@ function CarModel() {
     }
     
     const getMaterial = (selected: boolean | undefined): any => {
-      return <MeshReflectorMaterial mirror={0} roughness={selected ? 0.01 : 1} color={selected ? '#FF0000' : '#FFF'}/>
+      return <MeshReflectorMaterial mirror={0} roughness={selected ? 0.02 : 1} color={selected ? materialControls.color : '#FFFFFF'}/>
     }
 
     return (
       <group dispose={null}>
       <group position={[0, 0, -0.412]}>
-        <mesh
-          castShadow
-          receiveShadow
+        <mesh          
           geometry={nodes.Cube001_1.geometry}
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
           material={materials.raw}
         />
         <mesh
-          name={CAR_PARTS.PARACHOQUE_TRAS}
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.REAR_BUMPER}          
           geometry={nodes.Cube001_2.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.tras)}</mesh>
+        >{getMaterial(selectedCarParts.rear)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.REAR_DOOR}          
           geometry={nodes.Cube001_3.geometry}
-          material={materials['tampa-traseira']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.trunk)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.LEFT_REAR_SIDE}          
           geometry={nodes.Cube001_4.geometry}
-          material={materials['lateral-esq']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.rear_left_side)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.RIGHT_REAR_SIDE}          
           geometry={nodes.Cube001_5.geometry}
-          material={materials['lateral-dir']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.rear_right_side)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.RIGHT_REAR_DOOR}          
           geometry={nodes.Cube001_6.geometry}
-          material={materials['porta-tras-dir']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.rear_right_door)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.LEFT_REAR_DOOR}          
           geometry={nodes.Cube001_7.geometry}
-          material={materials['porta-tras-esq']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.rear_left_door)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+        name={CAR_PARTS.RIGHT_FRONT_DOOR}          
           geometry={nodes.Cube001_8.geometry}
-          material={materials['porta-dian-dir']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.front_right_door)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.LEFT_FRONT_DOOR}          
           geometry={nodes.Cube001_9.geometry}
-          material={materials['porta-dian-esq']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.front_left_door)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.RIGHT_FRONT_FENDER}          
           geometry={nodes.Cube001_10.geometry}
-          material={materials['paralama-dir']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.front_right_fender)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.LEFT_FRONT_FENDER}          
           geometry={nodes.Cube001_11.geometry}
-          material={materials['paralama-esq']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.front_left_fender)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.ROOF}          
           geometry={nodes.Cube001_12.geometry}
-          material={materials.teto}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.roof)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.HOOD}          
           geometry={nodes.Cube001_13.geometry}
-          material={materials.capo}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.hood)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.FRONT_BUMPER}          
           geometry={nodes.Cube001_14.geometry}
-          material={materials['parachoque-dian']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.front)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.WINDSHIELD}          
           geometry={nodes.Cube001_15.geometry}
-          material={materials.parabrisa}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.windshield)}</mesh>
       </group>
       <group position={[-0.672, 0.306, -0.657]} rotation={[0, 0, -0.379]} scale={0.697}>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.RIGHT_MIRROR}          
           geometry={nodes.Cube_1.geometry}
-          material={materials['retrovisor-dir']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.right_mirror)}</mesh>
         <mesh
-          castShadow
-          receiveShadow
+          name={CAR_PARTS.LEFT_MIRROR}          
           geometry={nodes.Cube_2.geometry}
-          material={materials['retrovisor-esq']}
-        />
+          onPointerDown ={(e) => handleOnSelectCarPart(e)}
+        >{getMaterial(selectedCarParts.left_mirror)}</mesh>
       </group>
     </group>
       )
