@@ -18,7 +18,7 @@ import { SO_STATUS_LIST } from "@/data/constants/utils";
 import { PDFViewer } from "@react-pdf/renderer";
 import { ServiceOrderPDF } from "@/components/PDF/ServiceOrderPDF";
 import { Modal } from "@/components/Modal/Modal";
-import CarScene from "@/components/3D/CarScene";
+import Garage from "../Garage";
 
 function ServiceOrderPage() {
   const queryClient = useQueryClient()
@@ -112,8 +112,8 @@ function ServiceOrderPage() {
         {/* Left side */}
         <div className="flex flex-1 flex-col gap-4">
           <h1 className="text-sm font-bold">Áreas danificadas</h1>
-          <CarScene/>
-          {/* <VehicleFormSheet 
+          <Garage/>
+          <VehicleFormSheet 
             onSubmit={handleVehicleSubmit}
             onDelete={handleVehicleDelete}
             isPending={false}
@@ -127,7 +127,7 @@ function ServiceOrderPage() {
             data={serviceOrder?.customer}
             trigger={<CustomerDetailCard customer={serviceOrder?.customer}/>}
           />
-          <FileSelect label="Imagens"/> */}
+          <FileSelect label="Imagens"/>
         </div>
 
         {/* right Side */}

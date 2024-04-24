@@ -1,27 +1,25 @@
 import { MeshReflectorMaterial, useGLTF } from "@react-three/drei"
 import { ThreeEvent } from "@react-three/fiber"
 import { useEffect, useRef, useState } from "react"
-import { useControls } from "leva"
 
 enum CAR_PARTS {
-  ALL = "Cube001",// TUDO = "Cube001"
-  HOOD = "hood",// CAPO = "capo"
-  FRONT_TOP = "front_top",// FRENTE_CIMA = "frente_cima"
-  FRONT_BUMPER = "front",// PARACHOQUE_DIANTEIRO = "frente"
-  LEFT_FRONT_DOOR = "front_left_door",// PORTA_DIANTEIRO_ESQUERDO = "porta_frente_esq"
-  LEFT_REAR_DOOR = "rear_left_door",// PORTA_TRASEIRO_ESQUERDO = "porta_tras_esq"
-  LEFT_FRONT_FENDER = "front_left_fender",// PARALAMA_DIANTEIRO_ESQUERDO = "frente_esq"
-  RIGHT_FRONT_DOOR = "front_right_door",// PORTA_DIANTEIRA_DIREITO = "porta_frente_dir"
-  RIGHT_FRONT_FENDER = "front_right_fender",// PARALAMA_DIANTEIRO_DIREITO = "frente_dir"
-  RIGHT_REAR_DOOR = "rear_right_door",// PORTA_TRASEIRO_DIREITO = "porta_tras_dir"
-  ROOF = "roof",// TETO = "teto"
-  REAR_BUMPER = "rear",// PARACHOQUE_TRASEIRO = "tras"
-  REAR_DOOR = "trunk",// TAMPA_TRASEIRA = "porta_malas"
-  WINDSHIELD = "windshield",// PARABRISA = "parabrisa"
-  RIGHT_REAR_SIDE = "rear_right_side",// LATERAL_TRASEIRO_DIREITO = "tras_dir"
-  LEFT_REAR_SIDE = "rear_left_side",// LATERAL_TRASEIRO_ESQUERDO = "tras_esq"
-  LEFT_MIRROR = "left_mirror",// RETROVISOR_ESQUERDO = "retrovisor_esq"
-  RIGHT_MIRROR = "right_mirror",// RETROVISOR_DIREITO = "retrovisor_dir"
+  ALL = "Cube001",
+  HOOD = "hood",
+  FRONT_BUMPER = "front",
+  LEFT_FRONT_DOOR = "front_left_door",
+  LEFT_REAR_DOOR = "rear_left_door",
+  LEFT_FRONT_FENDER = "front_left_fender",
+  RIGHT_FRONT_DOOR = "front_right_door",
+  RIGHT_FRONT_FENDER = "front_right_fender",
+  RIGHT_REAR_DOOR = "rear_right_door",
+  ROOF = "roof",
+  REAR = "rear",
+  TRUNK = "trunk",
+  WINDSHIELD = "windshield",
+  RIGHT_REAR_SIDE = "right_rear_side",
+  LEFT_REAR_SIDE = "left_rear_side",
+  LEFT_MIRROR = "left_mirror",
+  RIGHT_MIRROR = "right_mirror",
 }
 
 type CarPartsObject = Partial<Record<CAR_PARTS, boolean>>;
@@ -54,7 +52,7 @@ function CarModel() {
       //brake car
       // if(selected) return <MeshDistortMaterial speed={0} factor={13} color={'#636f76'} metalness={0} roughness={1} />
       //paint
-      return <MeshReflectorMaterial mirror={0} roughness={selected ? 0.02 : 1} color={selected ? '#FF0000' : '#FFFFFF'}/>
+      return <MeshReflectorMaterial mirror={0} roughness={selected ? 0.02 : 1} metalness={0.2} color={selected ? '#FF0000' : '#FFFFFF'}/>
     }
 
     return (
@@ -66,12 +64,12 @@ function CarModel() {
           material={materials.raw}
         />
         <mesh
-          name={CAR_PARTS.REAR_BUMPER}          
+          name={CAR_PARTS.REAR}          
           geometry={nodes.Cube001_2.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
         >{getMaterial(selectedCarParts.rear)}</mesh>
         <mesh
-          name={CAR_PARTS.REAR_DOOR}          
+          name={CAR_PARTS.TRUNK}          
           geometry={nodes.Cube001_3.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
         >{getMaterial(selectedCarParts.trunk)}</mesh>
@@ -79,12 +77,12 @@ function CarModel() {
           name={CAR_PARTS.LEFT_REAR_SIDE}          
           geometry={nodes.Cube001_4.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.rear_left_side)}</mesh>
+        >{getMaterial(selectedCarParts.left_rear_side)}</mesh>
         <mesh
           name={CAR_PARTS.RIGHT_REAR_SIDE}          
           geometry={nodes.Cube001_5.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.rear_right_side)}</mesh>
+        >{getMaterial(selectedCarParts.right_rear_side)}</mesh>
         <mesh
           name={CAR_PARTS.RIGHT_REAR_DOOR}          
           geometry={nodes.Cube001_6.geometry}

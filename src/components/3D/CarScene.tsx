@@ -5,7 +5,7 @@ import { Suspense } from "react"
 
 function CarScene() {
   return (
-    <Canvas frameloop="demand" resize={{scroll: false}} camera={{zoom: 140}} orthographic={true} style={{width: '100%', height: '100%'}}>
+    <Canvas frameloop="demand" resize={{scroll: false}} camera={{zoom: 130}} orthographic={true} style={{width: '100%', height: '80%'}}>
       {/* <PresentationControls   enabled={true}
           global={true}
           cursor={true}
@@ -20,7 +20,7 @@ function CarScene() {
       </PresentationControls> */}
       <Suspense fallback={null}>
         <Environment preset="warehouse"/>
-        <OrbitControls zoomToCursor={true} maxZoom={165} minZoom={140} maxPolarAngle={Math.PI/2} rotation={[2,0,0]} dampingFactor={0.05}/>
+        <OrbitControls zoomToCursor={true} maxZoom={180} minZoom={130} maxPolarAngle={Math.PI/2} rotation={[2.5,0,0]} dampingFactor={0.08}/>
         <CarModel/>
       </Suspense>
     </Canvas>
