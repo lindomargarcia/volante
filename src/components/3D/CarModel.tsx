@@ -67,84 +67,84 @@ function CarModel() {
           name={CAR_PARTS.REAR}          
           geometry={nodes.Cube001_2.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.rear)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.REAR])}</mesh>
         <mesh
           name={CAR_PARTS.TRUNK}          
           geometry={nodes.Cube001_3.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.trunk)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.TRUNK])}</mesh>
         <mesh
           name={CAR_PARTS.LEFT_REAR_SIDE}          
           geometry={nodes.Cube001_4.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.left_rear_side)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.LEFT_REAR_SIDE])}</mesh>
         <mesh
           name={CAR_PARTS.RIGHT_REAR_SIDE}          
           geometry={nodes.Cube001_5.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.right_rear_side)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.RIGHT_REAR_SIDE])}</mesh>
         <mesh
           name={CAR_PARTS.RIGHT_REAR_DOOR}          
           geometry={nodes.Cube001_6.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.rear_right_door)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.RIGHT_REAR_DOOR])}</mesh>
         <mesh
           name={CAR_PARTS.LEFT_REAR_DOOR}          
           geometry={nodes.Cube001_7.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.rear_left_door)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.LEFT_REAR_DOOR])}</mesh>
         <mesh
         name={CAR_PARTS.RIGHT_FRONT_DOOR}          
           geometry={nodes.Cube001_8.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.front_right_door)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.RIGHT_FRONT_DOOR])}</mesh>
         <mesh
           name={CAR_PARTS.LEFT_FRONT_DOOR}          
           geometry={nodes.Cube001_9.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.front_left_door)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.LEFT_FRONT_DOOR])}</mesh>
         <mesh
           name={CAR_PARTS.RIGHT_FRONT_FENDER}          
           geometry={nodes.Cube001_10.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.front_right_fender)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.RIGHT_FRONT_FENDER])}</mesh>
         <mesh
           name={CAR_PARTS.LEFT_FRONT_FENDER}          
           geometry={nodes.Cube001_11.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.front_left_fender)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.LEFT_FRONT_FENDER])}</mesh>
         <mesh
           name={CAR_PARTS.ROOF}          
           geometry={nodes.Cube001_12.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.roof)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.ROOF])}</mesh>
         <mesh
           name={CAR_PARTS.HOOD}          
           geometry={nodes.Cube001_13.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.hood)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.HOOD])}</mesh>
         <mesh
           name={CAR_PARTS.FRONT_BUMPER}          
           geometry={nodes.Cube001_14.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.front)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.FRONT_BUMPER])}</mesh>
         <mesh
           name={CAR_PARTS.WINDSHIELD}          
           geometry={nodes.Cube001_15.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.windshield)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.WINDSHIELD])}</mesh>
       </group>
       <group position={[-0.672, 0.306, -0.657]} rotation={[0, 0, -0.379]} scale={0.7}>
         <mesh
           name={CAR_PARTS.RIGHT_MIRROR}          
           geometry={nodes.Cube_1.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.right_mirror)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.RIGHT_MIRROR])}</mesh>
         <mesh
           name={CAR_PARTS.LEFT_MIRROR}          
           geometry={nodes.Cube_2.geometry}
           onPointerDown ={(e) => handleOnSelectCarPart(e)}
-        >{getMaterial(selectedCarParts.left_mirror)}</mesh>
+        >{getMaterial(selectedCarParts[CAR_PARTS.LEFT_MIRROR])}</mesh>
       </group>
     </group>
       )
