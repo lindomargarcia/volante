@@ -27,66 +27,70 @@ function CarServiceSelector() {
 
   const [services, setServices] = useState({
     [CAR_ACTIONS.DAMAGE]: [],
-        painting:{},
+        painting:{
+            type: 'tricolt',
+            car_parts: []
+        },
         polishing: {
             type: "basic",
             car_parts: []
         }
     })
 
-    const DamageSeverityColor: any = {
-        [SEVERITY_STATUS.CRITICAL]: "#f00",
-        [SEVERITY_STATUS.SEVERE]: "#ff0",
-        [SEVERITY_STATUS.MODERATE]: "#f0f",
-        [SEVERITY_STATUS.MINOR]: "#00f",
-        [SEVERITY_STATUS.NEGLIGIBLE]: "#0f0",
-    }
+    const getSeparatedColorsByDamageSeverity = (damageList: IDamage[]) => {
+        if(damageList.length === 0)
+            return []
 
-    const updateSeparatedColors = () => {
-        if(services[CAR_ACTIONS.DAMAGE].length > 0){
-            setSeparetedColor(services[CAR_ACTIONS.DAMAGE].map((damage) => {
-               return {value: damage.car_parts, color: DamageSeverityColor[damage.severity]}
-            }))
-        }
+        const SEVERITY_COLORS = {
+            [SEVERITY_STATUS.CRITICAL]: "#FF0000",  // Vermelho
+            [SEVERITY_STATUS.SEVERE]: "#FFA500",    // Laranja
+            [SEVERITY_STATUS.MODERATE]: "#FFFF00",  // Amarelo
+            [SEVERITY_STATUS.MINOR]: "#0000FF",     // Azul
+            [SEVERITY_STATUS.NEGLIGIBLE]: "#00FF00" // Verde
+        };
+
+        return damageList.map((damage) => ({value: damage.car_parts, color: SEVERITY_COLORS[damage.severity]}))
     }
 
   const handleOnActionChange = (action: ICarAction) => {
     if(!action.value) return;
-    console.log(action)
-    // return 
     setAction(action)
     switch(action.value){
       case CAR_ACTIONS.DAMAGE:{
         setCarMaterial(CarMaterialsTypes.RAW)
         // setActiveCarParts([])
+        setSeparetedColor(getSeparatedColorsByDamageSeverity(services[CAR_ACTIONS.DAMAGE]))
         break
       }
       case CAR_ACTIONS.PAINT: {
         setCarMaterial(CarMaterialsTypes.PAINT)
         setActiveCarParts(services.painting?.car_parts)
+        setSeparetedColor([])
         break
       }
       case CAR_ACTIONS.POLISH: {
         setCarMaterial(CarMaterialsTypes.POLISHING)
         setActiveCarParts(services.polishing?.car_parts)
+        setSeparetedColor([])
         break
       }
     }
   }
 
   const onCarPartsSelectionChange = (lastSelected: CAR_PARTS, selectedList: CAR_PARTS[]) => {
-    let newServices: any = {...services}
+    let updatedServices: any = {...services}
 
     if(action.value === CAR_ACTIONS.DAMAGE){        
-        newServices[CAR_ACTIONS.DAMAGE] = getNewDamageList(services[CAR_ACTIONS.DAMAGE], lastSelected, (action.option as SEVERITY_STATUS || SEVERITY_STATUS.MODERATE));
-        updateSeparatedColors()
-        console.log(newServices)
-        // console.log('valor:', newServices[CAR_ACTIONS.DAMAGE].map((damage: IDamage) => damage.car_parts))
+        updatedServices[CAR_ACTIONS.DAMAGE] = getNewDamageList(services[CAR_ACTIONS.DAMAGE], lastSelected, (action.option as SEVERITY_STATUS || SEVERITY_STATUS.MODERATE));
+        setSeparetedColor(getSeparatedColorsByDamageSeverity(updatedServices[CAR_ACTIONS.DAMAGE]))
+        setActiveCarParts(concatDamagedCarParts(updatedServices[CAR_ACTIONS.DAMAGE]))
     }else{
-        newServices[action.value] = {...newServices[action.value], car_parts: selectedList}
+        updatedServices[action.value] = {...updatedServices[action.value], car_parts: selectedList}
     }
-    setServices(newServices)
+    setServices(updatedServices)
   }
+
+  const concatDamagedCarParts = (damageList: IDamage[]) => damageList.reduce((acc: CAR_PARTS[], item: IDamage) => acc.concat(item.car_parts), [])
 
     const getNewDamageList = (damageList: IDamage[], selectedCarPart: CAR_PARTS, severity: SEVERITY_STATUS) => {
         let isNewSeverity = true
