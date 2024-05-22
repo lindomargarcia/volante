@@ -50,3 +50,19 @@ export enum STATUS_SERVICE_ORDER {
     CANCELLED = "cancelled",
     REJECTED = "rejected"
 }
+
+export enum SEVERITY_STATUS {
+    NEGLIGIBLE = "ignorar",
+    MINOR = 'leve',
+    MODERATE="moderado",
+    SEVERE = "grave",
+    CRITICAL = "crítico",
+    // TOTALED = "Perda Total"
+}
+
+export enum CAR_ACTIONS {
+    DAMAGE = "damage",
+    PAINT = "painting",
+    POLISH = "polishing",
+    FIX = "fixing"
+}

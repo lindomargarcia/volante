@@ -18,7 +18,7 @@ import { SO_STATUS_LIST } from "@/data/constants/utils";
 import { PDFViewer } from "@react-pdf/renderer";
 import { ServiceOrderPDF } from "@/components/PDF/ServiceOrderPDF";
 import { Modal } from "@/components/Modal/Modal";
-import Garage from "../Garage";
+import CarServiceSelector from "@/components/CarServiceSelector";
 
 function ServiceOrderPage() {
   const queryClient = useQueryClient()
@@ -111,8 +111,8 @@ function ServiceOrderPage() {
       <div className="flex-1 flex gap-10">
         {/* Left side */}
         <div className="flex flex-1 flex-col gap-4">
-          <h1 className="text-sm font-bold">Áreas danificadas</h1>
-          <Garage/>
+          {/* <h1 className="text-sm font-bold">Áreas danificadas</h1> */}
+          <CarServiceSelector/>
           <VehicleFormSheet 
             onSubmit={handleVehicleSubmit}
             onDelete={handleVehicleDelete}
