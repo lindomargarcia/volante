@@ -8,6 +8,7 @@ import { CAR_PARTS, CarMaterialsTypes } from "../Car3D/types"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Command, CommandItem, CommandList } from "../ui/command"
 import { CAR_ACTIONS, SEVERITY_STATUS } from "@/pages/ServiceOrder/types"
+import SprayGun from "@/assets/svg/spray_gun"
 
 interface ICarAction {
     value: CAR_ACTIONS,
@@ -146,7 +147,7 @@ interface IProps {
 
 export const CarSelectorActions = ({onChange, value}: IProps) => {
     return (
-        <ToggleGroup className="gap-8" type="single" value={value.value} onValueChange={(e:CAR_ACTIONS) => onChange({value: e})}>
+        <ToggleGroup size={"lg"} className="gap-8" type="single" value={value.value} onValueChange={(e:CAR_ACTIONS) => onChange({value: e})}>
             <Popover>
                 <ToggleGroupItem value="damage" className="p-0">
                     <PopoverTrigger asChild={true} className=" appearance-none px-3 a py-1">
@@ -164,7 +165,7 @@ export const CarSelectorActions = ({onChange, value}: IProps) => {
             <Popover>
                 <ToggleGroupItem value="painting" className="p-0">
                     <PopoverTrigger asChild={true} className=" appearance-none px-3 a py-1">
-                        <div><Paintbrush/></div>
+                        <div><SprayGun/></div>
                     </PopoverTrigger>
                 </ToggleGroupItem>
                 <PopoverContent align="center" side="top" className="p-2 mb-2 w-[120px]">
