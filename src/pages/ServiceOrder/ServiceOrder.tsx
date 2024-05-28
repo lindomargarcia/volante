@@ -18,7 +18,7 @@ import { SO_STATUS_LIST } from "@/data/constants/utils";
 import { PDFViewer } from "@react-pdf/renderer";
 import { ServiceOrderPDF } from "@/components/PDF/ServiceOrderPDF";
 import { Modal } from "@/components/Modal/Modal";
-import CarServiceSelector from "@/components/CarServiceSelector";
+import CarServiceSelector from "@/components/CarPartsSelector";
 
 function ServiceOrderPage() {
   const queryClient = useQueryClient()

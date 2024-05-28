@@ -38,3 +38,9 @@ const CAR_MATERIALS_SETTINGS: Record<CarMaterialsTypes, MaterialSetting> = {
 }
 
 export {CAR_PARTS, CAR_MATERIALS_SETTINGS, CarMaterialsTypes}
+
+export interface ISeparatedColors {
+    value: CAR_PARTS[],
+    color: string
+  }
+  

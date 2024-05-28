@@ -1,7 +1,7 @@
 import { useGLTF } from "@react-three/drei"
 import { ThreeEvent } from "@react-three/fiber"
 import { useEffect, useRef, useState } from "react"
-import { CAR_PARTS, CAR_MATERIALS_SETTINGS, CarMaterialsTypes } from "./types";
+import { CAR_PARTS, CAR_MATERIALS_SETTINGS, CarMaterialsTypes, ISeparatedColors } from "./types";
 
 interface IProps {
   value?: CAR_PARTS[]
@@ -12,12 +12,7 @@ interface IProps {
   onChange?: (value: CAR_PARTS, selectedList: CAR_PARTS[]) => void
 }
 
-interface ISeparatedColors {
-  value: CAR_PARTS[],
-  color: string
-}
-
-function CarSelector({value = [], material = CarMaterialsTypes.PAINT, baseColor = '#FFF', carColor, onChange = () => {}, separatedColors}: IProps) {
+function CarMesh({value = [], material = CarMaterialsTypes.PAINT, baseColor = '#FFF', carColor, onChange = () => {}, separatedColors}: IProps) {
     const { nodes }: any = useGLTF('src/assets/3d/carMesh.glb')
     const [selected, setSelectedList] = useState<CAR_PARTS[]>([])
     const carRef = useRef<any>()
@@ -49,16 +44,14 @@ function CarSelector({value = [], material = CarMaterialsTypes.PAINT, baseColor 
         return getDefaultMaterial()
     
       const materialSettings = CAR_MATERIALS_SETTINGS[material]
-      if(!separatedColors || separatedColors.length === 0){
+      if(!separatedColors || separatedColors.length === 0)
         return <meshStandardMaterial {...materialSettings} color={materialSettings.color || carColor} fog={false}/>
-      }
+
       let colorParams = separatedColors.find(separatedColor => separatedColor.value.includes(carPartName))
       return <meshStandardMaterial {...materialSettings} color={colorParams?.color || carColor} fog={false}/>
     }
     
-    const getDefaultMaterial = () => {
-      return <meshStandardMaterial {...CAR_MATERIALS_SETTINGS.raw} color={baseColor} fog={false}/>
-    }
+    const getDefaultMaterial = () => <meshStandardMaterial {...CAR_MATERIALS_SETTINGS.raw} color={baseColor} fog={false}/>
 
     return (
       <group dispose={null} ref={carRef}>
@@ -155,5 +148,5 @@ function CarSelector({value = [], material = CarMaterialsTypes.PAINT, baseColor 
       )
 }
 
-export default CarSelector
+export default CarMesh
 useGLTF.preload('src/assets/3d/car.glb')
