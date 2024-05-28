@@ -10,23 +10,25 @@ export enum SEVERITY_STATUS {
 }
 
 export const SEVERITY_COLORS: Record<SEVERITY_STATUS, string> = {
-  [SEVERITY_STATUS.CRITICAL]: "#ED553B", // Vermelho
-  [SEVERITY_STATUS.SEVERE]: "#F6952F", // Laranja
-  [SEVERITY_STATUS.MODERATE]: "#FFB800", // Amarelo
-  [SEVERITY_STATUS.MINOR]: "#029cdf", // Azul
-  [SEVERITY_STATUS.NEGLIGIBLE]: "#9cdf02", // Verde
+  [SEVERITY_STATUS.CRITICAL]: "#c92d12", // Vermelho 1 
+  [SEVERITY_STATUS.SEVERE]: "#eb4124", // Vermelho 2
+  [SEVERITY_STATUS.MODERATE]: "#ef6952", // Laranja
+  [SEVERITY_STATUS.MINOR]: "#FFB800", // Amarelo
+  [SEVERITY_STATUS.NEGLIGIBLE]: "#029cdf", // Azul
+  // [SEVERITY_STATUS.NEGLIGIBLE]: "#9cdf02", // Verde
 };
 
 export enum CAR_ACTIONS {
   DAMAGE = "damage",
-  PAINT = "painting",
-  POLISH = "polishing",
+  PAINT = "paint",
+  POLISH = "polish",
   FIX = "fixing",
+  RECOVER = "recover",
 }
 
 export interface ICarAction {
   value: CAR_ACTIONS;
-  option?: CAR_ACTIONS | SEVERITY_STATUS;
+  option?: string | SEVERITY_STATUS;
 }
 
 export interface IDamage {
@@ -36,12 +38,11 @@ export interface IDamage {
 
 export const DEFAULT_SELECTION = {
   [CAR_ACTIONS.DAMAGE]: [],
-  painting: {
+  [CAR_ACTIONS.PAINT]: {
     type: "tricolt",
     car_parts: [],
   },
-  polishing: {
-    type: "basic",
+  [CAR_ACTIONS.RECOVER]: {
     car_parts: [],
   },
 };

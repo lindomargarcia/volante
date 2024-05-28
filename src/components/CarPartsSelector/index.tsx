@@ -3,72 +3,60 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense, useState } from "react";
 import CarMesh from "../CarMesh";
 import { CAR_PARTS, CarMaterialsTypes, ISeparatedColors } from "../CarMesh/types";
-import {CAR_ACTIONS,DEFAULT_SELECTION,ICarAction,IDamage,SEVERITY_COLORS,SEVERITY_STATUS} from "./types";
+import {CAR_ACTIONS,DEFAULT_SELECTION,ICarAction,SEVERITY_STATUS} from "./types";
 import CarActionToggle from "../CarActionToggle";
+import { getDamageList, getSeparatedColorsByDamageSeverity, reduceDamagedCarParts } from "./logic";
 
 
 function CarServiceSelector() {
-  const [action, setAction] = useState<ICarAction>({value: CAR_ACTIONS.DAMAGE,option: SEVERITY_STATUS.CRITICAL});
+  const [action, setAction] = useState<ICarAction>({value: CAR_ACTIONS.DAMAGE, option: SEVERITY_STATUS.CRITICAL});
   const [carMaterial, setCarMaterial] = useState(CarMaterialsTypes.RAW);
   const [activeCarParts, setActiveCarParts] = useState<CAR_PARTS[]>([]);
   const [separatedColor, setSeparetedColor] = useState<ISeparatedColors[]>([]);
-
   const [services, setServices] = useState(DEFAULT_SELECTION);
 
-  const getSeparatedColorsByDamageSeverity = (damageList: IDamage[]): ISeparatedColors[] =>
-    damageList.length === 0
-      ? []
-      : damageList.map((damage) => ({
-          value: damage.car_parts,
-          color: SEVERITY_COLORS[damage.severity],
-        }));
+  const handleOnActionChange = (data: ICarAction) => {
+    if (!data.value) return;
 
-  const handleOnActionChange = (action: ICarAction) => {
-    if (!action.value) return;
-
-    setAction(action);
-    switch (action.value) {
+    switch (data.value) {
       case CAR_ACTIONS.DAMAGE: {
         setCarMaterial(CarMaterialsTypes.RAW);
-        // setActiveCarParts([])
-        setSeparetedColor(
-          getSeparatedColorsByDamageSeverity(services[CAR_ACTIONS.DAMAGE])
-        );
+        setSeparetedColor(getSeparatedColorsByDamageSeverity(services[CAR_ACTIONS.DAMAGE]));
+        setActiveCarParts(reduceDamagedCarParts(services[CAR_ACTIONS.DAMAGE]));
+        setAction(data)
         break;
       }
       case CAR_ACTIONS.PAINT: {
         setCarMaterial(CarMaterialsTypes.PAINT);
-        setActiveCarParts(services.painting?.car_parts);
         setSeparetedColor([]);
+        setActiveCarParts(services[CAR_ACTIONS.PAINT]?.car_parts);
+        if(data.option){
+          let updatedServices = {...services}
+          updatedServices.paint.type = data.option
+          setServices(updatedServices)
+          setAction(data)
+        }else{
+          setAction({...data, option: services.paint.type})
+        }
         break;
       }
-      case CAR_ACTIONS.POLISH: {
+      case CAR_ACTIONS.RECOVER: {
         setCarMaterial(CarMaterialsTypes.POLISHING);
-        setActiveCarParts(services.polishing?.car_parts);
         setSeparetedColor([]);
+        setActiveCarParts(services[CAR_ACTIONS.RECOVER]?.car_parts);
+        setAction(data)
         break;
       }
     }
   };
 
-  const handleOnCarPartsChange = (
-    lastSelected: CAR_PARTS,
-    selectedList: CAR_PARTS[]
-  ) => {
+  const handleOnCarPartsChange = (selected: CAR_PARTS, selectedList: CAR_PARTS[]) => {
     let updatedServices: any = { ...services };
 
     if (action.value === CAR_ACTIONS.DAMAGE) {
-      updatedServices[CAR_ACTIONS.DAMAGE] = getDamageList(
-        services[CAR_ACTIONS.DAMAGE],
-        lastSelected,
-        (action.option as SEVERITY_STATUS) || SEVERITY_STATUS.CRITICAL
-      );
-      setSeparetedColor(
-        getSeparatedColorsByDamageSeverity(updatedServices[CAR_ACTIONS.DAMAGE])
-      );
-      setActiveCarParts(
-        concatDamagedCarParts(updatedServices[CAR_ACTIONS.DAMAGE])
-      );
+      updatedServices[CAR_ACTIONS.DAMAGE] = getDamageList(services[CAR_ACTIONS.DAMAGE],selected,(action.option as SEVERITY_STATUS) || SEVERITY_STATUS.CRITICAL);
+      setSeparetedColor(getSeparatedColorsByDamageSeverity(updatedServices[CAR_ACTIONS.DAMAGE]));
+      setActiveCarParts(reduceDamagedCarParts(updatedServices[CAR_ACTIONS.DAMAGE]));
     } else {
       updatedServices[action.value] = {
         ...updatedServices[action.value],
@@ -78,52 +66,9 @@ function CarServiceSelector() {
     setServices(updatedServices);
   };
 
-  const concatDamagedCarParts = (damageList: IDamage[]) =>
-    damageList.reduce(
-      (acc: CAR_PARTS[], item: IDamage) => acc.concat(item.car_parts),
-      []
-    );
-
-  const getDamageList = (damageList: IDamage[], selectedCarPart: CAR_PARTS, severity: SEVERITY_STATUS) => {
-    let isNewSeverity = true;
-    let updatedDamageList: IDamage[] = [];
-
-    damageList.forEach((damage: IDamage) => {
-      let updatedDamage = { ...damage };
-      let isRemovingCarPart = false;
-
-      updatedDamage.car_parts = updatedDamage.car_parts.filter((carPart) => {
-        if (carPart !== selectedCarPart) return true;
-        isRemovingCarPart = true;
-        return false;
-      });
-
-      if (damage.severity === severity) {
-        isNewSeverity = false;
-        if (!isRemovingCarPart) updatedDamage.car_parts.push(selectedCarPart);
-      }
-
-      if (updatedDamage?.car_parts?.length > 0) {
-        updatedDamageList.push(updatedDamage);
-      }
-    });
-
-    if (isNewSeverity) {
-      updatedDamageList.push({ severity, car_parts: [selectedCarPart] });
-    }
-
-    return updatedDamageList;
-  };
-
   return (
     <div className="flex-col">
-      <Canvas
-        frameloop="demand"
-        resize={{ scroll: false }}
-        camera={{ zoom: 130 }}
-        orthographic={true}
-        style={{ width: "100%", height: 350 }}
-      >
+      <Canvas frameloop="demand" resize={{ scroll: false }} camera={{ zoom: 130 }} orthographic={true} style={{ width: "100%", height: 350 }}>
         <Suspense fallback={null}>
           <Environment preset="warehouse" />
           <OrbitControls
