@@ -1,13 +1,13 @@
 import { Environment, OrbitControls } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
 import { Suspense, useState } from "react"
-import { Crosshair, DrillIcon, HammerIcon, Paintbrush, SwatchBookIcon } from "lucide-react"
+import { Crosshair, DrillIcon, HammerIcon, SwatchBookIcon } from "lucide-react"
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group"
 import CarSelector from "../Car3D/CarModel"
 import { CAR_PARTS, CarMaterialsTypes } from "../Car3D/types"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Command, CommandItem, CommandList } from "../ui/command"
-import { CAR_ACTIONS, SEVERITY_STATUS } from "@/pages/ServiceOrder/types"
+import { CAR_ACTIONS, SEVERITY_COLORS, SEVERITY_STATUS } from "@/pages/ServiceOrder/types"
 import SprayGun from "@/assets/svg/spray_gun"
 
 interface ICarAction {
@@ -21,7 +21,7 @@ interface IDamage {
   }
 
 function CarServiceSelector() {
-  const [action, setAction] = useState<ICarAction>({value: CAR_ACTIONS.DAMAGE, option: SEVERITY_STATUS.MODERATE})
+  const [action, setAction] = useState<ICarAction>({value: CAR_ACTIONS.DAMAGE, option: SEVERITY_STATUS.CRITICAL})
   const [carMaterial, setCarMaterial] = useState(CarMaterialsTypes.RAW)
   const [activeCarParts, setActiveCarParts] = useState<CAR_PARTS[]>([])
   const [separatedColor, setSeparetedColor] = useState<any>([])
@@ -41,14 +41,6 @@ function CarServiceSelector() {
     const getSeparatedColorsByDamageSeverity = (damageList: IDamage[]) => {
         if(damageList.length === 0)
             return []
-
-        const SEVERITY_COLORS = {
-            [SEVERITY_STATUS.CRITICAL]: "#FF0000",  // Vermelho
-            [SEVERITY_STATUS.SEVERE]: "#FFA500",    // Laranja
-            [SEVERITY_STATUS.MODERATE]: "#FFFF00",  // Amarelo
-            [SEVERITY_STATUS.MINOR]: "#0000FF",     // Azul
-            [SEVERITY_STATUS.NEGLIGIBLE]: "#00FF00" // Verde
-        };
 
         return damageList.map((damage) => ({value: damage.car_parts, color: SEVERITY_COLORS[damage.severity]}))
     }
@@ -82,7 +74,7 @@ function CarServiceSelector() {
     let updatedServices: any = {...services}
 
     if(action.value === CAR_ACTIONS.DAMAGE){        
-        updatedServices[CAR_ACTIONS.DAMAGE] = getNewDamageList(services[CAR_ACTIONS.DAMAGE], lastSelected, (action.option as SEVERITY_STATUS || SEVERITY_STATUS.MODERATE));
+        updatedServices[CAR_ACTIONS.DAMAGE] = getNewDamageList(services[CAR_ACTIONS.DAMAGE], lastSelected, (action.option as SEVERITY_STATUS || SEVERITY_STATUS.CRITICAL));
         setSeparetedColor(getSeparatedColorsByDamageSeverity(updatedServices[CAR_ACTIONS.DAMAGE]))
         setActiveCarParts(concatDamagedCarParts(updatedServices[CAR_ACTIONS.DAMAGE]))
     }else{
