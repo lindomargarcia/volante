@@ -68,7 +68,7 @@ function CarServiceSelector() {
 
   return (
     <div className="flex-col">
-      <Canvas frameloop="demand" resize={{ scroll: false }} camera={{ zoom: 130 }} orthographic={true} style={{ width: "100%", height: 350 }}>
+      <Canvas frameloop="demand" resize={{ scroll: false }} camera={{ zoom: 120 }} orthographic={true} style={{ width: "100%", height: 300 }}>
         <Suspense fallback={null}>
           <Environment preset="warehouse" />
           <OrbitControls

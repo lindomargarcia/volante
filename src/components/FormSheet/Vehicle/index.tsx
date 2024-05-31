@@ -12,6 +12,7 @@ import { COLORS } from '@/data/constants/colors'
 import { CAR_BRANDS } from '@/data/constants/carBrands'
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton"
 import { Input } from "@/components/ui/input"
+import FileSelect from "@/components/ui/fileSelect"
 
 interface IVehicleSheetsProps {
   trigger: React.ReactElement
@@ -52,40 +53,35 @@ export function VehicleFormSheet({data, trigger, onSubmit, onDelete, isPending}:
   }
 
   return (
-    <SheetContainer 
-      title="Veículo"
-      isOpen={isOpen}
-      onIsOpenChange={setIsOpen}
-      description="Adicione aqui os dados do veículo. Clique em 'salvar' quando finalizar."
-      icon={<Car size={30} className="p-1"/>}
-      trigger={trigger}>
-        <Form {...form}>
-          <form className="grid gap-4 py-4" onSubmit={form.handleSubmit(handleOnSubmit)}>
-            <FormInput name='plate' label="Placa" form={form}>
-              {field => <Input placeholder="ABC-1D23"  className={'uppercase'} {...field}/>}
-            </FormInput>
-            <FormSelect name="brand" label="Marca" options={CAR_BRANDS} form={form} placeholder="Selecione..." />
-            <FormInput  name='model' label="Modelo" form={form}>
-              {field => <Input  placeholder="Digite aqui..." {...field}/>}
-            </FormInput>
-            <FormInput name='year' label="Ano" form={form}>
-              {field => <Input placeholder="2024"  {...field}/>}
-            </FormInput>
-            <FormSelect name="color" label="Cor" options={COLORS} form={form} placeholder="Selecione..." />
-            
-            <SheetFooter className="mt-4 justify-between">
-              <Button type="submit" disabled={isPending}>Salvar</Button>
-              {data?.plate && <ConfirmButton
-                  onConfirm={() => handleOnDelete(data)}
-                  variant={"destructive"}
-                  disabled={isPending}
-                  title="Remover veículo"
-                  message="Deseja realmente remover o veículo desse orçamento?">
-                    Remover
-                </ConfirmButton>}
-            </SheetFooter>
-          </form>
-        </Form>
-    </SheetContainer>
+    <Form {...form}>
+      <form className="grid gap-4 py-4" onSubmit={form.handleSubmit(handleOnSubmit)}>
+        <div className="flex gap-2">
+          <FormInput name='plate' label="Placa" form={form}>
+            {field => <Input placeholder="ABC-1D23"  className={'uppercase'} {...field}/>}
+          </FormInput>
+          <FormSelect name="brand" label="Marca"  className="flex-1" options={CAR_BRANDS} form={form} placeholder="Selecione..." />
+        </div>
+        <div className="flex gap-2">
+          <FormInput  name='model' label="Modelo" form={form}>
+            {field => <Input  placeholder="Digite aqui..." {...field}/>}
+          </FormInput>
+          <FormInput name='year' className="w-[80px]" label="Ano" form={form}>
+            {field => <Input placeholder="2024"  {...field}/>}
+          </FormInput>
+          <FormSelect name="color" className="flex-1" label="Cor" options={COLORS} form={form} placeholder="Selecione..." />
+        </div>
+        <SheetFooter className="mt-4 justify-between">
+          <Button type="submit" disabled={isPending}>Salvar</Button>
+          {data?.plate && <ConfirmButton
+              onConfirm={() => handleOnDelete(data)}
+              variant={"destructive"}
+              disabled={isPending}
+              title="Remover veículo"
+              message="Deseja realmente remover o veículo desse orçamento?">
+                Remover
+            </ConfirmButton>}
+        </SheetFooter>
+      </form>
+    </Form>
   )
 }

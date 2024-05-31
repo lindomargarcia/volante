@@ -19,6 +19,8 @@ import { PDFViewer } from "@react-pdf/renderer";
 import { ServiceOrderPDF } from "@/components/PDF/ServiceOrderPDF";
 import { Modal } from "@/components/Modal/Modal";
 import CarServiceSelector from "@/components/CarPartsSelector";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card } from "@/components/ui/card";
 
 function ServiceOrderPage() {
   const queryClient = useQueryClient()
@@ -98,40 +100,54 @@ function ServiceOrderPage() {
               Último salvo {serviceOrder?.last_saved_at ? new Date(serviceOrder?.last_saved_at).toLocaleString() : '...'}
             </p>
           </div>
-
-          <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={setStatus}/>
-          
         </div>
-
-        <Button variant={"link"}>
-          <MoreVertical size={18}/>
-        </Button>
+        <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={setStatus}/>
+        
       </header>
 
-      <div className="flex-1 flex gap-10">
+      <div className="flex-1 flex gap-4">
         {/* Left side */}
-        <div className="flex flex-1 flex-col gap-4">
-          {/* <h1 className="text-sm font-bold">Áreas danificadas</h1> */}
-          <CarServiceSelector/>
-          <VehicleFormSheet 
-            onSubmit={handleVehicleSubmit}
-            onDelete={handleVehicleDelete}
-            isPending={false}
-            data={serviceOrder?.vehicle}
-            trigger={<VehicleDetailCard vehicle={serviceOrder?.vehicle}/>}
-          />
-          <CustomerFormSheet 
-            onSubmit={handleCustomerSubmit}
-            onDelete={handleCustomerDelete}
-            isPending={false}
-            data={serviceOrder?.customer}
-            trigger={<CustomerDetailCard customer={serviceOrder?.customer}/>}
-          />
-          <FileSelect label="Imagens"/>
+        <div className="flex w-[500px] flex-col gap-4">
+        {/* <CarServiceSelector/> */}
+          <Tabs defaultValue="customer" className="">
+            <TabsList>
+              <TabsTrigger value="customer">Dados Pessoais</TabsTrigger>
+              <TabsTrigger value="damage">Áreas Danificadas</TabsTrigger>
+            </TabsList>
+            <TabsContent value="customer">
+              <div className="flex flex-col gap-4">
+                <Card className="px-4 rounded-lg">
+                  <CustomerFormSheet 
+                    onSubmit={handleCustomerSubmit}
+                    onDelete={handleCustomerDelete}
+                    isPending={false}
+                    data={serviceOrder?.customer}
+                    trigger={<CustomerDetailCard customer={serviceOrder?.customer}/>}
+                  />
+                </Card>
+                <Card className="px-4 rounded-lg">
+                    <VehicleFormSheet 
+                      onSubmit={handleVehicleSubmit}
+                      onDelete={handleVehicleDelete}
+                      isPending={false}
+                      data={serviceOrder?.vehicle}
+                      trigger={<VehicleDetailCard vehicle={serviceOrder?.vehicle}/>}
+                    />
+                </Card>
+              </div>
+            </TabsContent>
+            <TabsContent value="damage">
+              <CarServiceSelector/>
+              <Card className="p-4 rounded-lg mt-8">
+                <FileSelect label="Imagens"/>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </div>
 
         {/* right Side */}
-        <div className="flex flex-col">
+        <div className="flex flex-1 flex-col">
+          <h2 className="text-lg font-bold pb-4">Orçamento</h2>
           <ServiceOrderCard data={serviceOrder?.items || []} carServices={carServices || []} onAddItem={handleNewSOItem}/>
           <div className="flex mt-6 justify-end items-end gap-3">
             <Modal 

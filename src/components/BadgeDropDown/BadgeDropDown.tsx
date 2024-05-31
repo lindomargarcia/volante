@@ -16,7 +16,7 @@ export default function StatusDropDown({title, value, options, onChange}: Status
             <DropdownMenuTrigger className="focus:outline-none">
                 <Badge className={`h-8 rounded-full ${selected?.color} focus:border-dashed`}>{selected?.label}</Badge>
             </DropdownMenuTrigger>
-            {linked.length > 0 && <DropdownMenuContent>
+            {linked.length > 0 && <DropdownMenuContent side="bottom" align="end">
                 <DropdownMenuLabel>{title}</DropdownMenuLabel>
                 <DropdownMenuSeparator/>
                 <DropdownMenuRadioGroup value={value} onValueChange={onChange}>
