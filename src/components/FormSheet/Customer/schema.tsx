@@ -16,7 +16,7 @@ const customerSchema = z.object({
     }
   });
 
-const defaultCustomerValues = {
+const DEFAULT_CUSTOMER_VALUE = {
     name: "",
     cpf: "",
     phone: "",
@@ -25,5 +25,5 @@ const defaultCustomerValues = {
   
 type CustomerSchema = z.infer<typeof customerSchema>
 
-export { customerSchema, defaultCustomerValues }
+export { customerSchema, DEFAULT_CUSTOMER_VALUE }
 export type { CustomerSchema }

@@ -1,18 +1,17 @@
-import { File, MoreVertical, Save } from "lucide-react";
+import { File, Save } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
 import { CustomerFormSheet } from "@/components/FormSheet/Customer";
 import { VehicleFormSheet } from "@/components/FormSheet/Vehicle";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getServiceOrderAPI } from "@/data/ServiceOrder";
 import ServiceOrderCard from "../../components/ServiceOrderCard/ServiceOrderCard";
-import { ServiceOrder, ServiceOrderItem } from "./types";
+import { ServiceOrderItem } from "./types";
 import { getCarServicesAPI } from "@/data/CarServices";
-import { CustomerSchema } from "@/components/FormSheet/Customer/schema";
-import { VehicleSchema } from "@/components/FormSheet/Vehicle/schema";
+import { CustomerSchema, DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
+import { VehicleSchema, DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema";
 import { toast } from "sonner";
-import { VehicleDetailCard, CustomerDetailCard } from "@/components/DetailCard/DetailCard";
 import StatusDropDown from "@/components/BadgeDropDown/BadgeDropDown";
 import { SO_STATUS_LIST } from "@/data/constants/utils";
 import { PDFViewer } from "@react-pdf/renderer";
@@ -21,26 +20,27 @@ import { Modal } from "@/components/Modal/Modal";
 import CarServiceSelector from "@/components/CarPartsSelector";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
+import { create } from "zustand"
+
+const useStore = create((set: any) => ({
+  customer: DEFAULT_CUSTOMER_VALUE,
+  vehicle: DEFAULT_VEHICLE_VALUES,
+  items: [],
+  car_map: {},
+  setCustomer: (customer: CustomerSchema) => set(() => ({customer})),
+  setVehicle: (vehicle: VehicleSchema) => set(() => ({vehicle})),
+  setItems: (items: ServiceOrderItem[]) => set(() => ({items})),
+  addItem: (newItem: ServiceOrderItem) => set((state: any) => ({items: [...state.items, newItem]}))
+}))
 
 function ServiceOrderPage() {
-  const queryClient = useQueryClient()
   const [status, setStatus] = useState('pending')
-  // const form = useForm({ resolver: zodResolver(ServiceOrderSchema), defaultValues: {
-  //   duration_quantity: 1,
-  //   customer: {name: "", cpf: "", phone: "", email: ""}
-  // } })
 
-  const {data: carServices} = useQuery({
-    queryKey: ['car-services'],
-    queryFn: getCarServicesAPI,
-    refetchOnWindowFocus: false
-  })
+  const { setCustomer, setVehicle, addItem, customer, vehicle, items } = useStore()
 
-  const { data: serviceOrder } = useQuery({
-    queryFn: getServiceOrderAPI,
-    queryKey: ['service-order'],
-    refetchOnWindowFocus: false
-  })
+  const {data: carServices} = useQuery({queryKey: ['car-services'],queryFn: getCarServicesAPI,refetchOnWindowFocus: false})
+
+  const { data: serviceOrder } = useQuery({queryFn: getServiceOrderAPI,queryKey: ['service-order'],refetchOnWindowFocus: false})
 
   // const onSubmitHandle = (data: any) => {
   //   console.log(serviceOrder, data)
@@ -53,42 +53,24 @@ function ServiceOrderPage() {
 
   const handleCustomerSubmit = async (customer: CustomerSchema) => {
     toast.message("Cliente adicionado com sucesso!")
-    //Setar no form Geral
-    queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
-      return {...data, customer} 
-    })
+    setCustomer(customer)
   }
 
   const handleVehicleSubmit = async (vehicle: VehicleSchema) => {
     toast.message("Veículo adicionado com sucesso!")
-    //Setar no form Geral
-    queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
-      return {...data, vehicle}
-    })
+    setVehicle(vehicle)
   }
 
   const handleNewSOItem = async (newItem: ServiceOrderItem) => {
-    console.log(newItem)
-    //Setar no form Geral
-    queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
-      const newSO = {...data}
-      newSO.items = [...newSO.items, newItem]
-      return newSO
-    })
+    toast.message("Novo item adicionado com sucesso!")
+    addItem(newItem)
   }
 
-  const handleVehicleDelete = async () => {
-    queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
-      return {...data, vehicle: {}}
-    })
+  const cleanVehicleData = async () => {
+    setVehicle(DEFAULT_VEHICLE_VALUES)
   }
 
-  const handleCustomerDelete = async () => {
-    queryClient.setQueryData(['service-order'], (data: ServiceOrder) => {
-      return {...data, customer: {}}
-    })
-  }
-
+  const cleanCustomerData = async () => setCustomer(DEFAULT_CUSTOMER_VALUE)
 
   return (
     <div className="h-full flex flex-col">
@@ -119,19 +101,17 @@ function ServiceOrderPage() {
                 <Card className="px-4 rounded-lg">
                   <CustomerFormSheet 
                     onSubmit={handleCustomerSubmit}
-                    onDelete={handleCustomerDelete}
+                    onDelete={cleanCustomerData}
                     isPending={false}
-                    data={serviceOrder?.customer}
-                    trigger={<CustomerDetailCard customer={serviceOrder?.customer}/>}
+                    data={customer}
                   />
                 </Card>
                 <Card className="px-4 rounded-lg">
                     <VehicleFormSheet 
                       onSubmit={handleVehicleSubmit}
-                      onDelete={handleVehicleDelete}
+                      onDelete={cleanVehicleData}
                       isPending={false}
-                      data={serviceOrder?.vehicle}
-                      trigger={<VehicleDetailCard vehicle={serviceOrder?.vehicle}/>}
+                      data={vehicle}
                     />
                 </Card>
               </div>
@@ -148,7 +128,7 @@ function ServiceOrderPage() {
         {/* right Side */}
         <div className="flex flex-1 flex-col">
           <h2 className="text-lg font-bold pb-4">Orçamento</h2>
-          <ServiceOrderCard data={serviceOrder?.items || []} carServices={carServices || []} onAddItem={handleNewSOItem}/>
+          <ServiceOrderCard data={items} carServices={carServices || []} onAddItem={handleNewSOItem}/>
           <div className="flex mt-6 justify-end items-end gap-3">
             <Modal 
               trigger={<Button variant="outline"><File size={18} className="mr-2"/>PDF</Button>}

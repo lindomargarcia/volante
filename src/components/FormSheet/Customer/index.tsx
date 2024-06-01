@@ -1,17 +1,15 @@
 import { Button } from "@/components/ui/button"
 import { SheetFooter } from "@/components/ui/sheet"
-import { ReactComponentElement, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "../../ui/form"
 import { FormInput } from "../../FormInput"
-import { CustomerSchema, customerSchema, defaultCustomerValues } from "./schema"
+import { CustomerSchema, customerSchema, DEFAULT_CUSTOMER_VALUE } from "./schema"
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton"
 import MaskedInput from "@/components/MaskedInput/MaskedInput"
 import { MASKS } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 interface ICustomerSheetsProps {
-  trigger?: ReactComponentElement<any>,
   data?: CustomerSchema,
   onSubmit: (data: CustomerSchema) => Promise<any>
   onDelete: (data?: CustomerSchema) => Promise<any>
@@ -19,32 +17,20 @@ interface ICustomerSheetsProps {
 }
 
 export function CustomerFormSheet({data, onSubmit, onDelete, isPending}: ICustomerSheetsProps) {
-  const [isOpen, setIsOpen] = useState(false)
   const form = useForm<CustomerSchema>({
     resolver: zodResolver(customerSchema),
-    defaultValues: defaultCustomerValues
+    defaultValues: data || DEFAULT_CUSTOMER_VALUE
   })
 
-  useEffect(() => {
-    if(!isOpen) return
-    form.clearErrors()
-    form.setValue('name', data?.name || '')
-    form.setValue('cpf', data?.cpf  || '')
-    form.setValue('phone', data?.phone  || '')
-    form.setValue('email', data?.email || '')
-  }, [data, isOpen])
-
-
-  const onFormSubmit = (data: CustomerSchema) => {
-    console.log(data)
-    onSubmit(data).then(() => {
-      setIsOpen(false)
-    })
-  }
+  const onFormSubmit = (data: CustomerSchema) => {onSubmit(data)}
 
   const handleOnDelete = (data: CustomerSchema) => {
     onDelete(data).then(() => {
-      setIsOpen(false)
+      form.clearErrors()
+      form.setValue('name','')
+      form.setValue('cpf','')
+      form.setValue('phone','')
+      form.setValue('email','')
     })
   }
 

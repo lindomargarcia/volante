@@ -1,7 +1,7 @@
 
 import { z } from "@/lib/pt-zod"
 
-const defaultVehicleValues = {
+const DEFAULT_VEHICLE_VALUES = {
     plate: "",
     brand: "",
     model: "",
@@ -19,5 +19,5 @@ const vehicleSchema = z.object({
   
 type VehicleSchema = z.infer<typeof vehicleSchema>
 
-export { vehicleSchema, defaultVehicleValues }
+export { vehicleSchema, DEFAULT_VEHICLE_VALUES }
 export type { VehicleSchema }

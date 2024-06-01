@@ -1,54 +1,38 @@
 import { Button } from "@/components/ui/button"
 import { SheetFooter} from "@/components/ui/sheet"
-import { Car } from "lucide-react"
 import { Form } from "../../ui/form"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { FormInput, FormSelect } from "../../FormInput"
-import { VehicleSchema, defaultVehicleValues, vehicleSchema } from "./schema"
-import { SheetContainer } from "../../SheetContainer/SheetContainer"
-import { useEffect, useState } from "react"
+import { VehicleSchema, DEFAULT_VEHICLE_VALUES, vehicleSchema } from "./schema"
 import { COLORS } from '@/data/constants/colors'
 import { CAR_BRANDS } from '@/data/constants/carBrands'
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton"
 import { Input } from "@/components/ui/input"
-import FileSelect from "@/components/ui/fileSelect"
 
 interface IVehicleSheetsProps {
-  trigger: React.ReactElement
   data?: VehicleSchema,
   onSubmit: (data: VehicleSchema) => Promise<any>,
   onDelete: (data?: VehicleSchema) => Promise<any>
   isPending: boolean
 }
 
-export function VehicleFormSheet({data, trigger, onSubmit, onDelete, isPending}: IVehicleSheetsProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  
+export function VehicleFormSheet({data, onSubmit, onDelete, isPending}: IVehicleSheetsProps) {  
   const form = useForm<VehicleSchema>({
     resolver: zodResolver(vehicleSchema),
-    defaultValues:defaultVehicleValues
+    defaultValues: data || DEFAULT_VEHICLE_VALUES
   })
 
-  useEffect(() => {
-    if(!isOpen) return
-    form.clearErrors()
-    form.setValue('plate', data?.plate || '')
-    form.setValue('brand', data?.brand  || '')
-    form.setValue('model', data?.model  || '')
-    form.setValue('year', data?.year || '')
-    form.setValue('color', data?.color || 'black')
-  }, [data, isOpen])
-
-  const handleOnSubmit = (data: VehicleSchema) => {
-    onSubmit(data).then(() => {
-      setIsOpen(false)
-    })
-  }
+  const handleOnSubmit = (data: VehicleSchema) => {onSubmit(data)}
 
   const handleOnDelete = (data: VehicleSchema) => {
     onDelete(data).then(() => {
-      setIsOpen(false)
+      form.clearErrors()
+      form.setValue('plate','')
+      form.setValue('brand','')
+      form.setValue('model','')
+      form.setValue('year','')
+      form.setValue('color','black')
     })
   }
 

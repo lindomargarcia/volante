@@ -1,5 +1,5 @@
-import { CustomerSchema, defaultCustomerValues } from "@/components/FormSheet/Customer/schema"
-import { VehicleSchema, defaultVehicleValues } from "@/components/FormSheet/Vehicle/schema"
+import { CustomerSchema, DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema"
+import { DEFAULT_VEHICLE_VALUES, VehicleSchema } from "@/components/FormSheet/Vehicle/schema"
 import { STATUS_SERVICE_ORDER, ServiceOrder, ServiceOrderItem } from "@/pages/ServiceOrder/types"
 
 export async function getServiceOrderAPI(): Promise<ServiceOrder>{
@@ -8,8 +8,8 @@ export async function getServiceOrderAPI(): Promise<ServiceOrder>{
         status: STATUS_SERVICE_ORDER.PENDING,
         created_at: new Date().toJSON(),
         last_saved_at: new Date().toJSON(),
-        customer: defaultCustomerValues,
-        vehicle: defaultVehicleValues,
+        customer: DEFAULT_CUSTOMER_VALUE,
+        vehicle: DEFAULT_VEHICLE_VALUES,
         images: [],
         insurance_company: '',
         duration_quantity: 0,
