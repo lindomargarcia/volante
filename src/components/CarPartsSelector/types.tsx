@@ -36,7 +36,26 @@ export interface IDamage {
   car_parts: CAR_PARTS[];
 }
 
-export const DEFAULT_SELECTION = {
+interface IPaint{
+  type: string,
+  car_parts: CAR_PARTS[]
+}
+
+interface IRecover{
+  car_parts: CAR_PARTS[]
+}
+export interface ICarSelectionValue{
+  [CAR_ACTIONS.DAMAGE]: IDamage[],
+  [CAR_ACTIONS.PAINT]: IPaint,
+  [CAR_ACTIONS.RECOVER]: IRecover
+}
+
+export interface IChangeValue {
+  car_part: CAR_PARTS,
+  action: ICarAction
+}
+
+export const DEFAULT_SELECTION: ICarSelectionValue = {
   [CAR_ACTIONS.DAMAGE]: [],
   [CAR_ACTIONS.PAINT]: {
     type: "tricolt",

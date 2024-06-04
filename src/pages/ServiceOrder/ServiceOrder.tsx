@@ -1,4 +1,4 @@
-import { File, Save } from "lucide-react";
+import { Car, File, Save, User } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
@@ -20,57 +20,39 @@ import { Modal } from "@/components/Modal/Modal";
 import CarServiceSelector from "@/components/CarPartsSelector";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { create } from "zustand"
-
-const useStore = create((set: any) => ({
-  customer: DEFAULT_CUSTOMER_VALUE,
-  vehicle: DEFAULT_VEHICLE_VALUES,
-  items: [],
-  car_map: {},
-  setCustomer: (customer: CustomerSchema) => set(() => ({customer})),
-  setVehicle: (vehicle: VehicleSchema) => set(() => ({vehicle})),
-  setItems: (items: ServiceOrderItem[]) => set(() => ({items})),
-  addItem: (newItem: ServiceOrderItem) => set((state: any) => ({items: [...state.items, newItem]}))
-}))
+import { CAR_ACTIONS, ICarSelectionValue, IChangeValue } from "@/components/CarPartsSelector/types";
+import { COLORS } from "@/data/constants/colors";
+import { useServiceOrderStore } from "@/hooks/useServiceOrder";
 
 function ServiceOrderPage() {
-  const [status, setStatus] = useState('pending')
-
-  const { setCustomer, setVehicle, addItem, customer, vehicle, items } = useStore()
+  const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
+  const {
+    customer,vehicle,items,car_map,status,
+    setCustomer,setVehicle,addItem,setCarMap,setStatus
+  } = useServiceOrderStore()
 
   const {data: carServices} = useQuery({queryKey: ['car-services'],queryFn: getCarServicesAPI,refetchOnWindowFocus: false})
-
   const { data: serviceOrder } = useQuery({queryFn: getServiceOrderAPI,queryKey: ['service-order'],refetchOnWindowFocus: false})
 
-  // const onSubmitHandle = (data: any) => {
-  //   console.log(serviceOrder, data)
-  //   toast.success('Salvo com sucesso', )
-  //   // let newSO = queryClient.getQueryData<ServiceOrder>(['service-order'])
-  //   // newSO = {...newSO, ...data}
-  //   // console.log(newSO)
-  //   // putServiceOrder(newSO)
-  // }
-
-  const handleCustomerSubmit = async (customer: CustomerSchema) => {
-    toast.message("Cliente adicionado com sucesso!")
-    setCustomer(customer)
-  }
-
-  const handleVehicleSubmit = async (vehicle: VehicleSchema) => {
-    toast.message("Veículo adicionado com sucesso!")
-    setVehicle(vehicle)
-  }
 
   const handleNewSOItem = async (newItem: ServiceOrderItem) => {
     toast.message("Novo item adicionado com sucesso!")
     addItem(newItem)
   }
 
-  const cleanVehicleData = async () => {
-    setVehicle(DEFAULT_VEHICLE_VALUES)
+  const handleCarMapChange = async (selected: IChangeValue, data: ICarSelectionValue) => {
+    if(selected.action.value === CAR_ACTIONS.DAMAGE) return
+
+    toast.message("Clicou")
+    const newItem: ServiceOrderItem = {id: '389', description: selected.action.value + ' ' + selected.car_part, discount: 0, quantity: 1, total: 50, type: selected.action.value, insurance_coverage: 0, value: 50}
+    addItem(newItem)
+    console.log(selected)
+    setCarMap(data)
   }
 
-  const cleanCustomerData = async () => setCustomer(DEFAULT_CUSTOMER_VALUE)
+  const getVehicleColor = (vehicle: VehicleSchema) => {
+    return COLORS.find(color => color.value === vehicle.color)?.code || "#000"
+  }
 
   return (
     <div className="h-full flex flex-col">
@@ -84,43 +66,42 @@ function ServiceOrderPage() {
           </div>
         </div>
         <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={setStatus}/>
-        
       </header>
 
       <div className="flex-1 flex gap-4">
         {/* Left side */}
         <div className="flex w-[500px] flex-col gap-4">
         {/* <CarServiceSelector/> */}
-          <Tabs defaultValue="customer" className="">
+          <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
             <TabsList>
-              <TabsTrigger value="customer">Dados Pessoais</TabsTrigger>
-              <TabsTrigger value="damage">Áreas Danificadas</TabsTrigger>
+              <TabsTrigger value="customer"><User className="w-[18px] mr-2"/>Dados Pessoais</TabsTrigger>
+              <TabsTrigger value="damage"><Car className="w-[18px] mr-2"/>Mapa Veicular</TabsTrigger>
             </TabsList>
+            <TabsContent value="damage" hidden={activeTab !== 'damage'} forceMount>
+              <CarServiceSelector color={getVehicleColor(vehicle)} value={car_map} onChange={handleCarMapChange}/>
+              <Card className="p-4 rounded-lg mt-8">
+                <FileSelect label="Imagens"/>
+              </Card>
+            </TabsContent>
             <TabsContent value="customer">
               <div className="flex flex-col gap-4">
                 <Card className="px-4 rounded-lg">
                   <CustomerFormSheet 
-                    onSubmit={handleCustomerSubmit}
-                    onDelete={cleanCustomerData}
+                    onSubmit={setCustomer}
+                    onDelete={() => setCustomer(DEFAULT_CUSTOMER_VALUE)}
                     isPending={false}
                     data={customer}
                   />
                 </Card>
                 <Card className="px-4 rounded-lg">
                     <VehicleFormSheet 
-                      onSubmit={handleVehicleSubmit}
-                      onDelete={cleanVehicleData}
+                      onSubmit={setVehicle}
+                      onDelete={() => setVehicle(DEFAULT_VEHICLE_VALUES)}
                       isPending={false}
                       data={vehicle}
                     />
                 </Card>
               </div>
-            </TabsContent>
-            <TabsContent value="damage">
-              <CarServiceSelector/>
-              <Card className="p-4 rounded-lg mt-8">
-                <FileSelect label="Imagens"/>
-              </Card>
             </TabsContent>
           </Tabs>
         </div>

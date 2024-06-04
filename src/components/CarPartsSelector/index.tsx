@@ -3,17 +3,21 @@ import { Canvas } from "@react-three/fiber";
 import { Suspense, useState } from "react";
 import CarMesh from "../CarMesh";
 import { CAR_PARTS, CarMaterialsTypes, ISeparatedColors } from "../CarMesh/types";
-import {CAR_ACTIONS,DEFAULT_SELECTION,ICarAction,SEVERITY_STATUS} from "./types";
+import {CAR_ACTIONS,DEFAULT_SELECTION,ICarAction,ICarSelectionValue,IChangeValue,SEVERITY_STATUS} from "./types";
 import CarActionToggle from "../CarActionToggle";
 import { getDamageList, getSeparatedColorsByDamageSeverity, reduceDamagedCarParts } from "./logic";
+interface IProps{
+  color: string,
+  value: ICarSelectionValue,
+  onChange: (value: IChangeValue, state: ICarSelectionValue) => void
+}
 
-
-function CarServiceSelector() {
+function CarServiceSelector({color, value, onChange}: IProps) {
   const [action, setAction] = useState<ICarAction>({value: CAR_ACTIONS.DAMAGE, option: SEVERITY_STATUS.CRITICAL});
   const [carMaterial, setCarMaterial] = useState(CarMaterialsTypes.RAW);
   const [activeCarParts, setActiveCarParts] = useState<CAR_PARTS[]>([]);
   const [separatedColor, setSeparetedColor] = useState<ISeparatedColors[]>([]);
-  const [services, setServices] = useState(DEFAULT_SELECTION);
+  const [services, setServices] = useState<ICarSelectionValue>(value || DEFAULT_SELECTION);
 
   const handleOnActionChange = (data: ICarAction) => {
     if (!data.value) return;
@@ -64,6 +68,7 @@ function CarServiceSelector() {
       };
     }
     setServices(updatedServices);
+    onChange({car_part: selected, action}, updatedServices)
   };
 
   return (
@@ -83,7 +88,7 @@ function CarServiceSelector() {
             value={activeCarParts}
             onChange={handleOnCarPartsChange}
             material={carMaterial}
-            carColor={"#F00"}
+            carColor={color}
             baseColor="#e9fcff"
             separatedColors={separatedColor}
           />
