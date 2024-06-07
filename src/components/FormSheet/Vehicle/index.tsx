@@ -41,7 +41,7 @@ export function VehicleFormSheet({data, onSubmit, onDelete, isPending}: IVehicle
       <form className="grid gap-4 py-4" onSubmit={form.handleSubmit(handleOnSubmit)}>
         <div className="flex gap-2">
           <FormInput name='plate' label="Placa" form={form}>
-            {field => <Input placeholder="ABC-1D23"  className={'uppercase'} {...field}/>}
+            {field => <Input placeholder="ABC-1D23"  className={'uppercase w-[120px]'} {...field}/>}
           </FormInput>
           <FormSelect name="brand" label="Marca"  className="flex-1" options={CAR_BRANDS} form={form} placeholder="Selecione..." />
         </div>

@@ -35,7 +35,7 @@ function CarMesh({value = [], material = CarMaterialsTypes.PAINT, baseColor = '#
           return newSelectedCarPartsList
       });
     }
-    
+
     const getMaterial = (carPartName:CAR_PARTS): any => {
       //brake car
       // if(selected) return <MeshDistortMaterial speed={0} factor={13} color={'#636f76'} metalness={0} roughness={1} />

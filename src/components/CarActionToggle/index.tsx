@@ -39,11 +39,11 @@ export const CarActionToggle = ({onChange, value}: IProps) => {
                         </div>
                     </PopoverTrigger>
                 </ToggleGroupItem>
-                <PopoverContent align="center" side="top" className="p-2 mb-2 w-[250px]">
-                    <ToggleGroup type="single" value={value.option} onValueChange={(e:CAR_ACTIONS) => onChange({value: CAR_ACTIONS.PAINT, option: e})}>
-                        <ToggleGroupItem value="basic">Simples</ToggleGroupItem>
-                        <ToggleGroupItem value="tricolt">Tricolt</ToggleGroupItem>
-                        <ToggleGroupItem value="pearl">Perolado</ToggleGroupItem>
+                <PopoverContent align="center" side="top" className="p-2 mb-2 w-[136px]">
+                    <ToggleGroup type="single" className="flex flex-col justify-start align-top" value={value.option} onValueChange={(e:CAR_ACTIONS) => onChange({value: CAR_ACTIONS.PAINT, option: e})}>
+                        <ToggleGroupItem className="w-full" value="bicomponent">Bicomponente</ToggleGroupItem>
+                        <ToggleGroupItem className="w-full" value="poliuretano">Poliuretano</ToggleGroupItem>
+                        <ToggleGroupItem className="w-full" value="tricolt">Tricolt</ToggleGroupItem>
                     </ToggleGroup>
                 </PopoverContent>
             </Popover>

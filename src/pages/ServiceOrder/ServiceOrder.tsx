@@ -79,7 +79,15 @@ function ServiceOrderPage() {
             </TabsList>
             <TabsContent value="damage" hidden={activeTab !== 'damage'} forceMount>
               <CarServiceSelector color={getVehicleColor(vehicle)} value={car_map} onChange={handleCarMapChange}/>
-              <Card className="p-4 rounded-lg mt-8">
+              <Card className="px-4 rounded-lg mt-8">
+                <VehicleFormSheet 
+                  onSubmit={setVehicle}
+                  onDelete={() => setVehicle(DEFAULT_VEHICLE_VALUES)}
+                  isPending={false}
+                  data={vehicle}
+                />
+              </Card>
+              <Card className="p-4 rounded-lg mt-3">
                 <FileSelect label="Imagens"/>
               </Card>
             </TabsContent>
@@ -92,14 +100,6 @@ function ServiceOrderPage() {
                     isPending={false}
                     data={customer}
                   />
-                </Card>
-                <Card className="px-4 rounded-lg">
-                    <VehicleFormSheet 
-                      onSubmit={setVehicle}
-                      onDelete={() => setVehicle(DEFAULT_VEHICLE_VALUES)}
-                      isPending={false}
-                      data={vehicle}
-                    />
                 </Card>
               </div>
             </TabsContent>
