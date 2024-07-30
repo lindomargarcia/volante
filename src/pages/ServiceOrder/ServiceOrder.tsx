@@ -9,7 +9,7 @@ import { getServiceOrderAPI } from "@/data/ServiceOrder";
 import ServiceOrderCard from "../../components/ServiceOrderCard/ServiceOrderCard";
 import { ServiceOrderItem } from "./types";
 import { getCarServicesAPI } from "@/data/CarServices";
-import { CustomerSchema, DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
+import { DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
 import { VehicleSchema, DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema";
 import { toast } from "sonner";
 import StatusDropDown from "@/components/BadgeDropDown/BadgeDropDown";
@@ -56,19 +56,7 @@ function ServiceOrderPage() {
 
   return (
     <div className="h-full flex flex-col">
-      <header className="flex items-center pb-8">
-        <div className="flex gap-10 flex-1">
-          <div>
-            <h1 className="text-2xl font-semibold">Novo orçamento</h1>
-            <p className="text-sm text-muted-foreground">
-              Último salvo {serviceOrder?.last_saved_at ? new Date(serviceOrder?.last_saved_at).toLocaleString() : '...'}
-            </p>
-          </div>
-        </div>
-        <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={setStatus}/>
-      </header>
-
-      <div className="flex-1 flex gap-4">
+      <div className="flex-1 flex gap-12">
         {/* Left side */}
         <div className="flex w-[500px] flex-col gap-4">
         {/* <CarServiceSelector/> */}
@@ -79,14 +67,6 @@ function ServiceOrderPage() {
             </TabsList>
             <TabsContent value="damage" hidden={activeTab !== 'damage'} forceMount>
               <CarServiceSelector color={getVehicleColor(vehicle)} value={car_map} onChange={handleCarMapChange}/>
-              <Card className="px-4 rounded-lg mt-8">
-                <VehicleFormSheet 
-                  onSubmit={setVehicle}
-                  onDelete={() => setVehicle(DEFAULT_VEHICLE_VALUES)}
-                  isPending={false}
-                  data={vehicle}
-                />
-              </Card>
               <Card className="p-4 rounded-lg mt-3">
                 <FileSelect label="Imagens"/>
               </Card>
@@ -101,6 +81,14 @@ function ServiceOrderPage() {
                     data={customer}
                   />
                 </Card>
+                <Card className="px-4 rounded-lg">
+                  <VehicleFormSheet 
+                    onSubmit={setVehicle}
+                    onDelete={() => setVehicle(DEFAULT_VEHICLE_VALUES)}
+                    isPending={false}
+                    data={vehicle}
+                  />
+                </Card>
               </div>
             </TabsContent>
           </Tabs>
@@ -108,7 +96,17 @@ function ServiceOrderPage() {
 
         {/* right Side */}
         <div className="flex flex-1 flex-col">
-          <h2 className="text-lg font-bold pb-4">Orçamento</h2>
+          <header className="flex items-center pb-4">
+            <div className="flex gap-10 flex-1">
+              <div>
+                <h1 className="text-2xl font-semibold">Orçamento</h1>
+                <p className="text-sm text-muted-foreground">
+                  Último salvo {serviceOrder?.last_saved_at ? new Date(serviceOrder?.last_saved_at).toLocaleString() : '...'}
+                </p>
+              </div>
+            </div>
+            <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={setStatus}/>
+          </header>
           <ServiceOrderCard data={items} carServices={carServices || []} onAddItem={handleNewSOItem}/>
           <div className="flex mt-6 justify-end items-end gap-3">
             <Modal 

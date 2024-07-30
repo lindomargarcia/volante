@@ -14,7 +14,7 @@ export const CarActionToggle = ({onChange, value}: IProps) => {
         <ToggleGroup size={"lg"} className="gap-8" type="single" value={value.value} onValueChange={(e:CAR_ACTIONS) => onChange({value: e})}>
             <Popover>
                 <ToggleGroupItem value={CAR_ACTIONS.DAMAGE} className="p-0">
-                    <PopoverTrigger asChild={true} className=" appearance-none px-3 a py-1">
+                    <PopoverTrigger asChild={true} className="appearance-none px-3 a py-1">
                         <div className="flex gap-3 justify-center items-center">
                             <Crosshair/><h1>Danos</h1>
                         </div>

@@ -32,7 +32,7 @@ enum CarMaterialsTypes {
 }
 
 const CAR_MATERIALS_SETTINGS: Record<CarMaterialsTypes, MaterialSetting> = {
-    [CarMaterialsTypes.POLISHING]: {mirror: 0, roughness: 1, metalness: 0, color: '#8b5cf6'}, // Tinta fosca
+    [CarMaterialsTypes.POLISHING]: {mirror: 0, roughness: 1, metalness: 0}, // Tinta fosca
     [CarMaterialsTypes.RAW]: {mirror: 0, roughness: 1, metalness: 0}, // Primer
     [CarMaterialsTypes.PAINT]: {mirror: 0, roughness: 0, metalness: 0.1} // Tinta brilhante
 }
