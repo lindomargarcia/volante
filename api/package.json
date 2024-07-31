@@ -1,0 +1,19 @@
+{
+  "name": "volante-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Thailon Lucas",
+  "license": "ISC",
+  "description": "API for the Volante app",
+  "dependencies": {
+    "fastify": "^4.28.1",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
+  },
+  "type": "module"
+}
