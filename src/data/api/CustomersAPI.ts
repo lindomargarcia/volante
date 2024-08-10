@@ -1,0 +1,1 @@
+export const getAllCustomersAPI = () => fetch('http://localhost:2000/customers').then(res => res.json())
