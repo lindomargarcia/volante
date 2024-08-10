@@ -9,7 +9,8 @@ export const Catalog = db.define('Catalog', {
     sku: {
         type: DataTypes.STRING(25),
         allowNull: true,
-        unique: true
+        unique: true,
+        primaryKey: true
     },
     value:{
         type: DataTypes.NUMBER,
