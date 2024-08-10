@@ -3,7 +3,7 @@ import ServiceOrderPage from "@/pages/ServiceOrder/ServiceOrder";
 import { Toaster } from "./components/ui/sonner";
 import { createBrowserRouter, Link, Outlet, RouterProvider } from "react-router-dom";
 import Menu from "./components/Menu/Menu";
-import { ROUTER_PATHS } from "./data/routes/routes";
+import { ROUTER_PATHS } from "./routes/routes";
 import { Car, FilePlus, Hammer, Home, Settings2, User } from "lucide-react";
 import VehiclesPage from "./pages/Vehicles/VehiclesPage";
 import CustomersPage from "./pages/Customers/CustomersPage";

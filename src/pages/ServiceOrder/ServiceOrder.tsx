@@ -5,10 +5,8 @@ import FileSelect from "@/components/ui/fileSelect";
 import { CustomerFormSheet } from "@/components/FormSheet/Customer";
 import { VehicleFormSheet } from "@/components/FormSheet/Vehicle";
 import { useQuery } from "@tanstack/react-query";
-import { getServiceOrderAPI } from "@/data/ServiceOrder";
 import ServiceOrderCard from "../../components/ServiceOrderCard/ServiceOrderCard";
 import { ServiceOrderItem } from "./types";
-import { getCarServicesAPI } from "@/data/CarServices";
 import { DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
 import { VehicleSchema, DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema";
 import { toast } from "sonner";
@@ -23,6 +21,8 @@ import { Card } from "@/components/ui/card";
 import { CAR_ACTIONS, ICarSelectionValue, IChangeValue } from "@/components/CarPartsSelector/types";
 import { COLORS } from "@/data/constants/colors";
 import { useServiceOrderStore } from "@/hooks/useServiceOrder";
+import { getCarServicesAPI } from "@/data/api/CarServicesAPI";
+import { getServiceOrderAPI } from "@/data/api/ServiceOrderAPI";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')

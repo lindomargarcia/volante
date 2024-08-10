@@ -57,4 +57,6 @@ export const SO_STATUS_LIST: {value: STATUS_SERVICE_ORDER, label: string, color:
     }
 ]
 
+export const PAGE_LIMIT = 15
+
 

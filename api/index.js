@@ -35,22 +35,6 @@ api.register(cors, {
     }
 })
 
-// db.query("PRAGMA strict = ON;")
-//   .then(() => {
-//     console.log("Strict mode enabled in SQLite");
-//   })
-//   .catch(error => {
-//     console.error("Failed to enable strict mode:", error);
-//   });
-
-// db.sync()
-//     .then(() => {
-//         console.log("Database synchronized");
-//     })
-//     .catch(error => {
-//         console.error("Failed to synchronize database:", error);
-//     });
-
 db.authenticate()
     .then(() => {
         console.log('SQLite database connected');
@@ -68,6 +52,8 @@ db.authenticate()
 api.get("/", async (resquest, reply) => {
     reply.status(200).send("API Volante running succesfully!")
 })
+
+const getPaginationOffset = (page, limit) => page <= 1 ? 0 : ((page - 1) * limit)
 
 const createBasicCRUD = (name, route, table, methods = ['get_all','get_by_id', 'post', 'put', 'delete']) => {
     // Criar
@@ -158,13 +144,22 @@ const createBasicCRUD = (name, route, table, methods = ['get_all','get_by_id', '
 }
 
 createBasicCRUD('Catalog Price Condition', 'catalog_price_conditions', Catalog)
-createBasicCRUD('Catalog', 'catalog', Catalog)
 createBasicCRUD('Customer', 'customers', Customer)
 createBasicCRUD('Employee', 'employees', Employee)
 createBasicCRUD('Insurance Company', 'insurance_companies', InsuranceCompany)
 createBasicCRUD('Service Order', 'service_orders', ServiceOrder, ['put', 'delete', 'get_all'])
 createBasicCRUD('Service Order Item', 'service_order_items', ServiceOrder)
 createBasicCRUD('Vehicle', 'vehicles', Vehicle)
+
+createBasicCRUD('Catalog', 'catalog', Catalog, ['get_by_id', 'post', 'put', 'delete'])
+api.get('/catalog', async ({query: {page = 1, limit = 15}}, reply) => {
+    const result = await Catalog.findAndCountAll({
+        limit,
+        offset: getPaginationOffset(page, limit),
+        order: db.literal('description ASC')
+    })
+    reply.status(200).send(result)
+})
 
 api.post('/service_orders', async (request, reply) => {
     if(!request.body.customer){
@@ -173,7 +168,7 @@ api.post('/service_orders', async (request, reply) => {
         throw new Error('Vehicle cannot be empty')
     }
 
-    let result = await db.transaction(async t => {
+    await db.transaction(async t => {
         try{
             let customerId, vehicleId = null
 
