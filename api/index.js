@@ -5,9 +5,10 @@ import { Vehicle } from "./models/Vehicle.js";
 import { Employee } from "./models/Employee.js";
 import { InsuranceCompany } from "./models/InsuranceCompany.js";
 import { ServiceOrder } from "./models/ServiceOrder.js";
-import { ValidationError } from 'sequelize';
+import { ForeignKeyConstraintError, UniqueConstraintError, ValidationError } from 'sequelize';
 import { Catalog } from './models/Catalog.js';
 import { ServiceOrderItem } from './models/ServiceOrderItem.js';
+import cors from '@fastify/cors'
 
 const api = Fastify({logger: false})
 
@@ -20,6 +21,17 @@ const startServer = async () => {
         process.exit(1);
     }
 };
+
+api.register(cors, {
+    origin: (origin, cb) => {
+        const hostname = new URL(origin).hostname
+        if(hostname === 'localhost'){
+            cb(null, true)
+        }else{
+            cb(new Error("Not allowed"), false)
+        }
+    }
+})
 
 // db.query("PRAGMA strict = ON;")
 //   .then(() => {
@@ -191,9 +203,10 @@ api.post('/service_orders', async (request, reply) => {
             reply.status(200).send({...newSO.dataValues, items: createdItems})
         }catch(error){
             console.error(error)
-            if(error.name === 'SequelizeUniqueConstraintError'){
+            if(error instanceof UniqueConstraintError){
                 throw new Error(error.errors[0]?.message)
-            }else if(error.name === 'SequelizeForeignKeyConstraintError'){
+                
+            }else if(error instanceof ForeignKeyConstraintError){
                 throw new Error('Customer, Vehicle, Insurance Company or Catalog Item does not exist')
             }
             throw error
