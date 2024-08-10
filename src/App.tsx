@@ -5,6 +5,8 @@ import { createBrowserRouter, Link, Outlet, RouterProvider } from "react-router-
 import Menu from "./components/Menu/Menu";
 import { ROUTER_PATHS } from "./data/routes/routes";
 import { Car, FilePlus, Hammer, Home, Settings2, User } from "lucide-react";
+import CustomersPage from "./pages/Customers/CustomersPage";
+import VehiclesPage from "./pages/Vehicles/VehiclesPage";
 
 const MENU_LINKS = [
   {
@@ -21,13 +23,13 @@ const MENU_LINKS = [
   },
   {
     path: ROUTER_PATHS.VEHICLE,
-    element: <h1 className="h-full w-full align-text-middle text-zinc-400 text-center py-[33%]">Veículos</h1>,
+    element: <VehiclesPage/>,
     label: 'Veículos',
     icon: <Car size={23}/>
   },
   {
     path: ROUTER_PATHS.CUSTOMER,
-    element: <h1 className="h-full w-full align-text-middle text-zinc-400 text-center py-[33%]">Clientes</h1>,
+    element: <CustomersPage/>,
     label: 'Clientes',
     icon: <User size={23}/>
   },
