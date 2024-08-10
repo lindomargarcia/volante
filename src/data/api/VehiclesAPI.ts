@@ -1,0 +1,1 @@
+export const getAllVehiclesAPI = () => fetch('http://localhost:2000/vehicles').then(res => res.json())
