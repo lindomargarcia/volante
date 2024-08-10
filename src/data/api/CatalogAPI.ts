@@ -1,0 +1,1 @@
+export const getCatalogAPI = () => fetch('http://localhost:2000/catalog').then(res => res.json())
