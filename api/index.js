@@ -24,8 +24,10 @@ const startServer = async () => {
 
 api.register(cors, {
     origin: (origin, cb) => {
+        if(!origin) return cb(null, true)
+            
         const hostname = new URL(origin).hostname
-        if(hostname === 'localhost'){
+        if(!origin || hostname === 'localhost'){
             cb(null, true)
         }else{
             cb(new Error("Not allowed"), false)
