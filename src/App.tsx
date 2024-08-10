@@ -3,10 +3,11 @@ import ServiceOrderPage from "@/pages/ServiceOrder/ServiceOrder";
 import { Toaster } from "./components/ui/sonner";
 import { createBrowserRouter, Link, Outlet, RouterProvider } from "react-router-dom";
 import Menu from "./components/Menu/Menu";
-import { ROUTER_PATHS } from "./data/routes/routes";
+import { ROUTER_PATHS } from "./routes/routes";
 import { Car, FilePlus, Hammer, Home, Settings2, User } from "lucide-react";
-import CustomersPage from "./pages/Customers/CustomersPage";
 import VehiclesPage from "./pages/Vehicles/VehiclesPage";
+import CustomersPage from "./pages/Customers/CustomersPage";
+import CatalogPage from "./pages/Catalog/CatalogPage";
 
 const MENU_LINKS = [
   {
@@ -35,7 +36,7 @@ const MENU_LINKS = [
   },
   {
     path: ROUTER_PATHS.CATALOG,
-    element: <h1 className="h-full w-full align-text-middle text-zinc-400 text-center py-[33%]">Catálogo</h1>,
+    element: <CatalogPage/>,
     label: 'Catálogo',
     icon: <Hammer size={23}/>
   },
