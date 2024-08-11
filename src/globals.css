@@ -26,6 +26,7 @@
     --accent-foreground: 240 5.9% 10%;
 
     --theme-highlight: #8b5cf6;
+    --theme-highlight-100: rgba(171, 138, 247, 0.437);
  
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;

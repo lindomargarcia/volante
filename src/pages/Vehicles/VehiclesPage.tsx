@@ -1,4 +1,6 @@
+import Card from "@/components/Card"
 import { getAllVehiclesAPI } from "@/data/api/VehiclesAPI"
+import { isToday } from "@/lib/utils"
 import { useQuery } from "@tanstack/react-query"
 
 export default function VehiclesPage() {
@@ -10,10 +12,17 @@ export default function VehiclesPage() {
   })
 
   return (
-    <div>
+    <Card.Container>
       {vehicles?.map((vehicle: any) => (
-        <h1 key={vehicle.id}>{vehicle.plate}</h1>
+        <Card className="max-w-[250px]">
+          <Card.Header
+            title={vehicle.brand + ' ' + vehicle.model + ' ' + vehicle.year}
+            description={String(vehicle.plate).toUpperCase()}
+            fallback={vehicle?.brand?.substring(0,1)}
+          />
+          {isToday(new Date(vehicle.createdAt)) && <Card.Badge>Novo</Card.Badge>}
+        </Card>
       ))}
-    </div>
+    </Card.Container>
   )
 }

@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const currencyFormat = (value: number, style?:string, currency: string = "BRL") => new Intl.NumberFormat('pt-BR', {
+export const currencyFormat = (value: number, style?: string | 'currency', currency: string = "BRL") => new Intl.NumberFormat('pt-BR', {
   style,
   currency,
   minimumFractionDigits: 2,
@@ -17,6 +17,11 @@ export const MASKS = {
   CPF: "###.###.###-##",
   PHONE: "(##)#########",
   CELL_PHONE: "(##) #####-####"
+}
+
+export const isToday = (date: Date) => {
+  const today = new Date();
+  return date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate();
 }
 
 export function validateCPF(cpf: string): boolean {

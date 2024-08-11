@@ -1,5 +1,8 @@
+import Card from "@/components/Card"
 import { getAllCustomersAPI } from "@/data/api/CustomersAPI"
+import { isToday } from "@/lib/utils"
 import { useQuery } from "@tanstack/react-query"
+import { Mail, Phone } from "lucide-react"
 
 export default function CustomersPage() {
   const {data: customers, error} = useQuery({
@@ -17,10 +20,18 @@ export default function CustomersPage() {
   }
 
   return (
-    <div>
+    <Card.Container>
       {customers?.map((customer: any) => (
-        <h1 key={customer.id}>{customer.name}</h1>
+        <Card>
+          {isToday(new Date(customer.createdAt)) && <Card.Badge>Novo</Card.Badge>}
+          <Card.Header fallback={customer?.name?.substring(0,1)} title={customer.name} description={customer.cpf || customer.phone || customer.email}>
+            <Card.HeaderActions>
+              <Card.Action icon={<Mail size={18}/>}/>
+              <Card.Action icon={<Phone size={18}/>}/>
+            </Card.HeaderActions>
+          </Card.Header>
+        </Card>
       ))}
-    </div>
+      </Card.Container>
   )
 }
