@@ -20,18 +20,20 @@ export default function CustomersPage() {
   }
 
   return (
-    <Card.Container>
-      {customers?.map((customer: any) => (
-        <Card>
-          {isToday(new Date(customer.createdAt)) && <Card.Badge>Novo</Card.Badge>}
-          <Card.Header fallback={customer?.name?.substring(0,1)} title={customer.name} description={customer.cpf || customer.phone || customer.email}>
-            <Card.HeaderActions>
-              <Card.Action icon={<Mail size={18}/>}/>
-              <Card.Action icon={<Phone size={18}/>}/>
-            </Card.HeaderActions>
-          </Card.Header>
-        </Card>
-      ))}
-      </Card.Container>
+    <div className="flex h-full">
+      <Card.Container>
+        {customers?.map((customer: any) => (
+          <Card className="min-h-[110px]" key={customer.id}>
+            {isToday(new Date(customer.createdAt)) && <Card.Badge>Novo</Card.Badge>}
+            <Card.Header fallback={customer?.name?.substring(0,1)} title={customer.name} description={customer.cpf || customer.phone || customer.email}>
+              <Card.HeaderActions>
+                <Card.Action icon={<Mail size={18}/>}/>
+                <Card.Action icon={<Phone size={18}/>}/>
+              </Card.HeaderActions>
+            </Card.Header>
+          </Card>
+        ))}
+        </Card.Container>
+      </div>
   )
 }

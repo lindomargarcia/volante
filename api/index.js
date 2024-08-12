@@ -5,10 +5,13 @@ import { Vehicle } from "./models/Vehicle.js";
 import { Employee } from "./models/Employee.js";
 import { InsuranceCompany } from "./models/InsuranceCompany.js";
 import { ServiceOrder } from "./models/ServiceOrder.js";
-import { ForeignKeyConstraintError, UniqueConstraintError, ValidationError } from 'sequelize';
+import { ForeignKeyConstraintError, Op, UniqueConstraintError, ValidationError } from 'sequelize';
 import { Catalog } from './models/Catalog.js';
 import { ServiceOrderItem } from './models/ServiceOrderItem.js';
 import cors from '@fastify/cors'
+
+const INITIAL_PAGE = 1;
+const PAGE_LIMIT = 15;
 
 const api = Fastify({logger: false})
 
@@ -145,20 +148,125 @@ const createBasicCRUD = (name, route, table, methods = ['get_all','get_by_id', '
 
 createBasicCRUD('Catalog Price Condition', 'catalog_price_conditions', Catalog)
 createBasicCRUD('Customer', 'customers', Customer)
+api.get('/customers/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE_LIMIT, searchQuery = '' } }, reply) => {
+    try {
+        const {count, rows} = await Customer.findAndCountAll({
+            where: {
+                [Op.or]: [
+                    { name: { [Op.like]: `%${searchQuery}%` } },
+                    { cpf: { [Op.like]: `%${searchQuery}%` } },
+                    { phone: { [Op.like]: `%${searchQuery}%` } },
+                    { email: { [Op.like]: `%${searchQuery}%` } },
+                ]
+            },
+            limit: parseInt(limit, 10) || PAGE_LIMIT, 
+            order: [['name', 'ASC'], ['createdAt', 'DESC']],
+            offset: getPaginationOffset(page, limit),
+        });
+
+        const response = {
+            data: rows,
+            meta: {
+                page: Number(page),
+                totalItems: count,
+                totalPages: Math.ceil(count/limit)
+            }
+        }
+
+        reply.status(200).send(response);
+    } catch (error) {
+        reply.status(500).send({ error: error.message });
+    }
+});
+
 createBasicCRUD('Employee', 'employees', Employee)
+api.get('/employees/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIMIT, searchQuery = ''}}, reply) => {
+    try{
+        const {count, rows} = await Employee.findAndCountAll({
+            limit,
+            offset: getPaginationOffset(page, limit),
+            order: [['name', 'ASC'], ['createdAt', 'DESC']],
+            where:{
+                [Op.or]: {
+                    name: {[Op.like]: `%${searchQuery}%`},
+                    cpf: {[Op.like]: `%${searchQuery}%`}
+                }
+            }
+        })
+        const response = {
+            data: rows,
+            meta: {
+                page: Number(page),
+                totalItems: count,
+                totalPages: Math.ceil(count/limit)
+            }
+        }
+        reply.status(200).send(response);
+    }catch(error){
+        reply.status(500).reply({error: error.message})
+    }
+})
+
 createBasicCRUD('Insurance Company', 'insurance_companies', InsuranceCompany)
 createBasicCRUD('Service Order', 'service_orders', ServiceOrder, ['put', 'delete', 'get_all'])
 createBasicCRUD('Service Order Item', 'service_order_items', ServiceOrder)
 createBasicCRUD('Vehicle', 'vehicles', Vehicle)
+api.get('/vehicles/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE_LIMIT, searchQuery = '' } }, reply) => {
+    try {
+        const {count, rows} = await Vehicle.findAndCountAll({
+            where: {
+                [Op.or]: [
+                    { plate: { [Op.like]: `%${searchQuery}%` } },
+                    { brand: { [Op.like]: `%${searchQuery}%` } },
+                    { model: { [Op.like]: `%${searchQuery}%` } },
+                ]
+            },
+            limit: parseInt(limit, 10) || PAGE_LIMIT, 
+            order: [['plate', 'ASC'], ['createdAt', 'DESC']],
+            offset: getPaginationOffset(page, limit),
+        });
+
+        const response = {
+            data: rows,
+            meta: {
+                page: Number(page),
+                totalItems: count,
+                totalPages: Math.ceil(count/limit)
+            }
+        }
+        reply.status(200).send(response);
+    } catch (error) {
+        reply.status(500).send({ error: error.message });
+    }
+});
+
 
 createBasicCRUD('Catalog', 'catalog', Catalog, ['get_by_id', 'post', 'put', 'delete'])
-api.get('/catalog', async ({query: {page = 1, limit = 15}}, reply) => {
-    const result = await Catalog.findAndCountAll({
-        limit,
-        offset: getPaginationOffset(page, limit),
-        order: db.literal('description ASC')
-    })
-    reply.status(200).send(result)
+api.get('/catalog/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIMIT, searchQuery = ''}}, reply) => {
+    try{
+        const {count, rows} = await Catalog.findAndCountAll({
+            limit,
+            offset: getPaginationOffset(page, limit),
+            order: [['description', 'ASC'], ['createdAt', 'DESC']],
+            where:{
+                [Op.or]: {
+                    description: {[Op.like]: `%${searchQuery}%`},
+                    sku: {[Op.like]: `%${searchQuery}%`}
+                }
+            }
+        })
+        const response = {
+            data: rows,
+            meta: {
+                page: Number(page),
+                totalItems: count,
+                totalPages: Math.ceil(count/limit)
+            }
+        }
+        reply.status(200).send(response);
+    }catch(error){
+        reply.status(500).reply({error: error.message})
+    }
 })
 
 api.post('/service_orders', async (request, reply) => {

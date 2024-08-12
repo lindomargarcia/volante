@@ -18,7 +18,7 @@ export default function Card({children, className}: IProps) {
 
 Card.Container = ({children}: {children: ReactNode}) => {
     return (
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex flex-1 items-start content-start align-top gap-2 flex-wrap overflow-y-scroll">
             {children}
         </div>
     )
@@ -36,7 +36,7 @@ Card.Header = ({title, description, avatar, children, fallback}: {title?: string
             {(avatar || fallback) && 
                 <Avatar>
                     {avatar && <AvatarImage src={avatar}/>}
-                    {fallback && <AvatarFallback className="bg-[--theme-highlight-100]">{fallback}</AvatarFallback>}
+                    {fallback && <AvatarFallback className="bg-[--theme-highlight-100] text-[--theme-highlight]">{fallback}</AvatarFallback>}
                 </Avatar>
             }
             <div className="flex-1 min-w-[160px]">
