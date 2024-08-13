@@ -1,21 +1,37 @@
 import Card from "@/components/Card"
-import { getAllVehiclesAPI } from "@/data/api/VehiclesAPI"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { getVehiclesAPI } from "@/data/api/VehiclesAPI"
+import { USE_QUERY_CONFIGS } from "@/data/constants/utils"
+import useDebounce from "@/hooks/useDebounce"
 import { isToday } from "@/lib/utils"
-import { useQuery } from "@tanstack/react-query"
+import { useInfiniteQuery } from "@tanstack/react-query"
 
 export default function VehiclesPage() {
-  const {data: vehicles} = useQuery({
-    queryKey: ['get_all_vehicles'],
-    queryFn: getAllVehiclesAPI,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false
+  const [searchValue, setSearchValue] = useDebounce({timeout: 200})
+
+  const {data: vehicles, isFetchingNextPage, hasNextPage, fetchNextPage} = useInfiniteQuery({
+    queryKey: ['get_all_vehicles', {searchValue}],
+    queryFn: ({pageParam = 1}) => getVehiclesAPI(searchValue, pageParam),
+    ...USE_QUERY_CONFIGS,
+    getNextPageParam: (lastPage) => {
+      const nextPage = lastPage.meta.page + 1
+      return nextPage <= lastPage.meta.totalPages ? nextPage : undefined
+    },
+    initialPageParam: 1
   })
 
+  const vehiclesData = vehicles?.pages.flatMap(page => page.data)  || []
+
   return (
-    <div className="flex h-full">
+    <div className="flex h-full flex-col">
+      <h1 className="text-xl font-bold">Veículos Cadastrados</h1>
+      <div className='flex my-4'>
+        <Input type="text"  className="flex-1 p-6" placeholder="Pesquise os veículos aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
+      </div>
       <Card.Container>
-        {vehicles?.map((vehicle: any) => (
-          <Card className="max-w-[250px]" key={vehicle.id}>
+        {vehiclesData?.map((vehicle: any) => (
+          <Card key={vehicle.id}>
             <Card.Header
               title={vehicle.brand + ' ' + vehicle.model + ' ' + vehicle.year}
               description={String(vehicle.plate).toUpperCase()}
@@ -25,6 +41,15 @@ export default function VehiclesPage() {
           </Card>
         ))}
       </Card.Container>
+      {hasNextPage && <div className="flex justify-center">
+        <Button  
+            loading={isFetchingNextPage}
+            onClick={() => fetchNextPage()} 
+            variant={'default'}>
+            Ver mais
+        </Button>
+      </div>
+      }
     </div>
   )
 }

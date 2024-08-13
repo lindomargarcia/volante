@@ -1,3 +1,1 @@
-import { PAGE_LIMIT } from "../constants/utils";
-
-export const getCatalogAPI = (page?: number, limit = PAGE_LIMIT) => fetch(`http://localhost:2000/catalog?page=${page}&limit=${limit}`).then(res => res.json())
+export const getCatalogAPI = (searchValue = '', page = 1) => fetch(`http://localhost:2000/catalog/search?page=${page}&searchValue=${searchValue}`).then(res => res.json())

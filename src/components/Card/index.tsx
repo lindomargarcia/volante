@@ -10,7 +10,7 @@ interface IProps{
 
 export default function Card({children, className}: IProps) {
   return (
-    <BasicCard className={`rounded-lg flex flex-col flex-1 max-w-[400px] relative active:scale-95 transition hover:border-[--theme-highlight] hover:shadow-lg hover:shadow-[--theme-highlight-100] ${className}`}>
+    <BasicCard className={`rounded-lg flex flex-col flex-1 relative active:scale-95 transition hover:border-[--theme-highlight] hover:shadow-lg hover:shadow-[--theme-highlight-100] ${className}`}>
         {children}
     </BasicCard>
   )
@@ -18,7 +18,7 @@ export default function Card({children, className}: IProps) {
 
 Card.Container = ({children}: {children: ReactNode}) => {
     return (
-        <div className="flex flex-1 items-start content-start align-top gap-2 flex-wrap overflow-y-scroll">
+        <div className="grid grid-cols-1 md:grid-cols-[repeat(2,minmax(320px,1fr))] lg:grid-cols-[repeat(3,minmax(320px,1fr))] xl:grid-cols-[repeat(4,minmax(320px,1fr))] flex-1 content-start gap-2 flex-wrap overflow-y-scroll">
             {children}
         </div>
     )

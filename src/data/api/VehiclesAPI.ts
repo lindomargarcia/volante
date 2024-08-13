@@ -1,1 +1,1 @@
-export const getAllVehiclesAPI = () => fetch('http://localhost:2000/vehicles').then(res => res.json())
+export const getVehiclesAPI = (searchValue = '', page = 1) => fetch('http://localhost:2000/vehicles/search?page=' + page + '&searchValue=' + searchValue).then(res => res.json())

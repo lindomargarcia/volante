@@ -1,1 +1,1 @@
-export const getAllCustomersAPI = () => fetch('http://localhost:2000/customers').then(res => res.json())
+export const getCustomersAPI = (searchValue = '', page = 1) => fetch('http://localhost:2000/customers/search?searchValue=' + searchValue + '&page=' + page).then(res => res.json());

@@ -1,30 +1,32 @@
 import Card from "@/components/Card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { getCatalogAPI } from "@/data/api/CatalogAPI";
+import { USE_QUERY_CONFIGS } from "@/data/constants/utils";
+import useDebounce from "@/hooks/useDebounce";
 import { currencyFormat, isToday } from "@/lib/utils";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Loader2Icon } from "lucide-react";
 
 export default function CatalogPage() {
-    const { data, error, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
-        queryKey: ['get_catalog'],
-        queryFn: ({ pageParam = 1 }) => getCatalogAPI(pageParam),
+    const [searchValue, setSearchValue] = useDebounce({timeout: 200})
+    const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
+        queryKey: ['get_catalog', searchValue],
+        queryFn: ({ pageParam = 1 }) => getCatalogAPI(searchValue, pageParam),
         getNextPageParam: (lastPage) => {
             const nextPage = lastPage.page + 1;
             return nextPage <= lastPage.totalPages ? nextPage : undefined;
         },
-        initialPageParam: 1,
-        refetchOnWindowFocus: false,
-        refetchOnMount: false,
-        retry: 2
+        ...USE_QUERY_CONFIGS
     });
 
-    if (error) return <div>Servidor não conectado</div>;
-
-    const catalogData = data?.pages.flatMap((page) => page.rows) || [];
+    const catalogData = data?.pages.flatMap((page) => page.data) || [];
 
     return (
         <div className="flex h-full flex-col">
+            <h1 className="text-xl font-bold">Meu Catálogo</h1>
+            <div className='flex my-4'>
+                <Input type="text"  className="flex-1 p-6" placeholder="Pesquise suas peças e serviços aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
+            </div>
             <Card.Container>
                 {catalogData.map((item: any) => (
                     <Card className="min-w-[300px]" key={item.id}>
@@ -37,13 +39,11 @@ export default function CatalogPage() {
                 ))}
             </Card.Container>
             {hasNextPage && <div className="flex justify-center">
-                <Button 
-                    disabled={isLoading} 
+                <Button  
+                    loading={isFetchingNextPage}
                     onClick={() => fetchNextPage()} 
-                    className="self-center" 
                     variant={'default'}>
-                    {isFetchingNextPage && <Loader2Icon className="animate-spin mr-2 transition" size={18} />}
-                    Carregar mais
+                    Ver mais
                 </Button>
             </div>}
         </div>

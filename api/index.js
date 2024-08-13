@@ -11,7 +11,7 @@ import { ServiceOrderItem } from './models/ServiceOrderItem.js';
 import cors from '@fastify/cors'
 
 const INITIAL_PAGE = 1;
-const PAGE_LIMIT = 15;
+const PAGE_LIMIT = 50;
 
 const api = Fastify({logger: false})
 
@@ -148,15 +148,15 @@ const createBasicCRUD = (name, route, table, methods = ['get_all','get_by_id', '
 
 createBasicCRUD('Catalog Price Condition', 'catalog_price_conditions', Catalog)
 createBasicCRUD('Customer', 'customers', Customer)
-api.get('/customers/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE_LIMIT, searchQuery = '' } }, reply) => {
+api.get('/customers/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE_LIMIT, searchValue = '' } }, reply) => {
     try {
         const {count, rows} = await Customer.findAndCountAll({
             where: {
                 [Op.or]: [
-                    { name: { [Op.like]: `%${searchQuery}%` } },
-                    { cpf: { [Op.like]: `%${searchQuery}%` } },
-                    { phone: { [Op.like]: `%${searchQuery}%` } },
-                    { email: { [Op.like]: `%${searchQuery}%` } },
+                    { name: { [Op.like]: `%${searchValue}%` } },
+                    { cpf: { [Op.like]: `%${searchValue}%` } },
+                    { phone: { [Op.like]: `%${searchValue}%` } },
+                    { email: { [Op.like]: `%${searchValue}%` } },
                 ]
             },
             limit: parseInt(limit, 10) || PAGE_LIMIT, 
@@ -180,7 +180,7 @@ api.get('/customers/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE
 });
 
 createBasicCRUD('Employee', 'employees', Employee)
-api.get('/employees/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIMIT, searchQuery = ''}}, reply) => {
+api.get('/employees/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIMIT, searchValue = ''}}, reply) => {
     try{
         const {count, rows} = await Employee.findAndCountAll({
             limit,
@@ -188,8 +188,8 @@ api.get('/employees/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_L
             order: [['name', 'ASC'], ['createdAt', 'DESC']],
             where:{
                 [Op.or]: {
-                    name: {[Op.like]: `%${searchQuery}%`},
-                    cpf: {[Op.like]: `%${searchQuery}%`}
+                    name: {[Op.like]: `%${searchValue}%`},
+                    cpf: {[Op.like]: `%${searchValue}%`}
                 }
             }
         })
@@ -211,18 +211,18 @@ createBasicCRUD('Insurance Company', 'insurance_companies', InsuranceCompany)
 createBasicCRUD('Service Order', 'service_orders', ServiceOrder, ['put', 'delete', 'get_all'])
 createBasicCRUD('Service Order Item', 'service_order_items', ServiceOrder)
 createBasicCRUD('Vehicle', 'vehicles', Vehicle)
-api.get('/vehicles/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE_LIMIT, searchQuery = '' } }, reply) => {
+api.get('/vehicles/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE_LIMIT, searchValue = '' } }, reply) => {
     try {
         const {count, rows} = await Vehicle.findAndCountAll({
             where: {
                 [Op.or]: [
-                    { plate: { [Op.like]: `%${searchQuery}%` } },
-                    { brand: { [Op.like]: `%${searchQuery}%` } },
-                    { model: { [Op.like]: `%${searchQuery}%` } },
+                    { plate: { [Op.like]: `%${searchValue}%` } },
+                    { brand: { [Op.like]: `%${searchValue}%` } },
+                    { model: { [Op.like]: `%${searchValue}%` } },
                 ]
             },
             limit: parseInt(limit, 10) || PAGE_LIMIT, 
-            order: [['plate', 'ASC'], ['createdAt', 'DESC']],
+            order: [['brand', 'ASC'],['model', 'ASC'], ['createdAt', 'DESC']],
             offset: getPaginationOffset(page, limit),
         });
 
@@ -242,7 +242,7 @@ api.get('/vehicles/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE_
 
 
 createBasicCRUD('Catalog', 'catalog', Catalog, ['get_by_id', 'post', 'put', 'delete'])
-api.get('/catalog/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIMIT, searchQuery = ''}}, reply) => {
+api.get('/catalog/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIMIT, searchValue = ''}}, reply) => {
     try{
         const {count, rows} = await Catalog.findAndCountAll({
             limit,
@@ -250,8 +250,8 @@ api.get('/catalog/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIM
             order: [['description', 'ASC'], ['createdAt', 'DESC']],
             where:{
                 [Op.or]: {
-                    description: {[Op.like]: `%${searchQuery}%`},
-                    sku: {[Op.like]: `%${searchQuery}%`}
+                    description: {[Op.like]: `%${searchValue}%`},
+                    sku: {[Op.like]: `%${searchValue}%`}
                 }
             }
         })

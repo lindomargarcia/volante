@@ -11,7 +11,7 @@ export interface InputProps
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, value, label, ...props }, ref) => {
     return (
-      <span>
+      <span className="flex-1">
         {label && <Label className='text-sm mb-1'>{label}</Label>}
         <input
           type={type}

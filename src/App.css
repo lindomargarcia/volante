@@ -16,3 +16,7 @@ body{
   position: relative;
   display: flex;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
