@@ -4,10 +4,11 @@ import { Toaster } from "./components/ui/sonner";
 import { createBrowserRouter, Link, Outlet, RouterProvider } from "react-router-dom";
 import Menu from "./components/Menu/Menu";
 import { ROUTER_PATHS } from "./routes/routes";
-import { Car, FilePlus, Hammer, Home, Settings2, User } from "lucide-react";
+import { Car, FilePlus, Hammer, Home, Settings2, User, Users } from "lucide-react";
 import VehiclesPage from "./pages/Vehicles/VehiclesPage";
 import CustomersPage from "./pages/Customers/CustomersPage";
 import CatalogPage from "./pages/Catalog/CatalogPage";
+import SquadPage from "./pages/Squad/SquadPage";
 
 const MENU_LINKS = [
   {
@@ -39,6 +40,12 @@ const MENU_LINKS = [
     element: <CatalogPage/>,
     label: 'Catálogo',
     icon: <Hammer size={23}/>
+  },
+  {
+    path: ROUTER_PATHS.EMPLOYEE,
+    element: <SquadPage/>,
+    label: 'Equipe',
+    icon: <Users size={23}/>
   },
   {
     path: ROUTER_PATHS.CONFIG,

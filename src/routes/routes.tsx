@@ -3,6 +3,7 @@ export enum ROUTER_PATHS {
     SERVICE_ORDER = '/service-order',
     VEHICLE = '/vehicle',
     CUSTOMER = '/customer',
+    EMPLOYEE = '/employee',
     CATALOG = '/catalog',
     CONFIG = '/config'
 }

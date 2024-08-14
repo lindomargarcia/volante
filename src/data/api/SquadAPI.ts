@@ -1,0 +1,1 @@
+export const getSquadAPI = (searchValue = '', page = 1) => fetch('http://localhost:2000/employees/search?searchValue=' + searchValue + '&page=' + page).then(res => res.json());
