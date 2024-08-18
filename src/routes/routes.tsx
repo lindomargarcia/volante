@@ -4,6 +4,7 @@ export enum ROUTER_PATHS {
     VEHICLE = '/vehicle',
     CUSTOMER = '/customer',
     EMPLOYEE = '/employee',
+    SUPPLIER = '/supplier',
     CATALOG = '/catalog',
     CONFIG = '/config'
 }

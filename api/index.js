@@ -9,6 +9,7 @@ import { ForeignKeyConstraintError, Op, UniqueConstraintError, ValidationError }
 import { Catalog } from './models/Catalog.js';
 import { ServiceOrderItem } from './models/ServiceOrderItem.js';
 import cors from '@fastify/cors'
+import { Supplier } from './models/Supplier.js';
 
 const INITIAL_PAGE = 1;
 const PAGE_LIMIT = 50;
@@ -190,6 +191,34 @@ api.get('/employees/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_L
                 [Op.or]: {
                     name: {[Op.like]: `%${searchValue}%`},
                     cpf: {[Op.like]: `%${searchValue}%`}
+                }
+            }
+        })
+        const response = {
+            data: rows,
+            meta: {
+                page: Number(page),
+                totalItems: count,
+                totalPages: Math.ceil(count/limit)
+            }
+        }
+        reply.status(200).send(response);
+    }catch(error){
+        reply.status(500).reply({error: error.message})
+    }
+})
+
+createBasicCRUD('Supplier', 'suppliers', Supplier)
+api.get('/suppliers/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIMIT, searchValue = ''}}, reply) => {
+    try{
+        const {count, rows} = await Supplier.findAndCountAll({
+            limit,
+            offset: getPaginationOffset(page, limit),
+            order: [['name', 'ASC'], ['createdAt', 'DESC']],
+            where:{
+                [Op.or]: {
+                    name: {[Op.like]: `%${searchValue}%`},
+                    cnpj: {[Op.like]: `%${searchValue}%`}
                 }
             }
         })

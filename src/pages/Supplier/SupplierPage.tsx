@@ -1,7 +1,7 @@
 import Card from "@/components/Card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { getSquadAPI } from "@/data/api/SquadAPI"
+import { getSupplierAPI } from "@/data/api/SupplierAPI"
 import { USE_QUERY_CONFIGS } from "@/data/constants/utils"
 import useDebounce from "@/hooks/useDebounce"
 import { isToday } from "@/lib/utils"
@@ -9,31 +9,31 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 import { Mail, Phone } from "lucide-react"
 
 
-export default function SquadPage() {
+export default function SupplierPage() {
   const [searchValue, setSearchValue] = useDebounce({timeout: 200})
 
   const {data: squad, fetchNextPage, isFetchingNextPage, hasNextPage} = useInfiniteQuery({
-    queryKey: ['get_squad', {searchValue}],
-    queryFn: ({pageParam = 1}) => getSquadAPI(searchValue, pageParam),
+    queryKey: ['get_supplier', {searchValue}],
+    queryFn: ({pageParam = 1}) => getSupplierAPI(searchValue, pageParam),
     ...USE_QUERY_CONFIGS,
     getNextPageParam: (lastPage) => {
       const nextPage = lastPage.meta.page + 1;
       return nextPage <= lastPage.meta.totalPages ? nextPage : undefined;
     }
   })
-  const squadData = squad?.pages.flatMap((page) => page.data) || [];
+  const supplierData = squad?.pages.flatMap((page) => page.data) || [];
 
   return (
     <div className="flex flex-col h-full">
-      <h1 className="text-xl font-bold">Minha Equipe</h1>
+      <h1 className="text-xl font-bold">Meus Fornecedores</h1>
       <div className='flex my-4'>
-        <Input type="text"  className="flex-1 p-6" placeholder="Pesquise os membros da sua equipe aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
+        <Input type="text"  className="flex-1 p-6" placeholder="Pesquise os fornecedores aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
       </div>
       <Card.Container>
-        {squadData.map((squadMember: any) => (
-          <Card className="min-h-[110px]" key={squadMember.id}>
-            {isToday(new Date(squadMember.createdAt)) && <Card.Badge>Novo</Card.Badge>}
-            <Card.Header fallback={squadMember?.name?.substring(0,1)} title={squadMember.name} description={squadMember.cpf || squadMember.phone || squadMember.email}>
+        {supplierData.map((supplier: any) => (
+          <Card className="min-h-[110px]" key={supplier.id}>
+            {isToday(new Date(supplier.createdAt)) && <Card.Badge>Novo</Card.Badge>}
+            <Card.Header fallback={supplier?.name?.substring(0,1)} title={supplier.name} description={supplier.cnpj || supplier.phone || supplier.email}>
               <Card.HeaderActions>
                 <Card.Action icon={<Mail size={18}/>}/>
                 <Card.Action icon={<Phone size={18}/>}/>
