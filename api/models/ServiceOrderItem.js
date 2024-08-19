@@ -3,29 +3,18 @@ import db from "../config/database.js";
 import { ServiceOrder } from "./ServiceOrder.js";
 import { Catalog } from "./Catalog.js";
 
-export const ServiceOrderItem = db.define('ServiceOrderItem', {
-    serviceOrderId: {
-        type: DataTypes.NUMBER,
-        allowNull: false,
-        references: {
-            model: ServiceOrder,
-            key: 'id'
-        }
-    },
-    catalogItemId: {
-        type: DataTypes.NUMBER,
-        allowNull: true,
-        references: {
-            model: Catalog,
-            key: 'id'
-        }
+export const ServiceOrderItem = db.define('service_order_items', {
+    id:{
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
     },
     description:{
         type: DataTypes.STRING,
         allowNull: false
     },
     value:{
-        type: DataTypes.NUMBER,
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
     quantity:{
@@ -34,17 +23,23 @@ export const ServiceOrderItem = db.define('ServiceOrderItem', {
         defaultValue: 1
     },
     discount: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: true
     },
     total: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false
     },
     type: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
+        defaultValue: 'parts'
     }
 }, {
     tableName: 'service_order_items'
 })
+
+ServiceOrderItem.belongsTo(ServiceOrder, { foreignKey: 'serviceOrderId', allowNull: true });
+ServiceOrderItem.belongsTo(Catalog, { foreignKey: 'catalogItemId', allowNull: true });
+ServiceOrder.hasMany(ServiceOrderItem, { foreignKey: 'serviceOrderId' });
+Catalog.hasMany(ServiceOrderItem, { foreignKey: 'catalogItemId' });

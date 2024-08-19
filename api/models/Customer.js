@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import db from "../config/database.js";
 
 
-export const Customer = db.define('Customer', {
+export const Customer = db.define('customer', {
   name: {
     type: DataTypes.STRING,
     allowNull: false

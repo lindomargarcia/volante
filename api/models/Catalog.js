@@ -1,13 +1,7 @@
 import { DataTypes } from "sequelize";
 import db from "../config/database.js";
 
-export const Catalog = db.define('Catalog', {
-    id:{
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        unique: true,
-        primaryKey: true
-    },
+export const Catalog = db.define('catalog', {
     description: {
         type: DataTypes.STRING,
         allowNull: false
@@ -15,8 +9,7 @@ export const Catalog = db.define('Catalog', {
     sku: {
         type: DataTypes.STRING(25),
         allowNull: true,
-        unique: true,
-        primaryKey: true
+        unique: true
     },
     value:{
         type: DataTypes.NUMBER,

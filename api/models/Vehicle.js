@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import db from "../config/database.js";
 
-export const Vehicle = db.define('Vehicle', {
+export const Vehicle = db.define('vehicle', {
     plate: {
         type: DataTypes.STRING(7),
         allowNull: false,

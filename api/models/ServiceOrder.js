@@ -44,3 +44,6 @@ export const ServiceOrder = db.define("ServiceOrder", {
 },{
     tableName: 'service_orders'
 })
+
+ServiceOrder.belongsTo(Customer)
+ServiceOrder.belongsTo(Vehicle)

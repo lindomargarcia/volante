@@ -4,10 +4,10 @@ import { Customer } from "./models/Customer.js";
 import { Vehicle } from "./models/Vehicle.js";
 import { Employee } from "./models/Employee.js";
 import { InsuranceCompany } from "./models/InsuranceCompany.js";
-import { ServiceOrder } from "./models/ServiceOrder.js";
-import { ForeignKeyConstraintError, Op, UniqueConstraintError, ValidationError } from 'sequelize';
 import { Catalog } from './models/Catalog.js';
 import { ServiceOrderItem } from './models/ServiceOrderItem.js';
+import { ServiceOrder } from "./models/ServiceOrder.js";
+import { Op, ValidationError } from 'sequelize';
 import cors from '@fastify/cors'
 import { Supplier } from './models/Supplier.js';
 
@@ -68,8 +68,7 @@ const createBasicCRUD = (name, route, table, methods = ['get_all','get_by_id', '
             reply.status(201).send(result);
             } catch (error) {
                 if(error instanceof ValidationError){
-                    const message = error.errors[0].message
-                    reply.status(400).send({error: message})
+                    reply.status(400).send({error})
                 }
             reply.status(400).send({ error: error.message });
             }
@@ -204,7 +203,7 @@ api.get('/employees/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_L
         }
         reply.status(200).send(response);
     }catch(error){
-        reply.status(500).reply({error: error.message})
+        reply.status(500).send({error: error.message})
     }
 })
 
@@ -232,12 +231,100 @@ api.get('/suppliers/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_L
         }
         reply.status(200).send(response);
     }catch(error){
-        reply.status(500).reply({error: error.message})
+        reply.status(500).send({error: error.message})
     }
 })
 
 createBasicCRUD('Insurance Company', 'insurance_companies', InsuranceCompany)
 createBasicCRUD('Service Order', 'service_orders', ServiceOrder, ['put', 'delete', 'get_all'])
+api.get('/service_orders/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIMIT, searchValue = ''}}, reply) => {
+    try{
+        const {count, rows} = await ServiceOrder.findAndCountAll({
+            limit,
+            offset: getPaginationOffset(page, limit),
+            order: [['createdAt', 'DESC']],
+            include:[
+                {
+                    model: Customer,
+                    attributes: ['id', 'name', 'cpf', 'phone', 'email']
+                },
+                {
+                    model: Vehicle,
+                    attributes: ['id', 'plate', 'brand', 'model', 'year','color']
+                },
+                {
+                    model: ServiceOrderItem,
+                    attributes: ['id', 'description','value','quantity','discount','total', 'type']
+                }
+            ]
+        })
+        const response = {
+            data: rows,
+            meta: {
+                page: Number(page),
+                totalItems: count,
+                totalPages: Math.ceil(count/limit)
+            }
+        }
+        reply.status(200).send(response);
+    }catch(error){
+        reply.status(500).send({error: error.message})
+    }
+})
+
+
+api.post('/service_orders', async (request, reply) => {
+    if(!request.body.customer){
+        throw new Error('Customer cannot be empty')
+    }else if(!request.body.vehicle){
+        throw new Error('Vehicle cannot be empty')
+    }
+
+    await db.transaction(async t => {
+        try{
+            const [customer] = await Customer.findOrCreate({
+                transaction: t,
+                where: {
+                    [Op.or]: [
+                        request?.body?.customer?.id && { id: request?.body?.customer?.id },
+                        request?.body?.customer?.cpf && { cpf: request?.body?.customer?.cpf }
+                    ]
+                },
+                defaults: request.body.customer,
+            })
+            
+            const [vehicle] = await Vehicle.findOrCreate({
+                transaction: t,
+                where: {
+                    [Op.or]: [
+                        request?.body?.vehicle?.id && { id: request?.body?.vehicle?.id },
+                        request?.body?.vehicle?.plate && { plate: request?.body?.vehicle?.plate },
+                    ]
+                },
+                defaults: request?.body?.vehicle
+            })
+            
+            const {status, insuranceCompanyId, durationQuantity, durationType, items} = request.body
+
+            const newSO = await ServiceOrder.create({status, customerId: customer.id, vehicleId: vehicle.id, insuranceCompanyId, durationQuantity, durationType}, {transaction: t})
+            let createdItems = []
+
+            if(items && items?.length > 0){
+                const itemsData = items.map(item => ({serviceOrderId: newSO.id, ...item}));
+                createdItems = await ServiceOrderItem.bulkCreate(itemsData, { transaction: t })
+            }
+
+            reply.status(200).send({...newSO.dataValues, items: createdItems, customer, vehicle})
+        }catch(error){
+            console.log(error)
+            await t.rollback()
+            reply.status(500).send({error})
+        }
+    })
+    reply.status(204)
+})
+
+
 createBasicCRUD('Service Order Item', 'service_order_items', ServiceOrder)
 createBasicCRUD('Vehicle', 'vehicles', Vehicle)
 api.get('/vehicles/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE_LIMIT, searchValue = '' } }, reply) => {
@@ -294,57 +381,6 @@ api.get('/catalog/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIM
         }
         reply.status(200).send(response);
     }catch(error){
-        reply.status(500).reply({error: error.message})
+        reply.status(500).send({error})
     }
-})
-
-api.post('/service_orders', async (request, reply) => {
-    if(!request.body.customer){
-        throw new Error('Customer cannot be empty')
-    }else if(!request.body.vehicle){
-        throw new Error('Vehicle cannot be empty')
-    }
-
-    await db.transaction(async t => {
-        try{
-            let customerId, vehicleId = null
-
-            if(request.body?.customer?.id){
-                customerId = request.body.customer.id
-            }else{
-                const newCustomer = await Customer.create(request.body.customer, { transaction: t })
-                customerId = newCustomer.id
-            }
-
-            if(request.body?.vehicle?.id){
-                vehicleId = request.body.vehicle.id
-            }else{
-                const newVehicle = await Vehicle.create(request.body.vehicle, { transaction: t })
-                vehicleId = newVehicle.id
-            }
-
-            const {status, insuranceCompanyId, durationQuantity, durationType, items} = request.body
-
-            const newSO = await ServiceOrder.create({status, customerId, vehicleId, insuranceCompanyId, durationQuantity, durationType}, {transaction: t})
-
-            let createdItems = []
-
-            if(items && items?.length > 0){
-                const itemsData = items.map(item => ({serviceOrderId: newSO.id, ...item}));
-                createdItems = await ServiceOrderItem.bulkCreate(itemsData, { transaction: t })
-            }
-
-            reply.status(200).send({...newSO.dataValues, items: createdItems})
-        }catch(error){
-            console.error(error)
-            if(error instanceof UniqueConstraintError){
-                throw new Error(error.errors[0]?.message)
-                
-            }else if(error instanceof ForeignKeyConstraintError){
-                throw new Error('Customer, Vehicle, Insurance Company or Catalog Item does not exist')
-            }
-            throw error
-        }
-    })
-    reply.status(204)
 })
