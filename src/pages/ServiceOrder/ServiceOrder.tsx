@@ -21,14 +21,12 @@ import { Card } from "@/components/ui/card";
 import { CAR_ACTIONS, ICarSelectionValue, IChangeValue } from "@/components/CarPartsSelector/types";
 import { COLORS } from "@/data/constants/colors";
 import { useServiceOrderStore } from "@/hooks/useServiceOrder";
-import { getCarServicesAPI } from "@/data/api/CarServicesAPI";
 import { getServiceOrderAPI } from "@/data/api/ServiceOrderAPI";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
   const {customer,vehicle,items,car_map,status,setCustomer,setVehicle,addItem,setCarMap,setStatus} = useServiceOrderStore()
 
-  const {data: carServices} = useQuery({queryKey: ['car-services'],queryFn: getCarServicesAPI,refetchOnWindowFocus: false})
   const { data: serviceOrder } = useQuery({queryFn: getServiceOrderAPI,queryKey: ['service-order'],refetchOnWindowFocus: false})
 
 
@@ -93,7 +91,7 @@ function ServiceOrderPage() {
         {/* right Side */}
         <div className="flex flex-1 flex-col">
           <ServiceOrderHeader serviceOrder={serviceOrder} status={status} onStatusChange={setStatus}/>
-          <ServiceOrderItems data={items} carServices={carServices || []} onAddItem={handleNewSOItem}/>
+          <ServiceOrderItems data={items} onAddItem={handleNewSOItem}/>
           <div className="flex mt-6 justify-end items-end gap-3">
             <Modal 
               trigger={<Button variant="outline"><File size={18} className="mr-2"/>PDF</Button>}

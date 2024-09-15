@@ -12,7 +12,7 @@ export default function SearchPage({children}: any) {
 
 SearchPage.Title = ({children}: {children: string}) => {
     return (
-        <h1 className="text-xl font-bold">{children}</h1>
+        <h1 className="text-2xl">{children}</h1>
     )
 }
 
@@ -35,7 +35,6 @@ SearchPage.LoadMore = ({loading, visible, onClick, children}: LoadMoreProps) => 
     if(!visible){
         return null
     }
-    
     return(
         <div className="flex justify-center">
             <Button  
