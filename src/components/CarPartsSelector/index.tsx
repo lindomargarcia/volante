@@ -12,28 +12,35 @@ interface IProps{
   onChange: (value: IChangeValue, state: ICarSelectionValue) => void
 }
 
+interface CarMeshSettingsProps {
+  material: CarMaterialsTypes,
+  color: string,
+  selected: CAR_PARTS[]
+}
+
 function CarServiceSelector({color, value, onChange}: IProps) {
   const [action, setAction] = useState<ICarAction>({value: CAR_ACTIONS.DAMAGE, option: SEVERITY_STATUS.CRITICAL});
-  const [carMaterial, setCarMaterial] = useState(CarMaterialsTypes.RAW);
-  const [activeCarParts, setActiveCarParts] = useState<CAR_PARTS[]>([]);
   const [separatedColor, setSeparetedColor] = useState<ISeparatedColors[]>([]);
   const [services, setServices] = useState<ICarSelectionValue>(value || DEFAULT_SELECTION);
+  const [carMeshSetting, setCarMeshSettings] = useState<CarMeshSettingsProps>({
+    color: color,
+    material: CarMaterialsTypes.RAW,
+    selected: [],
+  })
 
-  const handleOnActionChange = (data: ICarAction) => {
+  const onActionChange = (data: ICarAction) => {
     if (!data.value) return;
 
     switch (data.value) {
       case CAR_ACTIONS.DAMAGE: {
-        setCarMaterial(CarMaterialsTypes.RAW);
+        setCarMeshSettings({material: CarMaterialsTypes.RAW, selected: reduceDamagedCarParts(services[CAR_ACTIONS.DAMAGE]), color: color})
         setSeparetedColor(getSeparatedColorsByDamageSeverity(services[CAR_ACTIONS.DAMAGE]));
-        setActiveCarParts(reduceDamagedCarParts(services[CAR_ACTIONS.DAMAGE]));
         setAction(data)
         break;
       }
       case CAR_ACTIONS.PAINT: {
-        setCarMaterial(CarMaterialsTypes.PAINT);
+        setCarMeshSettings({material: CarMaterialsTypes.PAINT, selected: services[CAR_ACTIONS.PAINT]?.car_parts, color: color})
         setSeparetedColor([]);
-        setActiveCarParts(services[CAR_ACTIONS.PAINT]?.car_parts);
         if(data.option){
           let updatedServices = {...services}
           updatedServices.paint.type = data.option
@@ -45,22 +52,21 @@ function CarServiceSelector({color, value, onChange}: IProps) {
         break;
       }
       case CAR_ACTIONS.RECOVER: {
-        setCarMaterial(CarMaterialsTypes.POLISHING);
+        setCarMeshSettings({material: CarMaterialsTypes.POLISHING, selected: services[CAR_ACTIONS.RECOVER]?.car_parts, color: color})
         setSeparetedColor([]);
-        setActiveCarParts(services[CAR_ACTIONS.RECOVER]?.car_parts);
         setAction(data)
         break;
       }
     }
   };
 
-  const handleOnCarPartsChange = (selected: CAR_PARTS, selectedList: CAR_PARTS[]) => {
+  const onCarPartClick = (selected: CAR_PARTS, selectedList: CAR_PARTS[]) => {
     let updatedServices: any = { ...services };
 
     if (action.value === CAR_ACTIONS.DAMAGE) {
       updatedServices[CAR_ACTIONS.DAMAGE] = getDamageList(services[CAR_ACTIONS.DAMAGE],selected,(action.option as SEVERITY_STATUS) || SEVERITY_STATUS.CRITICAL);
       setSeparetedColor(getSeparatedColorsByDamageSeverity(updatedServices[CAR_ACTIONS.DAMAGE]));
-      setActiveCarParts(reduceDamagedCarParts(updatedServices[CAR_ACTIONS.DAMAGE]));
+      setCarMeshSettings({...carMeshSetting, selected: reduceDamagedCarParts(updatedServices[CAR_ACTIONS.DAMAGE])})
     } else {
       updatedServices[action.value] = {
         ...updatedServices[action.value],
@@ -85,16 +91,16 @@ function CarServiceSelector({color, value, onChange}: IProps) {
             dampingFactor={0.08}
           />
           <CarMesh
-            value={activeCarParts}
-            onChange={handleOnCarPartsChange}
-            material={carMaterial}
-            carColor={color}
+            onChange={onCarPartClick}
             baseColor="#e9fcff"
+            value={carMeshSetting.selected}
+            material={carMeshSetting.material}
+            carColor={carMeshSetting.color}
             separatedColors={separatedColor}
           />
         </Suspense>
       </Canvas>
-      <CarActionToggle value={action} onChange={handleOnActionChange} />
+      <CarActionToggle value={action} onChange={onActionChange} />
     </div>
   );
 }

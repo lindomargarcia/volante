@@ -1,6 +1,5 @@
 import Card from "@/components/Card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import SearchPage from "@/components/SearchPage"
 import { getSupplierAPI } from "@/data/api/SupplierAPI"
 import { USE_QUERY_CONFIGS } from "@/data/constants/utils"
 import useDebounce from "@/hooks/useDebounce"
@@ -10,7 +9,7 @@ import { Mail, Phone } from "lucide-react"
 
 
 export default function SupplierPage() {
-  const [searchValue, setSearchValue] = useDebounce({timeout: 200})
+  const [searchValue, setSearchValue] = useDebounce({timeout: 800})
 
   const {data: squad, fetchNextPage, isFetchingNextPage, hasNextPage} = useInfiniteQuery({
     queryKey: ['get_supplier', {searchValue}],
@@ -24,11 +23,9 @@ export default function SupplierPage() {
   const supplierData = squad?.pages.flatMap((page) => page.data) || [];
 
   return (
-    <div className="flex flex-col h-full">
-      <h1 className="text-xl font-bold">Meus Fornecedores</h1>
-      <div className='flex my-4'>
-        <Input type="text"  className="flex-1 p-6" placeholder="Pesquise os fornecedores aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
-      </div>
+    <SearchPage>
+      <SearchPage.Title>Meus Fornecedores</SearchPage.Title>
+      <SearchPage.SearchBar placeholder="Pesquise os fornecedores aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
       <Card.Container>
         {supplierData.map((supplier: any) => (
           <Card className="min-h-[110px]" key={supplier.id}>
@@ -42,15 +39,7 @@ export default function SupplierPage() {
           </Card>
         ))}
         </Card.Container>
-        {hasNextPage && <div className="flex justify-center">
-          <Button  
-              loading={isFetchingNextPage}
-              onClick={() => fetchNextPage()} 
-              variant={'default'}>
-              Ver mais
-          </Button>
-        </div>
-        }
-      </div>
+      <SearchPage.LoadMore visible={hasNextPage} loading={isFetchingNextPage} onClick={() => fetchNextPage()}>Ver mais</SearchPage.LoadMore>
+    </SearchPage>
   )
 }

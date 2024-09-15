@@ -4,27 +4,27 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "../../ui/form"
 import { FormInput } from "../../FormInput"
-import { CustomerSchema, customerSchema, DEFAULT_CUSTOMER_VALUE } from "./schema"
+import { CustomerType, customerSchema, DEFAULT_CUSTOMER_VALUE } from "./schema"
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton"
 import MaskedInput from "@/components/MaskedInput/MaskedInput"
 import { MASKS } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 interface ICustomerSheetsProps {
-  data?: CustomerSchema,
-  onSubmit: (data: CustomerSchema) => Promise<any>
-  onDelete: (data?: CustomerSchema) => Promise<any>
+  data?: CustomerType,
+  onSubmit: (data: CustomerType) => Promise<any>
+  onDelete: (data?: CustomerType) => Promise<any>
   isPending: boolean
 }
 
 export function CustomerForm({data, onSubmit, onDelete, isPending}: ICustomerSheetsProps) {
-  const form = useForm<CustomerSchema>({
+  const form = useForm<CustomerType>({
     resolver: zodResolver(customerSchema),
     defaultValues: data || DEFAULT_CUSTOMER_VALUE
   })
 
-  const onFormSubmit = (data: CustomerSchema) => {onSubmit(data)}
+  const onFormSubmit = (data: CustomerType) => {onSubmit(data)}
 
-  const handleOnDelete = (data: CustomerSchema) => {
+  const handleOnDelete = (data: CustomerType) => {
     onDelete(data).then(() => {
       form.clearErrors()
       form.setValue('name','')

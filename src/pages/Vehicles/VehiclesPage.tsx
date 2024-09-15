@@ -1,6 +1,5 @@
 import Card from "@/components/Card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import SearchPage from "@/components/SearchPage"
 import { getVehiclesAPI } from "@/data/api/VehiclesAPI"
 import { USE_QUERY_CONFIGS } from "@/data/constants/utils"
 import useDebounce from "@/hooks/useDebounce"
@@ -24,11 +23,9 @@ export default function VehiclesPage() {
   const vehiclesData = vehicles?.pages.flatMap(page => page.data)  || []
 
   return (
-    <div className="flex h-full flex-col">
-      <h1 className="text-xl font-bold">Veículos Cadastrados</h1>
-      <div className='flex my-4'>
-        <Input type="text"  className="flex-1 p-6" placeholder="Pesquise os veículos aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
-      </div>
+    <SearchPage>
+      <SearchPage.Title>Veículos cadastrados</SearchPage.Title>
+      <SearchPage.SearchBar placeholder="Pesquise os veículos aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
       <Card.Container>
         {vehiclesData?.map((vehicle: any) => (
           <Card key={vehicle.id}>
@@ -41,15 +38,7 @@ export default function VehiclesPage() {
           </Card>
         ))}
       </Card.Container>
-      {hasNextPage && <div className="flex justify-center">
-        <Button  
-            loading={isFetchingNextPage}
-            onClick={() => fetchNextPage()} 
-            variant={'default'}>
-            Ver mais
-        </Button>
-      </div>
-      }
-    </div>
+      <SearchPage.LoadMore visible={hasNextPage} loading={isFetchingNextPage} onClick={() => fetchNextPage()} >Ver mais</SearchPage.LoadMore>
+    </SearchPage>
   )
 }

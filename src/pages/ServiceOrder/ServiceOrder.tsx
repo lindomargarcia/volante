@@ -40,7 +40,6 @@ function ServiceOrderPage() {
   const handleCarMapChange = async (selected: IChangeValue, data: ICarSelectionValue) => {
     if(selected.action.value === CAR_ACTIONS.DAMAGE) return
 
-    toast.message("Clicou")
     const newItem: ServiceOrderItem = {id: '389', description: selected.action.value + ' ' + selected.car_part, discount: 0, quantity: 1, total: 50, type: selected.action.value, insurance_coverage: 0, value: 50}
     addItem(newItem)
     console.log(selected)

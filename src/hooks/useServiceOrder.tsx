@@ -4,7 +4,21 @@ import { DEFAULT_VEHICLE_VALUES, VehicleSchema } from "@/components/FormSheet/Ve
 import { STATUS_SERVICE_ORDER, ServiceOrderItem } from "@/pages/ServiceOrder/types";
 import { create } from "zustand";
 
-export const useServiceOrderStore = create((set: any) => ({
+interface ServiceOrderStore {
+  status: STATUS_SERVICE_ORDER,
+  customer: any,
+  vehicle: any,
+  items: [],
+  car_map: any,
+  setStatus: (status: STATUS_SERVICE_ORDER | string) => Promise<any>,
+  setCustomer: (customer: CustomerSchema) => Promise<any>,
+  setVehicle: (vehicle: VehicleSchema) => Promise<any>,
+  setItems: (items: ServiceOrderItem[]) => Promise<any>,
+  setCarMap: (car_map: ICarSelectionValue) => Promise<any>,
+  addItem: (newItem: ServiceOrderItem) => Promise<any>
+}
+
+export const useServiceOrderStore = create<ServiceOrderStore>((set: any) => ({
     status: STATUS_SERVICE_ORDER.PENDING,
     customer: DEFAULT_CUSTOMER_VALUE,
     vehicle: DEFAULT_VEHICLE_VALUES,

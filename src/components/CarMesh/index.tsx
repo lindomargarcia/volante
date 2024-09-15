@@ -9,7 +9,7 @@ interface IProps {
   carColor: string
   baseColor?: string
   separatedColors?: ISeparatedColors[]
-  onChange?: (value: CAR_PARTS, selectedList: CAR_PARTS[]) => void
+  onChange?: (value: CAR_PARTS, selectedList: CAR_PARTS[], selected: boolean) => void
 }
 
 function CarMesh({value = [], material = CarMaterialsTypes.PAINT, baseColor = '#FFF', carColor, onChange = () => {}, separatedColors}: IProps) {
@@ -31,7 +31,7 @@ function CarMesh({value = [], material = CarMaterialsTypes.PAINT, baseColor = '#
         setSelectedList(selectedCarParts => {
           const isCarPartSelected = selectedCarParts.includes(clickedCarPart);
           let newSelectedCarPartsList = isCarPartSelected ? selectedCarParts.filter(value => value !== clickedCarPart) : [...selectedCarParts, clickedCarPart];
-          onChange(clickedCarPart, newSelectedCarPartsList)
+          onChange(clickedCarPart, newSelectedCarPartsList, !isCarPartSelected)
           return newSelectedCarPartsList
       });
     }
