@@ -17,7 +17,7 @@ interface IVehicleSheetsProps {
   isPending: boolean
 }
 
-export function VehicleFormSheet({data, onSubmit, onDelete, isPending}: IVehicleSheetsProps) {  
+export function VehicleForm({data, onSubmit, onDelete, isPending}: IVehicleSheetsProps) {  
   const form = useForm<VehicleSchema>({
     resolver: zodResolver(vehicleSchema),
     defaultValues: data || DEFAULT_VEHICLE_VALUES

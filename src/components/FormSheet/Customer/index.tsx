@@ -16,7 +16,7 @@ interface ICustomerSheetsProps {
   isPending: boolean
 }
 
-export function CustomerFormSheet({data, onSubmit, onDelete, isPending}: ICustomerSheetsProps) {
+export function CustomerForm({data, onSubmit, onDelete, isPending}: ICustomerSheetsProps) {
   const form = useForm<CustomerSchema>({
     resolver: zodResolver(customerSchema),
     defaultValues: data || DEFAULT_CUSTOMER_VALUE

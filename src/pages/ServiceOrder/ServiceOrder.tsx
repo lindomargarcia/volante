@@ -2,10 +2,10 @@ import { Car, File, Save, User } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
-import { CustomerFormSheet } from "@/components/FormSheet/Customer";
-import { VehicleFormSheet } from "@/components/FormSheet/Vehicle";
+import { CustomerForm } from "@/components/FormSheet/Customer";
+import { VehicleForm } from "@/components/FormSheet/Vehicle";
 import { useQuery } from "@tanstack/react-query";
-import ServiceOrderCard from "../../components/ServiceOrderCard/ServiceOrderCard";
+import ServiceOrderItems from "../../components/ServiceOrderItems/ServiceOrderItems";
 import { ServiceOrderItem } from "./types";
 import { DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
 import { VehicleSchema, DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema";
@@ -26,10 +26,7 @@ import { getServiceOrderAPI } from "@/data/api/ServiceOrderAPI";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
-  const {
-    customer,vehicle,items,car_map,status,
-    setCustomer,setVehicle,addItem,setCarMap,setStatus
-  } = useServiceOrderStore()
+  const {customer,vehicle,items,car_map,status,setCustomer,setVehicle,addItem,setCarMap,setStatus} = useServiceOrderStore()
 
   const {data: carServices} = useQuery({queryKey: ['car-services'],queryFn: getCarServicesAPI,refetchOnWindowFocus: false})
   const { data: serviceOrder } = useQuery({queryFn: getServiceOrderAPI,queryKey: ['service-order'],refetchOnWindowFocus: false})
@@ -74,7 +71,7 @@ function ServiceOrderPage() {
             <TabsContent value="customer">
               <div className="flex flex-col gap-4">
                 <Card className="px-4 rounded-lg">
-                  <CustomerFormSheet 
+                  <CustomerForm 
                     onSubmit={setCustomer}
                     onDelete={() => setCustomer(DEFAULT_CUSTOMER_VALUE)}
                     isPending={false}
@@ -82,7 +79,7 @@ function ServiceOrderPage() {
                   />
                 </Card>
                 <Card className="px-4 rounded-lg">
-                  <VehicleFormSheet 
+                  <VehicleForm 
                     onSubmit={setVehicle}
                     onDelete={() => setVehicle(DEFAULT_VEHICLE_VALUES)}
                     isPending={false}
@@ -96,18 +93,8 @@ function ServiceOrderPage() {
 
         {/* right Side */}
         <div className="flex flex-1 flex-col">
-          <header className="flex items-center pb-4">
-            <div className="flex gap-10 flex-1">
-              <div>
-                <h1 className="text-2xl font-semibold">Orçamento</h1>
-                <p className="text-sm text-muted-foreground">
-                  Último salvo {serviceOrder?.last_saved_at ? new Date(serviceOrder?.last_saved_at).toLocaleString() : '...'}
-                </p>
-              </div>
-            </div>
-            <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={setStatus}/>
-          </header>
-          <ServiceOrderCard data={items} carServices={carServices || []} onAddItem={handleNewSOItem}/>
+          <ServiceOrderHeader serviceOrder={serviceOrder} status={status} onStatusChange={setStatus}/>
+          <ServiceOrderItems data={items} carServices={carServices || []} onAddItem={handleNewSOItem}/>
           <div className="flex mt-6 justify-end items-end gap-3">
             <Modal 
               trigger={<Button variant="outline"><File size={18} className="mr-2"/>PDF</Button>}
@@ -129,4 +116,25 @@ function ServiceOrderPage() {
   );
 }
 
+interface IServiceOrderHearderProps {
+  serviceOrder: any,
+  status: any,
+  onStatusChange: (status: string) => void
+}
+
+const ServiceOrderHeader = ({serviceOrder, status, onStatusChange}: IServiceOrderHearderProps) => {
+  return(
+    <header className="flex items-center pb-4">
+      <div className="flex gap-10 flex-1">
+        <div>
+          <h1 className="text-2xl font-semibold">Orçamento</h1>
+          <p className="text-sm text-muted-foreground">
+            Último salvo {serviceOrder?.last_saved_at ? new Date(serviceOrder?.last_saved_at).toLocaleString() : '...'}
+          </p>
+        </div>
+      </div>
+      <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={onStatusChange}/>
+    </header>
+  )
+}
 export default ServiceOrderPage;
