@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
 });
 
 interface ServiceOrderPDFProps {
-    data?: ServiceOrder
+    data?: Partial<ServiceOrder>
 }
 export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
     const todayDate = new Date()
@@ -102,16 +102,16 @@ export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
 
         <View style={{...styles.container, justifyContent: 'space-between'}}>
             <View>
-                <Text style={styles.title}>{data?.customer.name || 'Cliente anônimo'}</Text>
-                {data?.customer.cpf && <Text><Text style={styles.title2}>CPF: </Text>{data?.customer.cpf}</Text>}
-                {data?.customer.email && <Text><Text style={styles.title2}>E-mail: </Text>{data?.customer.email}</Text>}
-                {data?.customer.phone && <Text><Text style={styles.title2}>Telefone: </Text>{data?.customer.phone}</Text>}
+                <Text style={styles.title}>{data?.customer?.name || 'Cliente anônimo'}</Text>
+                {data?.customer?.cpf && <Text><Text style={styles.title2}>CPF: </Text>{data?.customer?.cpf}</Text>}
+                {data?.customer?.email && <Text><Text style={styles.title2}>E-mail: </Text>{data?.customer?.email}</Text>}
+                {data?.customer?.phone && <Text><Text style={styles.title2}>Telefone: </Text>{data?.customer?.phone}</Text>}
             </View>
             <View>
-                {data?.vehicle.brand && <Text style={styles.title}>{`${data?.vehicle.brand} ${data?.vehicle.model}`}</Text>}
-                {data?.vehicle.plate && <Text><Text style={styles.title2}>Placa: </Text>{data?.vehicle.plate}</Text>}
-                {data?.vehicle.color && <Text><Text style={styles.title2}>Cor: </Text>{data?.vehicle.color}</Text>}
-                {data?.vehicle.year && <Text><Text style={styles.title2}>Ano: </Text>{data?.vehicle.year}</Text>}
+                {data?.vehicle?.brand && <Text style={styles.title}>{`${data?.vehicle?.brand} ${data?.vehicle?.model}`}</Text>}
+                {data?.vehicle?.plate && <Text><Text style={styles.title2}>Placa: </Text>{data?.vehicle?.plate}</Text>}
+                {data?.vehicle?.color && <Text><Text style={styles.title2}>Cor: </Text>{data?.vehicle?.color}</Text>}
+                {data?.vehicle?.year && <Text><Text style={styles.title2}>Ano: </Text>{data?.vehicle?.year}</Text>}
             </View>
             <View style={{width: 130}}>
                 <Text style={styles.title}>Endereço</Text>
@@ -127,7 +127,7 @@ export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
                 <Text style={styles.itemTitle}>Subtotal</Text>
                 <Text style={styles.itemTitle}>Total</Text>
             </View>
-            {data?.items.map(item => (
+            {data?.items?.map(item => (
                 <View style={{flexDirection: 'row', minHeight: 12, paddingHorizontal: 12}}>
                     <Text style={{...styles.itemText, flex: 1, textAlign: 'left'}}>{item.description}</Text>
                     <Text style={styles.itemText}>{item.quantity}</Text>

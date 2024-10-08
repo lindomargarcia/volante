@@ -4,27 +4,27 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form } from "../../ui/form"
 import { FormInput } from "../../FormInput"
-import { CustomerType, customerSchema, DEFAULT_CUSTOMER_VALUE } from "./schema"
+import { CustomerSchema, customerSchema, DEFAULT_CUSTOMER_VALUE } from "./schema"
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton"
 import MaskedInput from "@/components/MaskedInput/MaskedInput"
 import { MASKS } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 interface ICustomerSheetsProps {
-  data?: CustomerType,
-  onSubmit: (data: CustomerType) => Promise<any>
-  onDelete: (data?: CustomerType) => Promise<any>
+  data?: CustomerSchema,
+  onSubmit: (data: CustomerSchema) => Promise<any>
+  onDelete: (data?: CustomerSchema) => Promise<any>
   isPending: boolean
 }
 
 export function CustomerForm({data, onSubmit, onDelete, isPending}: ICustomerSheetsProps) {
-  const form = useForm<CustomerType>({
+  const form = useForm<CustomerSchema>({
     resolver: zodResolver(customerSchema),
     defaultValues: data || DEFAULT_CUSTOMER_VALUE
   })
 
-  const onFormSubmit = (data: CustomerType) => {onSubmit(data)}
+  const handleOnSubmit = (data: CustomerSchema) => {onSubmit(data)}
 
-  const handleOnDelete = (data: CustomerType) => {
+  const handleOnDelete = (data: CustomerSchema) => {
     onDelete(data).then(() => {
       form.clearErrors()
       form.setValue('name','')
@@ -36,7 +36,7 @@ export function CustomerForm({data, onSubmit, onDelete, isPending}: ICustomerShe
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onFormSubmit)} className="grid gap-2 py-4">
+      <form onSubmit={form.handleSubmit(handleOnSubmit)} className="grid gap-2 py-4">
         <FormInput name='name' label="Nome" form={form}>
           {(field) => <Input type="text" placeholder="Digite aqui..." {...field}/>}
         </FormInput>

@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
 import { CustomerForm } from "@/components/FormSheet/Customer";
 import { VehicleForm } from "@/components/FormSheet/Vehicle";
-import { useQuery } from "@tanstack/react-query";
 import ServiceOrderItems from "../../components/ServiceOrderItems/ServiceOrderItems";
 import { ServiceOrderItem } from "./types";
 import { DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
@@ -21,14 +20,10 @@ import { Card } from "@/components/ui/card";
 import { CAR_ACTIONS, ICarSelectionValue, IChangeValue } from "@/components/CarPartsSelector/types";
 import { COLORS } from "@/data/constants/colors";
 import { useServiceOrderStore } from "@/hooks/useServiceOrder";
-import { getServiceOrderAPI } from "@/data/api/ServiceOrderAPI";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
   const {customer,vehicle,items,car_map,status,setCustomer,setVehicle,addItem,setCarMap,setStatus} = useServiceOrderStore()
-
-  const { data: serviceOrder } = useQuery({queryFn: getServiceOrderAPI,queryKey: ['service-order'],refetchOnWindowFocus: false})
-
 
   const handleNewSOItem = async (newItem: ServiceOrderItem) => {
     toast.message("Novo item adicionado com sucesso!")
@@ -90,7 +85,7 @@ function ServiceOrderPage() {
 
         {/* right Side */}
         <div className="flex flex-1 flex-col">
-          <ServiceOrderHeader serviceOrder={serviceOrder} status={status} onStatusChange={setStatus}/>
+          <ServiceOrderHeader status={status} onStatusChange={setStatus}/>
           <ServiceOrderItems data={items} onAddItem={handleNewSOItem}/>
           <div className="flex mt-6 justify-end items-end gap-3">
             <Modal 
@@ -100,7 +95,7 @@ function ServiceOrderPage() {
               className="min-h-[calc(100vh-180px)]"
               async={true}>
                 <PDFViewer className="w-full min-h-[calc(100vh-180px)]">
-                  <ServiceOrderPDF data={serviceOrder}/>
+                  <ServiceOrderPDF data={{customer, vehicle, items, status}}/>
                 </PDFViewer>
             </Modal>
             <Button type="submit">
@@ -114,19 +109,18 @@ function ServiceOrderPage() {
 }
 
 interface IServiceOrderHearderProps {
-  serviceOrder: any,
   status: any,
   onStatusChange: (status: string) => void
 }
 
-const ServiceOrderHeader = ({serviceOrder, status, onStatusChange}: IServiceOrderHearderProps) => {
+const ServiceOrderHeader = ({status, onStatusChange}: IServiceOrderHearderProps) => {
   return(
     <header className="flex items-center pb-4">
       <div className="flex gap-10 flex-1">
         <div>
           <h1 className="text-2xl font-semibold">Orçamento</h1>
           <p className="text-sm text-muted-foreground">
-            Último salvo {serviceOrder?.last_saved_at ? new Date(serviceOrder?.last_saved_at).toLocaleString() : '...'}
+            Informe abaixo os serviços que serão realizados no veículo
           </p>
         </div>
       </div>
