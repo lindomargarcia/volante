@@ -1,26 +1,27 @@
 import { ServiceOrderItem } from "@/pages/ServiceOrder/types"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-const useSOPrices = () => {
-    const [totalPrice, setTotalPrice] = useState<number>(0)
-    const [totalServicesPrice, setServicesPrice] = useState<number>(0)
-    const [totalPartsPrice, setPartsPrice] = useState<number>(0)
-    const [totalDiscountPrice, setDiscounts] = useState<number>(0)
-
-    const updatePrices = ({value, quantity, discount, type}: ServiceOrderItem) => {
-        const totalValue: number = (value * quantity) - discount
-
-        setTotalPrice(totalPrice + totalValue)
-        setDiscounts(totalDiscountPrice + Number(discount))
-
-        if(type === "PARTS"){
-            setPartsPrice(totalPartsPrice + (value * quantity))
-        }else{
-            setServicesPrice(totalServicesPrice + (value * quantity))
-        }
+const useSOPrices = (itemsList: ServiceOrderItem[]) => {
+    const reducePrices = (list: ServiceOrderItem[]) => {
+        return list.reduce((acc, item) => {
+            const itemTotal = Number((item.value * item.quantity) - item.discount)
+            return {
+                subtotal: acc.subtotal + Number((item.value * item.quantity)),
+                totalPrice: acc.totalPrice + itemTotal,
+                totalServicesPrice: acc.totalServicesPrice + (item.type !== "PARTS" ? itemTotal : 0),
+                totalPartsPrice: acc.totalPartsPrice + (item.type === "PARTS" ? itemTotal : 0),
+                totalDiscountPrice: acc.totalDiscountPrice + Number(item.discount)
+            }
+        }, {subtotal: 0, totalPrice: 0, totalServicesPrice: 0, totalPartsPrice: 0, totalDiscountPrice: 0})
     }
 
-    return { totalPrice, totalPartsPrice, totalServicesPrice, totalDiscountPrice, updatePrices };
+    const [prices, setPrices] = useState(reducePrices(itemsList))
+
+    useEffect(() => {
+        setPrices(reducePrices(itemsList))
+    }, [JSON.stringify(itemsList)])
+
+    return { ...prices };
 }
  
 export default useSOPrices;

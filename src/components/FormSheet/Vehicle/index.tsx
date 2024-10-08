@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input"
 interface IVehicleSheetsProps {
   data?: VehicleSchema,
   onSubmit: (data: VehicleSchema) => Promise<any>,
-  onDelete: (data?: VehicleSchema) => Promise<any>
+  onDelete: () => Promise<any>
   isPending: boolean
 }
 
@@ -25,15 +25,14 @@ export function VehicleForm({data, onSubmit, onDelete, isPending}: IVehicleSheet
 
   const handleOnSubmit = (data: VehicleSchema) => {onSubmit(data)}
 
-  const handleOnDelete = (data: VehicleSchema) => {
-    onDelete(data).then(() => {
-      form.clearErrors()
-      form.setValue('plate','')
-      form.setValue('brand','')
-      form.setValue('model','')
-      form.setValue('year','')
-      form.setValue('color','black')
-    })
+  const handleOnDelete = () => {
+    form.clearErrors()
+    form.setValue('plate','')
+    form.setValue('brand','')
+    form.setValue('model','')
+    form.setValue('year','')
+    form.setValue('color','black')
+    onDelete()
   }
 
   return (
@@ -57,7 +56,7 @@ export function VehicleForm({data, onSubmit, onDelete, isPending}: IVehicleSheet
         <SheetFooter className="mt-4 justify-between">
           <Button type="submit" disabled={isPending}>Salvar</Button>
           {data?.plate && <ConfirmButton
-              onConfirm={() => handleOnDelete(data)}
+              onConfirm={() => handleOnDelete()}
               variant={"destructive"}
               disabled={isPending}
               title="Remover veículo"

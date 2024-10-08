@@ -24,14 +24,13 @@ export function CustomerForm({data, onSubmit, onDelete, isPending}: ICustomerShe
 
   const handleOnSubmit = (data: CustomerSchema) => {onSubmit(data)}
 
-  const handleOnDelete = (data: CustomerSchema) => {
-    onDelete(data).then(() => {
-      form.clearErrors()
-      form.setValue('name','')
-      form.setValue('cpf','')
-      form.setValue('phone','')
-      form.setValue('email','')
-    })
+  const handleOnDelete = () => {
+    form.clearErrors()
+    form.setValue('name','')
+    form.setValue('cpf','')
+    form.setValue('phone','')
+    form.setValue('email','')
+    onDelete()
   }
 
   return (
@@ -54,7 +53,7 @@ export function CustomerForm({data, onSubmit, onDelete, isPending}: ICustomerShe
         <SheetFooter className="mt-4 justify-between">
           <Button type="submit" disabled={isPending}>Salvar</Button>
           {data?.name && <ConfirmButton 
-              onConfirm={() => handleOnDelete(data)}
+              onConfirm={() => handleOnDelete()}
               variant={"destructive"}
               disabled={isPending}
               title="Remover cliente"

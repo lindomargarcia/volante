@@ -8,14 +8,13 @@ interface ServiceOrderStore {
   status: STATUS_SERVICE_ORDER,
   customer: any,
   vehicle: any,
-  items: [],
+  items: ServiceOrderItem[],
   car_map: any,
   setStatus: (status: STATUS_SERVICE_ORDER | string) => Promise<any>,
   setCustomer: (customer: CustomerSchema) => Promise<any>,
   setVehicle: (vehicle: VehicleSchema) => Promise<any>,
   setItems: (items: ServiceOrderItem[]) => Promise<any>,
   setCarMap: (car_map: ICarSelectionValue) => Promise<any>,
-  addItem: (newItem: ServiceOrderItem) => Promise<any>
 }
 
 export const useServiceOrderStore = create<ServiceOrderStore>((set: any) => ({
@@ -29,5 +28,4 @@ export const useServiceOrderStore = create<ServiceOrderStore>((set: any) => ({
     setVehicle: (vehicle: VehicleSchema) => set(() => ({vehicle})),
     setItems: (items: ServiceOrderItem[]) => set(() => ({items})),
     setCarMap: (car_map: ICarSelectionValue) => set(() => ({car_map})),
-    addItem: (newItem: ServiceOrderItem) => set((state: any) => ({items: [...state.items, newItem]}))
   }))

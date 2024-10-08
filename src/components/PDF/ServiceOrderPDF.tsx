@@ -171,10 +171,12 @@ export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
                     <Text>50% de entrada da mão de obra e o restante parcelado em até 3 vezes no cartão, sem juros, para orçamentos acima de R$ 500,00.
                         Pagamento à vista com 5% de desconto para orçamentos acima de R$ 1.000,00.
                         Aceitamos Pix pelo CNPJ 04.367.737.0001-06.</Text>
+                    <Text>O pagamento para peças é exclusivamente à vista.</Text>
                 </View>
                 <View>
                     <Text style={styles.title}>Avisos</Text>
                     <Text>Em alguns casos, precisaremos ajustar a data de entrega. Isso pode acontecer por diverso fatores, como atrasos na entrega de peças.</Text>
+                    <Text>Trabalhamos com todas as companhias de seguros.</Text>
                 </View>
             </View>
             <View style={styles.signContainer}>
@@ -186,12 +188,14 @@ export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
         </View>
         <View style={styles.footer} fixed>
             <View>
-                <Text><Text style={styles.title2}>e-mail: </Text>funilariageracao2000@gmail.com </Text>
-                <Text><Text style={styles.title2}>instagram: </Text>@funilariageracao2k</Text>
-                <Text><Text style={styles.title2}>facebook: </Text>funilariageracao2000</Text>
-                <Text><Text style={styles.title2}>Telefone: </Text>{`+55 (11) 4194-3489`}</Text>
+              <Text><Text style={styles.title2}>Whatsapp: </Text>{`+55 (11) 99169-5290`}</Text>
+              <Text><Text style={styles.title2}>Telefone: </Text>{`+55 (11) 4194-3489`}</Text>
+                <Text><Text style={styles.title2}>E-mail: </Text>funilariageracao2000@gmail.com </Text>
+                <Text><Text style={styles.title2}>Instagram: </Text>@oficinageracao2k</Text>
+                <Text><Text style={styles.title2}>Facebook: </Text>Oficina Geração 2000</Text>
             </View>
-            <Text style={{width: 110,textAlign: 'right'}}>Rua Gisele, 204, Parque dos Camargos, 06436-120 Barueri - SP</Text>
+            <Text style={{width: 80,textAlign: 'center'}}>Rua Gisele, 204 Parque dos Camargos, Barueri - SP / 06436-120 </Text>
+            <Text style={{width: 110,textAlign: 'right'}}>CNPJ: 04.367.737/0001-06</Text>
         </View>
         </Page>
     </Document>

@@ -23,18 +23,30 @@ import { useServiceOrderStore } from "@/hooks/useServiceOrder";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
-  const {customer,vehicle,items,car_map,status,setCustomer,setVehicle,addItem,setCarMap,setStatus} = useServiceOrderStore()
+  const {customer,vehicle,items,car_map,status,setCustomer,setVehicle,setItems,setCarMap,setStatus} = useServiceOrderStore()
 
   const handleNewSOItem = async (newItem: ServiceOrderItem) => {
     toast.message("Novo item adicionado com sucesso!")
-    addItem(newItem)
+    setItems([newItem, ...items])
+  }
+
+  const handleChangeItem = (changedItem: ServiceOrderItem) => {
+    const updatedItems = items.map((item) => {
+      return (item.id === changedItem.id) ? changedItem : item
+    })
+    setItems(updatedItems)
+  }
+
+  const handleRemoveItem = (changedItem: ServiceOrderItem) => {
+    const updatedItems = items.filter((item) => (item.id !== changedItem.id))
+    setItems(updatedItems)
   }
 
   const handleCarMapChange = async (selected: IChangeValue, data: ICarSelectionValue) => {
     if(selected.action.value === CAR_ACTIONS.DAMAGE) return
 
     const newItem: ServiceOrderItem = {id: '389', description: selected.action.value + ' ' + selected.car_part, discount: 0, quantity: 1, total: 50, type: selected.action.value, insurance_coverage: 0, value: 50}
-    addItem(newItem)
+    setItems([newItem, ...items])
     console.log(selected)
     setCarMap(data)
   }
@@ -86,7 +98,12 @@ function ServiceOrderPage() {
         {/* right Side */}
         <div className="flex flex-1 flex-col">
           <ServiceOrderHeader status={status} onStatusChange={setStatus}/>
-          <ServiceOrderItems data={items} onAddItem={handleNewSOItem}/>
+          <ServiceOrderItems 
+            data={items}
+            onAddItem={handleNewSOItem}
+            onChangeItem={handleChangeItem}
+            onRemoveItem={handleRemoveItem}
+          />
           <div className="flex mt-6 justify-end items-end gap-3">
             <Modal 
               trigger={<Button variant="outline"><File size={18} className="mr-2"/>PDF</Button>}
