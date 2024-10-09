@@ -5,8 +5,7 @@ import { Catalog } from "./Catalog.js";
 
 export const ServiceOrderItem = db.define('service_order_items', {
     id:{
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.STRING,
         primaryKey: true,
     },
     description:{

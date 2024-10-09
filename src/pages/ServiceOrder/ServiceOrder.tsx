@@ -20,10 +20,11 @@ import { Card } from "@/components/ui/card";
 import { CAR_ACTIONS, ICarSelectionValue, IChangeValue } from "@/components/CarPartsSelector/types";
 import { COLORS } from "@/data/constants/colors";
 import { useServiceOrderStore } from "@/hooks/useServiceOrder";
+import { deleteServiceOrderItem, putServiceOrderAPI } from "@/data/api/ServiceOrderAPI";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
-  const {customer,vehicle,items,car_map,status,setCustomer,setVehicle,setItems,setCarMap,setStatus} = useServiceOrderStore()
+  const {id, customer,vehicle,items,car_map,status, setCustomer,setVehicle,setItems,setCarMap,setStatus} = useServiceOrderStore()
 
   const handleNewSOItem = async (newItem: ServiceOrderItem) => {
     toast.message("Novo item adicionado com sucesso!")
@@ -37,9 +38,12 @@ function ServiceOrderPage() {
     setItems(updatedItems)
   }
 
-  const handleRemoveItem = (changedItem: ServiceOrderItem) => {
-    const updatedItems = items.filter((item) => (item.id !== changedItem.id))
-    setItems(updatedItems)
+  const handleRemoveItem = (deletedItem: ServiceOrderItem) => {
+    deleteServiceOrderItem(deletedItem.id).then((data) => {
+      console.log(data)
+      const updatedItems = items.filter((item) => (item.id !== deletedItem.id))
+      setItems(updatedItems)
+    })
   }
 
   const handleCarMapChange = async (selected: IChangeValue, data: ICarSelectionValue) => {
@@ -53,6 +57,16 @@ function ServiceOrderPage() {
 
   const getVehicleColor = (vehicle: VehicleSchema) => {
     return COLORS.find(color => color.value === vehicle.color)?.code || "#000"
+  }
+
+  const handleOnSave = () => {
+    console.log({id, customer, vehicle, items, status})
+    putServiceOrderAPI({id, customer, vehicle, items, status}).then((data) => {
+      console.log(data)
+      data?.customer && setCustomer(data?.customer)
+      data?.vehicle && setVehicle(data?.vehicle)
+      toast.message("Salvo com sucesso!")
+    })
   }
 
   return (
@@ -115,7 +129,7 @@ function ServiceOrderPage() {
                   <ServiceOrderPDF data={{customer, vehicle, items, status}}/>
                 </PDFViewer>
             </Modal>
-            <Button type="submit">
+            <Button onClick={handleOnSave}>
               <Save size={18} className="mr-2"/>Salvar
             </Button>
           </div>

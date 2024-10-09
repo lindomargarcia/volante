@@ -14,7 +14,7 @@ import { getCarServicesAPI } from "@/data/api/CarServicesAPI";
 import { BADGE_COLORS } from "@/data/constants/colors";
 import { ReactNode } from "react";
 import { Trash2Icon } from "lucide-react";
-
+import { nanoid } from 'nanoid/non-secure'
 interface ServiceOrderItemProps {
     data: ServiceOrderItem[];
     onAddItem: (newItem: ServiceOrderItem) => Promise<void>;
@@ -23,15 +23,16 @@ interface ServiceOrderItemProps {
 }
 
 const defaultServiceOrder: ServiceOrderItem = {
-    description: "", value: 0, discount: 0, quantity: 1, id: "", type: "BODYWORK", insurance_coverage: 0, total: 0
+   id: nanoid(), description: "", value: 0, discount: 0, quantity: 1, type: "BODYWORK", insurance_coverage: 0, total: 0
 };
 
 const ServiceOrderItems = ({ data, onAddItem, onChangeItem, onRemoveItem }: ServiceOrderItemProps) => {
     const { subtotal, totalPrice, totalDiscountPrice, totalPartsPrice, totalServicesPrice } = useSOPrices(data);
 
     const onSubmit = async (item: ServiceOrderItem) => {
-        item.id = crypto.randomUUID();
-        await onAddItem(item);
+        let newItem = {...item}
+        newItem.id = nanoid()
+        await onAddItem(newItem);
     };
 
     return (
@@ -125,7 +126,12 @@ ServiceOrderItems.ListItem = ({ item, onChange, onDelete }: { item: ServiceOrder
     <li className="flex gap-2 py-2 rounded-md pr-4 hover:bg-zinc-100">
         <span className={`w-[10px] h-[10px] ml-4 mt-[6px] ${BADGE_COLORS[item.type]} rounded-full`} />
         <div className="flex-1">
-            <h1 className="font-medium">{item.description}</h1>
+            <input
+                className="font-medium h-full w-full px-2 bg-transparent rounded"
+                type="text"
+                value={item.description}
+                onChange={(e) => handleOnChange('description', e.target.value)}
+            />
             {/* <h1 className="text-slate-500">
                 Aqui caso haja algum detalhe
             </h1> */}

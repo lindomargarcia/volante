@@ -1,6 +1,6 @@
-import { CustomerSchema, DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema"
-import { DEFAULT_VEHICLE_VALUES, VehicleSchema } from "@/components/FormSheet/Vehicle/schema"
-import { STATUS_SERVICE_ORDER, ServiceOrder, ServiceOrderItem } from "@/pages/ServiceOrder/types"
+import { DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema"
+import { DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema"
+import { STATUS_SERVICE_ORDER, ServiceOrder } from "@/pages/ServiceOrder/types"
 
 export async function getServiceOrderAPI(): Promise<ServiceOrder>{
     return {
@@ -18,18 +18,30 @@ export async function getServiceOrderAPI(): Promise<ServiceOrder>{
     }
 }
 
-export async function putServiceOrderItemAPI(_data: ServiceOrderItem){
-    return 
+// export async function putServiceOrderItemAPI(data: ServiceOrderItem){
+//     return 
+// }
+
+// export async function putServiceOrderCustomerAPI(data: CustomerSchema){
+//     return 
+// }
+
+// export async function putServiceOrderVehicleAPI(_data: VehicleSchema){
+//     return 
+// }
+
+export async function putServiceOrderAPI(data: Partial<ServiceOrder>){
+    return fetch('http://localhost:2000/service_orders', {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/json"
+        },
+        body:JSON.stringify({...data})
+    }).then(res => res.json())
 }
 
-export async function putServiceOrderCustomerAPI(_data: CustomerSchema){
-    return 
-}
-
-export async function putServiceOrderVehicleAPI(_data: VehicleSchema){
-    return 
-}
-
-export async function putServiceOrderAPI(_data?: ServiceOrder){
-    return 
+export async function deleteServiceOrderItem(id: string){
+    return fetch('http://localhost:2000/service_order_items/' + id, {
+        method: 'DELETE'
+    }).then(res => res.json())
 }

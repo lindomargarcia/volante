@@ -274,6 +274,7 @@ api.get('/service_orders/search', async ({query: {page = INITIAL_PAGE, limit = P
 
 
 api.post('/service_orders', async (request, reply) => {
+    console.log(request.body)
     if(!request.body.customer){
         throw new Error('Customer cannot be empty')
     }else if(!request.body.vehicle){
@@ -306,12 +307,16 @@ api.post('/service_orders', async (request, reply) => {
             
             const {status, insuranceCompanyId, durationQuantity, durationType, items} = request.body
 
-            const newSO = await ServiceOrder.create({status, customerId: customer.id, vehicleId: vehicle.id, insuranceCompanyId, durationQuantity, durationType}, {transaction: t})
+            const newSO = await ServiceOrder.upsert({id: request?.body?.id, status, customerId: customer.id, vehicleId: vehicle.id, insuranceCompanyId, durationQuantity, durationType},{transaction: t})
             let createdItems = []
 
-            if(items && items?.length > 0){
-                const itemsData = items.map(item => ({serviceOrderId: newSO.id, ...item}));
-                createdItems = await ServiceOrderItem.bulkCreate(itemsData, { transaction: t })
+            if (items && items.length > 0) {
+                for (const item of items) {
+                    await ServiceOrderItem.upsert(
+                        { serviceOrderId: newSO.id, ...item },
+                        { transaction: t }
+                    );
+                }
             }
 
             reply.status(200).send({...newSO.dataValues, items: createdItems, customer, vehicle})
@@ -325,7 +330,7 @@ api.post('/service_orders', async (request, reply) => {
 })
 
 
-createBasicCRUD('Service Order Item', 'service_order_items', ServiceOrder)
+createBasicCRUD('Service Order Item', 'service_order_items', ServiceOrderItem)
 createBasicCRUD('Vehicle', 'vehicles', Vehicle)
 api.get('/vehicles/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE_LIMIT, searchValue = '' } }, reply) => {
     try {

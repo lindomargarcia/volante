@@ -9,6 +9,7 @@ import ConfirmButton from "@/components/ConfirmButton/ConfirmButton"
 import MaskedInput from "@/components/MaskedInput/MaskedInput"
 import { MASKS } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
+import { useEffect } from "react"
 interface ICustomerSheetsProps {
   data?: CustomerSchema,
   onSubmit: (data: CustomerSchema) => Promise<any>
@@ -22,6 +23,9 @@ export function CustomerForm({data, onSubmit, onDelete, isPending}: ICustomerShe
     defaultValues: data || DEFAULT_CUSTOMER_VALUE
   })
 
+  useEffect(() => {
+    console.log(data)
+  }, [JSON.stringify(data)])
   const handleOnSubmit = (data: CustomerSchema) => {onSubmit(data)}
 
   const handleOnDelete = () => {
@@ -35,7 +39,7 @@ export function CustomerForm({data, onSubmit, onDelete, isPending}: ICustomerShe
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleOnSubmit)} className="grid gap-2 py-4">
+      <form onSubmit={form.handleSubmit(handleOnSubmit)} className={'grid gap-2 py-4'}>
         <FormInput name='name' label="Nome" form={form}>
           {(field) => <Input type="text" placeholder="Digite aqui..." {...field}/>}
         </FormInput>
@@ -51,7 +55,7 @@ export function CustomerForm({data, onSubmit, onDelete, isPending}: ICustomerShe
           {(field) => <Input type="email" placeholder="Digite aqui..." {...field}/>}
         </FormInput>
         <SheetFooter className="mt-4 justify-between">
-          <Button type="submit" disabled={isPending}>Salvar</Button>
+          {!(data?.id) && <Button type="submit" disabled={isPending}>Salvar</Button>}
           {data?.name && <ConfirmButton 
               onConfirm={() => handleOnDelete()}
               variant={"destructive"}

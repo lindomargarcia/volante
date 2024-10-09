@@ -10,12 +10,13 @@ const DEFAULT_VEHICLE_VALUES = {
 }
 
 const vehicleSchema = z.object({
-    plate: z.string().length(7, {message: 'Placa inválida'}).toUpperCase().or(z.literal("").nullable()),
-    brand: z.string().min(1, {message: 'Campo obrigatório'}),
-    model: z.string().min(1, {message: 'Campo obrigatório'}),
-    year: z.string().or(z.literal("")),
-    color: z.string().toLowerCase()
-  })
+  id: z.string().optional(),
+  plate: z.string().length(7, {message: 'Placa inválida'}).toUpperCase().or(z.literal("").nullable()),
+  brand: z.string().min(1, {message: 'Campo obrigatório'}),
+  model: z.string().min(1, {message: 'Campo obrigatório'}),
+  year: z.string().or(z.literal("")),
+  color: z.string().toLowerCase()
+})
   
 type VehicleSchema = z.infer<typeof vehicleSchema>
 

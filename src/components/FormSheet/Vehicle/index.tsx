@@ -54,7 +54,7 @@ export function VehicleForm({data, onSubmit, onDelete, isPending}: IVehicleSheet
           <FormSelect name="color" className="flex-1" label="Cor" options={COLORS} form={form} placeholder="Selecione..." />
         </div>
         <SheetFooter className="mt-4 justify-between">
-          <Button type="submit" disabled={isPending}>Salvar</Button>
+          {!(data?.id) && <Button type="submit" disabled={isPending}>Salvar</Button>}
           {data?.plate && <ConfirmButton
               onConfirm={() => handleOnDelete()}
               variant={"destructive"}

@@ -5,6 +5,10 @@ import { Vehicle } from "./Vehicle.js";
 import { InsuranceCompany } from "./InsuranceCompany.js"
 
 export const ServiceOrder = db.define("ServiceOrder", {
+    id: {
+        type: DataTypes.STRING,
+        primaryKey: true
+    },
     status:{
         type: DataTypes.STRING,
         allowNull: false

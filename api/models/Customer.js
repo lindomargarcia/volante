@@ -9,8 +9,7 @@ export const Customer = db.define('customer', {
   },
   cpf:{
     type: DataTypes.STRING(15),
-    allowNull: true,
-    unique: true
+    allowNull: true
   },
   email: {
     type: DataTypes.STRING,
