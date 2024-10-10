@@ -151,7 +151,7 @@ function ServiceOrderPage() {
                Resetar
             </ConfirmButton>
             <div className="flex gap-4">
-              {service_order_items.length > 0 && <Modal 
+              {service_order_items.length > 0 && <><Modal 
                 trigger={<Button onClick={handleOnSave} variant="outline"><File size={18} className="mr-2"/>PDF</Button>}
                 title='Orçamento'
                 subtitle='Envie ou imprima para seu cliente'
@@ -160,12 +160,13 @@ function ServiceOrderPage() {
                   <PDFViewer className="w-full min-h-[calc(100vh-180px)]">
                     <ServiceOrderPDF data={{customer, vehicle, service_order_items, status}}/>
                   </PDFViewer>
-              </Modal>}
+              </Modal>
               <PDFDownloadLink fileName={`${vehicle.model} ${customer.name} `} document={<ServiceOrderPDF data={{customer, vehicle, service_order_items, status}}/>}>
                 <Button variant={'outline'}>
                   <Save size={18} className="mr-2"/>Download
                 </Button>
               </PDFDownloadLink>
+              </>}
               <Button onClick={handleOnSave}>
                 <Save size={18} className="mr-2"/>Salvar
               </Button>
