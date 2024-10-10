@@ -9,13 +9,12 @@ import useSOPrices from "@/hooks/useSOPrices";
 import { Card } from "../ui/card";
 import { Input } from "../ui/input";
 import MoneyInput from "../ui/money-input";
-import { useQuery } from "@tanstack/react-query";
-import { getCarServicesAPI } from "@/data/api/CarServicesAPI";
 import { BADGE_COLORS } from "@/data/constants/colors";
 import { ReactNode } from "react";
 import { Trash2Icon } from "lucide-react";
 import { nanoid } from 'nanoid/non-secure'
 import ConfirmButton from "../ConfirmButton/ConfirmButton";
+import { CAR_SERVICES } from "@/data/constants/utils";
 interface ServiceOrderItemProps {
     data: ServiceOrderItem[];
     onAddItem: (newItem: ServiceOrderItem) => Promise<void>;
@@ -62,12 +61,6 @@ const ServiceOrderItems = ({ data, onAddItem, onChangeItem, onRemoveItem }: Serv
 
 ServiceOrderItems.Form = ({ onSubmit }: { onSubmit: (data: ServiceOrderItem) => void }) => {
     const form = useForm<ServiceOrderItem>({ defaultValues: defaultServiceOrder });
-    const { data: carServices } = useQuery<any>({
-        queryKey: ['car-services'],
-        queryFn: getCarServicesAPI,
-        refetchOnWindowFocus: false,
-    });
-
     const resetForm = () => form.reset(defaultServiceOrder);
 
     const handleOnSubmit = (data: ServiceOrderItem) => {
@@ -86,7 +79,7 @@ ServiceOrderItems.Form = ({ onSubmit }: { onSubmit: (data: ServiceOrderItem) => 
                     label="Tipo"
                     name="type"
                     form={form}
-                    options={carServices || []}
+                    options={CAR_SERVICES || []}
                     placeholder="Selecione..."
                     className="w-[150px]"
                 />
@@ -108,10 +101,10 @@ interface ServiceOrderListProps {
 
 ServiceOrderItems.List = ({ data, renderItem }: ServiceOrderListProps) => (
     <ol className="relative flex border m-[-17px] flex-col p-4 mt-4 flex-1 select-none">
-        <div className="overflow-y-scroll max-h-[calc(100vh-420px)] flex-1">
+        <div className="overflow-y-scroll max-h-[calc(100vh-440px)] flex-1">
             {data.map(renderItem)}
         </div>
-        <span className="w-full h-[80px] pointer-events-none absolute bottom-0 left-0 bg-gradient-to-t from-white" />
+        {/* <span className="w-full h-[80px] pointer-events-none absolute bottom-0 left-0 bg-gradient-to-t from-white" /> */}
     </ol>
 );
 

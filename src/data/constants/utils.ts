@@ -65,3 +65,19 @@ export const USE_QUERY_CONFIGS = {
     refetchOnMount: true,
     initialPageParam: 1,
 }
+
+export const CAR_SERVICES = [
+    { "value": "BODYWORK", "label": "Funilaria", "color": "bg-blue-500" },
+    { "value": "PAINTING", "label": "Pintura", "color": "bg-violet-500" },
+    { "value": "PARTS", "label": "Peças", "color": "bg-amber-500" },
+    { "value": "AIR_CONDITIONING", "label": "Ar Condicionado", "color": "bg-indigo-300" },
+    { "value": "TIRE_REPAIR", "label": "Borracharia", "color": "bg-gray-500" },
+    { "value": "ELECTRICAL", "label": "Elétrica", "color": "bg-pink-500" },
+    { "value": "AESTHETICS", "label": "Estética", "color": "bg-pink-400" },
+    { "value": "DENT_REPAIR", "label": "Martelinho", "color": "bg-blue-400" },
+    { "value": "MECHANICAL", "label": "Mecânica", "color": "bg-green-500" },
+    { "value": "OVERHAUL", "label": "Revisão", "color": "bg-red-400" },
+    { "value": "UPHOLSTERY", "label": "Tapeçaria", "color": "bg-amber-700" },
+    { "value": "GLASSWORK", "label": "Vidraçaria", "color": "bg-blue-300" },
+    { "value": "OTHER", "label": "Outros", "color": "bg-pink-800" }
+]

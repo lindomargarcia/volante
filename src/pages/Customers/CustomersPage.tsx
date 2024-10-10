@@ -28,8 +28,8 @@ export default function CustomersPage() {
       <SearchPage.SearchBar placeholder="Pesquise seus clientes aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
       <Card.Container>
         {customersData.map((customer: any) => (
-          <Card className="min-h-[110px]" key={customer.id}>
-            {isToday(new Date(customer.createdAt)) && <Card.Badge>Novo</Card.Badge>}
+          <Card key={customer.id}>
+            {isToday(new Date(customer.updatedAt)) && <Card.Badge> </Card.Badge>}
             <Card.Header fallback={customer?.name?.substring(0,1) || '?'} title={customer.name || 'Nome não informado'} description={customer.cpf || 'CPF não informado'}>
               {/* <Card.HeaderActions>
                 <Card.Action icon={<Mail size={18}/>}/>

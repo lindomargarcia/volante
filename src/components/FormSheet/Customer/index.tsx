@@ -1,10 +1,8 @@
-import { useForm } from "react-hook-form"
-import { Form } from "../../ui/form"
-import { CustomerSchema, DEFAULT_CUSTOMER_VALUE } from "./schema"
+import { CustomerSchema } from "./schema"
 import MaskedInput from "@/components/MaskedInput/MaskedInput"
 import { MASKS } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
-
+import { useState } from "react"
 interface ICustomerSheetsProps {
   data: CustomerSchema,
   onSubmit: (field: string, value: string) => void
@@ -13,18 +11,22 @@ interface ICustomerSheetsProps {
 }
 
 export function CustomerForm({data, onSubmit}: ICustomerSheetsProps) {
+  const [name, setName] = useState(data?.name || '')
+  const [cpf, setCpf] = useState(data?.cpf || '')
+  const [phone, setPhone] = useState(data?.phone || '')
+  const [address, setAddress] = useState(data?.address || '')
+  const [email, setEmail] = useState(data?.email || '')
+
   const disabled = false
-  const form = useForm<CustomerSchema>({
-    // resolver: zodResolver(customerSchema),
-    defaultValues: data || DEFAULT_CUSTOMER_VALUE
-  })
+  // const form = useForm<CustomerSchema>({
+  //   // resolver: zodResolver(customerSchema),
+  //   defaultValues: data || DEFAULT_CUSTOMER_VALUE
+  // })
 
   // useEffect(() => {
   //   const subscription = form.watch(() => form.handleSubmit(onSubmit)())
   //   return () => subscription.unsubscribe();
   // }, [form.handleSubmit, form.watch])
-
-  // const handleOnSubmit = (data: CustomerSchema) => {onSubmit(data)}
 
   // const handleOnDelete = () => {
   //   form.clearErrors()
@@ -36,15 +38,15 @@ export function CustomerForm({data, onSubmit}: ICustomerSheetsProps) {
   // }
 
   return (
-    <Form {...form}>
+    <>
       <form className={'grid gap-2 py-4'}>
-        <Input disabled={disabled} id="name" value={data?.name} label='Nome do cliente' onChange={(e) => onSubmit('name', e?.target?.value || '')} type="text" placeholder="Digite aqui..." />
+        <Input disabled={disabled} id="name" value={name} label='Nome do cliente' onChange={(e: any) => setName(e.target.value)} onBlur={() => onSubmit('name', name)} type="text" placeholder="Digite aqui..." />
         <div className="flex gap-2">
-          <MaskedInput disabled={disabled} value={data?.cpf} mask={MASKS.CPF} placeholder='000.000.000-00' label='CPF' onChange={(e: any) => onSubmit('cpf', e?.target?.value || '')} />
-          <MaskedInput disabled={disabled} value={data?.phone} mask={MASKS.PHONE} maskChar="" placeholder='(00) 00000-0000' label='Telefone' onChange={(e: any) => onSubmit('phone', e?.target?.value || '')} />
+          <MaskedInput disabled={disabled} value={cpf} mask={MASKS.CPF} placeholder='000.000.000-00' label='CPF' onBlur={() => onSubmit('cpf', cpf)} onChange={(e: any) => setCpf(e.target.value)}/>
+          <MaskedInput disabled={disabled} value={phone} mask={MASKS.PHONE} maskChar="" placeholder='(00) 00000-0000' label='Telefone' onBlur={() => onSubmit('phone', phone)} onChange={(e: any) => setPhone(e.target.value)}/>
         </div>
-        <Input disabled={disabled} type="email" value={data?.email} label="Email" placeholder="Digite aqui..." onChange={(e) => onSubmit('email', e?.target?.value || '')}/>
-        <Input disabled={disabled} type="text" value={data?.address} label="Endereço" placeholder="Digite aqui..." onChange={(e) => onSubmit('address', e?.target?.value || '')}/>
+        <Input disabled={disabled} type="email" value={email} label="Email" placeholder="Digite aqui..." onBlur={() => onSubmit('email', email)} onChange={(e) => setEmail(e.target.value)}/>
+        <Input disabled={disabled} type="text" value={address} label="Endereço" placeholder="Digite aqui..." onBlur={() => onSubmit('address', address)} onChange={(e) => setAddress(e.target.value)}/>
         {/* <SheetFooter className="mt-4 justify-between">
           {!(data?.id) && <Button type="submit" disabled={isPending}>Salvar</Button>}
           {data?.name && <ConfirmButton 
@@ -57,6 +59,6 @@ export function CustomerForm({data, onSubmit}: ICustomerSheetsProps) {
             </ConfirmButton>}
         </SheetFooter> */}
       </form>
-    </Form>
+    </>
   )
 }

@@ -11,7 +11,6 @@ import { ROUTER_PATHS } from "@/routes/routes"
 import { useServiceOrderStore } from "@/hooks/useServiceOrder"
 import StatusDropDown from "@/components/BadgeDropDown/BadgeDropDown"
 
-
 export default function SearchServiceOrdersPage() {
   const [searchValue, setSearchValue] = useDebounce({timeout: 800})
   const navigation = useNavigate()
@@ -29,7 +28,7 @@ export default function SearchServiceOrdersPage() {
 
   const handleCardClick = async (serviceOrder: ServiceOrder) => {
     await setServiceOrder({...serviceOrder})
-    navigation(ROUTER_PATHS.SERVICE_ORDER)
+    navigation(ROUTER_PATHS.SERVICE_ORDER + '?edit=true')
   }
 
   const serviceOrdersData = serviceOrders?.pages.flatMap((page) => page.data) || [];
@@ -40,13 +39,13 @@ export default function SearchServiceOrdersPage() {
       <SearchPage.SearchBar placeholder="Pesquise seus orçamentos aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
       <Card.Container>
         {serviceOrdersData.map((serviceOrder: ServiceOrder) => (
-          <Card className="min-h-[110px] capitalize" key={serviceOrder?.id} onClick={() => handleCardClick(serviceOrder)}>
-            {serviceOrder?.updatedAt && isToday(new Date(serviceOrder?.updatedAt)) && <Card.Badge>Novo</Card.Badge>}
+          <Card className="capitalize" key={serviceOrder?.id} onClick={() => handleCardClick(serviceOrder)}>
+            {serviceOrder?.updatedAt && isToday(new Date(serviceOrder?.updatedAt)) && <Card.Badge></Card.Badge>}
             <Card.Header title={(serviceOrder?.vehicle?.brand || serviceOrder?.vehicle?.model) ? `${serviceOrder?.vehicle?.brand} ${serviceOrder?.vehicle?.model}` : 'Sem Veículo'} description={serviceOrder?.customer?.name || 'Cliente não identificado'}/>
             <Card.Content>
             <div className="flex justify-between">
+              {serviceOrder?.vehicle?.plate ? <p className="uppercase text-md border rounded border-blue-500 font-bold px-2 pt-[3px]">{serviceOrder?.vehicle?.plate}</p> : <span></span>}
               <StatusDropDown value={serviceOrder.status} options={SO_STATUS_LIST} disabled={true} onChange={() => {}}/>
-              <p className="text-md uppercase">{serviceOrder?.vehicle?.plate}</p>
             </div>
             </Card.Content>
           </Card>

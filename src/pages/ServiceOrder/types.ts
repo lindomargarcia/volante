@@ -7,7 +7,7 @@ import { VehicleSchema } from "@/components/FormSheet/Vehicle/schema"
 export type ServiceOrder = {
     id: string
     status: STATUS_SERVICE_ORDER,
-    created_at: string,
+    createdAt: string,
     updatedAt?: string,
     insurance_company?: string,
     duration_quantity: number,

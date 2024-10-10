@@ -34,13 +34,14 @@ export default function VehiclesPage() {
           <Card key={vehicle.id}>
             <Card.Header
               title={(vehicle.brand || vehicle.model) ? `${vehicle.brand} ${vehicle.model}` : 'Sem Veículo'}
-              description={String(vehicle.plate || 'Sem placa').toUpperCase()}
-              fallback={vehicle?.brand?.substring(0,1) || vehicle?.model?.substring(0,1)}
-            />
-            {isToday(new Date(vehicle.createdAt)) && <Card.Badge>Novo</Card.Badge>}
+              description={String(vehicle.year || '').toUpperCase()}
+            >
+            {vehicle.plate && <p className="uppercase border rounded border-blue-500 font-bold px-2">{vehicle.plate}</p>}
+            </Card.Header>
+            {isToday(new Date(vehicle.updatedAt)) && <Card.Badge> </Card.Badge>}
             <Card.Content>
-              <p className="flex gap-2 text-sm mb-1"><Palette size={18}/>{COLORS.find(i => i.value === vehicle.color)?.label || 'Cor não informada'}</p>
-              <p className="flex gap-2 text-sm"><Fuel size={18}/>{CAR_FUELS.find(i => i.value === vehicle.fuel)?.label || 'Combustível não informado'}</p>
+              <p className="flex gap-2 text-sm mb-1"><Palette size={18} className="ml-[1px]"/>{COLORS.find(i => i.value === vehicle.color)?.label || 'Não informada'}</p>
+              <p className="flex gap-2 text-sm"><Fuel size={18} className="ml-[1px]"/>{CAR_FUELS.find(i => i.value === vehicle.fuel)?.label || 'Não informado'}</p>
               {/* <p className="flex gap-2 text-sm mt-1"><Car size={18}/>{vehicle.chassi || 'Chassi não informado'}</p> */}
             </Card.Content>
           </Card>

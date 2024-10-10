@@ -1,10 +1,9 @@
-import { Form } from "../../ui/form"
-import { useForm } from "react-hook-form"
-import { VehicleSchema, DEFAULT_VEHICLE_VALUES } from "./schema"
+import { VehicleSchema } from "./schema"
 import { COLORS } from '@/data/constants/colors'
 import { CAR_BRANDS, CAR_FUELS } from '@/data/constants/carBrands'
 import { Input } from "@/components/ui/input"
 import SelectOption from "@/components/ui/selectOptions"
+import { useState } from "react"
 
 interface IVehicleSheetsProps {
   data?: VehicleSchema,
@@ -15,10 +14,11 @@ interface IVehicleSheetsProps {
 
 export function VehicleForm({data, onSubmit}: IVehicleSheetsProps) {
   const disabled = false
-  const form = useForm<VehicleSchema>({
-    // resolver: zodResolver(vehicleSchema),
-    defaultValues: data || DEFAULT_VEHICLE_VALUES
-  })
+  const [plate, setPlate] = useState(data?.plate || '')
+  const [model, setModel] = useState(data?.model || '')
+  const [year, setYear] = useState(data?.year || '')
+  const [km, setKm] = useState(data?.km || '')
+  const [chassi, setChassi] = useState(data?.chassi || '')
 
   // const handleOnSubmit = (data: VehicleSchema) => {onSubmit(data)}
 
@@ -33,20 +33,20 @@ export function VehicleForm({data, onSubmit}: IVehicleSheetsProps) {
   // }
 
   return (
-    <Form {...form}>
-      <form className="grid gap-4 py-4">
+    <>
+      <div className="grid gap-4 py-4">
         <div className="flex gap-2">
-          <Input value={data?.plate || ''} disabled={disabled} label="Placa" placeholder="ABC-1D23"  className={'uppercase'} onChange={(e) => onSubmit('plate', e?.target?.value || '')}/>
+          <Input value={plate || ''} disabled={disabled} label="Placa" placeholder="ABC-1D23"  className={'uppercase'} onChange={(e) => setPlate(e.target.value || '')} onBlur={() => onSubmit('plate', plate)}/>
           <SelectOption disabled={disabled} value={data?.brand || ''} label="Marca" placeholder="Selecione..." onChange={(value) => onSubmit('brand', value || "")} options={CAR_BRANDS} />
         </div>
         <div className="flex gap-2">
-          <Input disabled={disabled} label="Modelo" value={data?.model || ''} placeholder="Digite aqui..." onChange={(e) => onSubmit('model', e?.target?.value || '')}/>
-          <Input disabled={disabled} label="Ano" value={data?.year || ''} placeholder="2024" onChange={(e) => onSubmit('year', e?.target?.value || '')}/>
+          <Input disabled={disabled} label="Modelo" value={model || ''} placeholder="Digite aqui..." onChange={(e) => setModel(e.target.value || '')} onBlur={() => onSubmit('model', model)}/>
+          <Input disabled={disabled} label="Ano" value={year || ''} placeholder="2024" onChange={(e) => setYear(e.target.value || '')} onBlur={() => onSubmit('year', year)}/>
           <SelectOption disabled={disabled} value={data?.color || ''} label="Cor" placeholder="Selecione..." options={COLORS} onChange={(value) => onSubmit('color', value || "")}/>
         </div>
         <div className="flex gap-2">
-          <Input disabled={disabled} label="Km" value={data?.km || ''} placeholder="Digite aqui..." onChange={(e) => onSubmit('km', e?.target?.value || '')}/>
-          <Input disabled={disabled} label="Chassi" value={data?.chassi || ''} placeholder="Ex: 1HGCM82633A123456" onChange={(e) => onSubmit('chassi', e?.target?.value || '')}/>
+          <Input disabled={disabled} label="Km" value={km || ''} placeholder="Digite aqui..." onChange={(e) => setKm(e.target.value || '')} onBlur={() => onSubmit('km', km)}/>
+          <Input disabled={disabled} label="Chassi" value={chassi || ''} placeholder="Ex: 1HGCM82633A123456" onChange={(e) => setChassi(e.target.value || '')} onBlur={() => onSubmit('chassi', chassi)}/>
           <SelectOption disabled={disabled} value={data?.fuel || ''} label="Combustível" placeholder="Selecione..." options={CAR_FUELS} onChange={(value) => onSubmit('fuel', value || "")}/>
         </div>
         {/* <SheetFooter className="mt-4 justify-between">
@@ -60,7 +60,7 @@ export function VehicleForm({data, onSubmit}: IVehicleSheetsProps) {
                 Remover
             </ConfirmButton>}
         </SheetFooter> */}
-      </form>
-    </Form>
+      </div>
+    </>
   )
 }

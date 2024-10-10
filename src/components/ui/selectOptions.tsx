@@ -1,7 +1,7 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "./label";
 
-interface SelectOptionProps {
+interface SelectOptionProps{
     value?: string,
     placeholder?: string,
     options: {value: string, label: string, color?: string}[],

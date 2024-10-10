@@ -1,5 +1,5 @@
 import { Car, Check, File, Save, User, X } from "lucide-react";
-import { useState } from "react";
+import {useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
 import { CustomerForm } from "@/components/FormSheet/Customer";
@@ -25,7 +25,18 @@ import ConfirmButton from "@/components/ConfirmButton/ConfirmButton";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
-  const {id, customer,vehicle,service_order_items,car_map,status, setCustomer,setVehicle,setItems,setCarMap,setStatus} = useServiceOrderStore()
+  const {id, customer,vehicle,service_order_items,car_map,status, setCustomer,setVehicle,setItems,setCarMap,setStatus, reset} = useServiceOrderStore()
+
+  const queryParams = new URLSearchParams(location.search);
+
+  // Exemplo de como obter um parâmetro específico
+  const editMode = queryParams.get('edit');
+
+  useEffect(() => {
+    if(!editMode){
+      reset()
+    }
+  }, [])
 
   const handleNewSOItem = async (newItem: ServiceOrderItem) => {
     // toast.message("Novo item adicionado com sucesso!")
@@ -55,7 +66,7 @@ function ServiceOrderPage() {
   }
 
   const getVehicleColor = (vehicle: VehicleSchema) => {
-    return COLORS.find(color => color.value === vehicle.color)?.code || "#000"
+    return COLORS.find(color => color.value === vehicle?.color)?.code || "#000"
   }
 
   const handleOnSave = () => {
@@ -68,6 +79,18 @@ function ServiceOrderPage() {
         toast.message("Erro ao salvar", { icon: <X/>})
       }
     })
+  }
+
+  const onCustomerFieldChange = (field: string, value: string) => {
+    let newCustomer = customer
+    newCustomer[field] = value
+    setCustomer(newCustomer)
+  }
+
+  const onVehicleFieldChange = (field: string, value: string) => {
+    let newVehicle = vehicle
+    newVehicle[field] = value
+    setVehicle(newVehicle)
   }
 
   return (
@@ -91,7 +114,7 @@ function ServiceOrderPage() {
               <div className="flex flex-col gap-4">
                 <Card className="px-4 rounded-lg">
                   <CustomerForm 
-                    onSubmit={(field, value) => {setCustomer({...customer, [field]: value})}}
+                    onSubmit={onCustomerFieldChange}
                     onDelete={() => setCustomer(DEFAULT_CUSTOMER_VALUE)}
                     isPending={false}
                     data={customer}
@@ -99,7 +122,7 @@ function ServiceOrderPage() {
                 </Card>
                 <Card className="px-4 rounded-lg">
                   <VehicleForm 
-                    onSubmit={(field, value) => {setVehicle({...vehicle, [field]: value})}}
+                    onSubmit={onVehicleFieldChange}
                     onDelete={() => setVehicle(DEFAULT_VEHICLE_VALUES)}
                     isPending={false}
                     data={vehicle}
@@ -125,10 +148,10 @@ function ServiceOrderPage() {
               title="Resetar"
               variant={"destructive"}
               onConfirm={() => window.location.reload()}>
-               Limpar
+               Resetar
             </ConfirmButton>
             <div className="flex gap-4">
-              <Modal 
+              {service_order_items.length > 0 && <Modal 
                 trigger={<Button onClick={handleOnSave} variant="outline"><File size={18} className="mr-2"/>PDF</Button>}
                 title='Orçamento'
                 subtitle='Envie ou imprima para seu cliente'
@@ -137,7 +160,7 @@ function ServiceOrderPage() {
                   <PDFViewer className="w-full min-h-[calc(100vh-180px)]">
                     <ServiceOrderPDF data={{customer, vehicle, service_order_items, status}}/>
                   </PDFViewer>
-              </Modal>
+              </Modal>}
               <Button onClick={handleOnSave}>
                 <Save size={18} className="mr-2"/>Salvar
               </Button>

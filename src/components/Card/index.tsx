@@ -10,7 +10,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement>{
 
 export default function Card({children, className, ...props}: IProps) {
   return (
-    <BasicCard {...props} className={`rounded-lg flex flex-col flex-1 relative active:scale-95 transition hover:border-[--theme-highlight] hover:shadow-lg hover:shadow-[--theme-highlight-100] ${className}`}>
+    <BasicCard {...props} className={`rounded-lg flex flex-col relative active:scale-95 transition hover:border-[--theme-highlight] hover:shadow-lg hover:shadow-[--theme-highlight-100] ${className}`}>
         {children}
     </BasicCard>
   )
@@ -18,15 +18,15 @@ export default function Card({children, className, ...props}: IProps) {
 
 Card.Container = ({children}: {children: ReactNode}) => {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-[repeat(2,minmax(320px,1fr))] lg:grid-cols-[repeat(3,minmax(320px,1fr))] xl:grid-cols-[repeat(4,minmax(320px,1fr))] flex-1 content-start gap-2 flex-wrap overflow-y-scroll">
+        <div className="grid grid-cols-1 md:grid-cols-[repeat(2,minmax(320px,1fr))] lg:grid-cols-[repeat(3,minmax(320px,1fr))] xl:grid-cols-[repeat(4,minmax(320px,1fr))] content-start gap-2 flex-wrap overflow-y-scroll">
             {children}
         </div>
     )
 }
 
-Card.Badge = ({children}: {children: ReactNode}) => {
+Card.Badge = ({children}: {children?: ReactNode}) => {
     return (
-        <Badge className="bg-[--theme-highlight] shadow-none absolute right-1 top-1">{children}</Badge>
+        <Badge className="bg-[--theme-highlight] shadow-none absolute right-1 top-1 h-3">{children}</Badge>
     )
 }
 
