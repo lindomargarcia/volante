@@ -3,7 +3,7 @@ import { COLORS } from '@/data/constants/colors'
 import { CAR_BRANDS, CAR_FUELS } from '@/data/constants/carBrands'
 import { Input } from "@/components/ui/input"
 import SelectOption from "@/components/ui/selectOptions"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 interface IVehicleSheetsProps {
   data?: VehicleSchema,
@@ -19,6 +19,19 @@ export function VehicleForm({data, onSubmit}: IVehicleSheetsProps) {
   const [year, setYear] = useState(data?.year || '')
   const [km, setKm] = useState(data?.km || '')
   const [chassi, setChassi] = useState(data?.chassi || '')
+
+  const queryParams = new URLSearchParams(location.search);
+  const editMode = queryParams.get('edit');
+
+  useEffect(() => {
+    if(!editMode){
+      setPlate('')
+      setModel('')
+      setYear('')
+      setKm('')
+      setChassi('')
+    }
+  }, [])
 
   // const handleOnSubmit = (data: VehicleSchema) => {onSubmit(data)}
 

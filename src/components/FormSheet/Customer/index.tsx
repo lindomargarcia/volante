@@ -2,7 +2,7 @@ import { CustomerSchema } from "./schema"
 import MaskedInput from "@/components/MaskedInput/MaskedInput"
 import { MASKS } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 interface ICustomerSheetsProps {
   data: CustomerSchema,
   onSubmit: (field: string, value: string) => void
@@ -16,8 +16,21 @@ export function CustomerForm({data, onSubmit}: ICustomerSheetsProps) {
   const [phone, setPhone] = useState(data?.phone || '')
   const [address, setAddress] = useState(data?.address || '')
   const [email, setEmail] = useState(data?.email || '')
-
+  const queryParams = new URLSearchParams(location.search);
+  const editMode = queryParams.get('edit');
   const disabled = false
+
+
+  useEffect(() => {
+    if(!editMode){
+      setName('')
+      setCpf('')
+      setAddress('')
+      setEmail('')
+      setPhone('')
+    }
+  }, [])
+
   // const form = useForm<CustomerSchema>({
   //   // resolver: zodResolver(customerSchema),
   //   defaultValues: data || DEFAULT_CUSTOMER_VALUE

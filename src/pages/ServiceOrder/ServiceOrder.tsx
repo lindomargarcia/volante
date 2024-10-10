@@ -28,8 +28,6 @@ function ServiceOrderPage() {
   const {id, customer,vehicle,service_order_items,car_map,status, setCustomer,setVehicle,setItems,setCarMap,setStatus, reset} = useServiceOrderStore()
 
   const queryParams = new URLSearchParams(location.search);
-
-  // Exemplo de como obter um parâmetro específico
   const editMode = queryParams.get('edit');
 
   useEffect(() => {
