@@ -7,6 +7,7 @@ const customerSchema = z.object({
   cpf: z.string().refine((value) => validateCPF(value), {message: 'CPF inválido'}).or(z.literal('')),
   phone: z.string().min(12, {message: "Telefone inválido"}).max(15).or(z.literal('')),
   email: z.string().toLowerCase().email().or(z.literal('')),
+  address: z.string().optional()
 }).superRefine(({ email, phone }, refinementContext) => {
     if (email === '' && phone === '' ) {
       return refinementContext.addIssue({
@@ -21,7 +22,8 @@ const DEFAULT_CUSTOMER_VALUE = {
     name: "",
     cpf: "",
     phone: "",
-    email: ""
+    email: "",
+    address: ""
 }
   
 type CustomerSchema = z.infer<typeof customerSchema>

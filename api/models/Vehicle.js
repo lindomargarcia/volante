@@ -21,6 +21,18 @@ export const Vehicle = db.define('vehicle', {
     color: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    km: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    fuel: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    chassi: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 },{
     tableName: 'vehicles'

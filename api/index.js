@@ -160,7 +160,7 @@ api.get('/customers/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE
                 ]
             },
             limit: parseInt(limit, 10) || PAGE_LIMIT, 
-            order: [['name', 'ASC'], ['createdAt', 'DESC']],
+            order: [['updatedAt', 'DESC'], ['name', 'ASC']],
             offset: getPaginationOffset(page, limit),
         });
 
@@ -237,26 +237,32 @@ api.get('/suppliers/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_L
 
 createBasicCRUD('Insurance Company', 'insurance_companies', InsuranceCompany)
 createBasicCRUD('Service Order', 'service_orders', ServiceOrder, ['put', 'delete', 'get_all'])
+
 api.get('/service_orders/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIMIT, searchValue = ''}}, reply) => {
     try{
         const {count, rows} = await ServiceOrder.findAndCountAll({
             limit,
             offset: getPaginationOffset(page, limit),
-            order: [['createdAt', 'DESC']],
+            order: [['updatedAt', 'DESC']],
             include:[
                 {
                     model: Customer,
-                    attributes: ['id', 'name', 'cpf', 'phone', 'email']
+                    attributes: ['id', 'name', 'cpf', 'phone', 'email', 'address']
                 },
                 {
                     model: Vehicle,
-                    attributes: ['id', 'plate', 'brand', 'model', 'year','color']
+                    attributes: ['id', 'plate','chassi', 'brand', 'model', 'year','color', 'km', 'fuel']
                 },
                 {
                     model: ServiceOrderItem,
-                    attributes: ['id', 'description','value','quantity','discount','total', 'type']
+                    attributes: ['serviceOrderId', 'id', 'description','value','quantity','discount','total', 'type']
                 }
-            ]
+            ],
+            where: {
+                [Op.or]: [
+                    { id: { [Op.like]: `%${searchValue}%` } }
+                ]
+            }
         })
         const response = {
             data: rows,
@@ -274,7 +280,6 @@ api.get('/service_orders/search', async ({query: {page = INITIAL_PAGE, limit = P
 
 
 api.post('/service_orders', async (request, reply) => {
-    console.log(request.body)
     if(!request.body.customer){
         throw new Error('Customer cannot be empty')
     }else if(!request.body.vehicle){
@@ -283,43 +288,26 @@ api.post('/service_orders', async (request, reply) => {
 
     await db.transaction(async t => {
         try{
-            const [customer] = await Customer.findOrCreate({
-                transaction: t,
-                where: {
-                    [Op.or]: [
-                        request?.body?.customer?.id && { id: request?.body?.customer?.id },
-                        request?.body?.customer?.cpf && { cpf: request?.body?.customer?.cpf }
-                    ]
-                },
-                defaults: request.body.customer,
-            })
             
-            const [vehicle] = await Vehicle.findOrCreate({
-                transaction: t,
-                where: {
-                    [Op.or]: [
-                        request?.body?.vehicle?.id && { id: request?.body?.vehicle?.id },
-                        request?.body?.vehicle?.plate && { plate: request?.body?.vehicle?.plate },
-                    ]
-                },
-                defaults: request?.body?.vehicle
-            })
+            const [customer] = await Customer.upsert(request.body.customer, {transaction: t})
+            const [vehicle] = await Vehicle.upsert(request?.body?.vehicle, {transaction: t})
             
-            const {status, insuranceCompanyId, durationQuantity, durationType, items} = request.body
+            const {status, insuranceCompanyId, durationQuantity, durationType, service_order_items} = request.body
 
             const newSO = await ServiceOrder.upsert({id: request?.body?.id, status, customerId: customer.id, vehicleId: vehicle.id, insuranceCompanyId, durationQuantity, durationType},{transaction: t})
             let createdItems = []
 
-            if (items && items.length > 0) {
-                for (const item of items) {
-                    await ServiceOrderItem.upsert(
-                        { serviceOrderId: newSO.id, ...item },
+            if (service_order_items && service_order_items.length > 0) {
+                for (const item of service_order_items) {
+                    const newItem = await ServiceOrderItem.upsert(
+                        { serviceOrderId: request?.body?.id, ...item },
                         { transaction: t }
                     );
+                    createdItems.push(newItem)
                 }
             }
 
-            reply.status(200).send({...newSO.dataValues, items: createdItems, customer, vehicle})
+            reply.status(200).send({...newSO.dataValues, service_order_items: createdItems, customer, vehicle})
         }catch(error){
             console.log(error)
             await t.rollback()
@@ -343,7 +331,7 @@ api.get('/vehicles/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE_
                 ]
             },
             limit: parseInt(limit, 10) || PAGE_LIMIT, 
-            order: [['brand', 'ASC'],['model', 'ASC'], ['createdAt', 'DESC']],
+            order: [['updatedAt', 'DESC'], ['brand', 'ASC'],['model', 'ASC']],
             offset: getPaginationOffset(page, limit),
         });
 

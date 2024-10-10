@@ -8,14 +8,15 @@ export type ServiceOrder = {
     id: string
     status: STATUS_SERVICE_ORDER,
     created_at: string,
-    last_saved_at: string,
+    updatedAt?: string,
     insurance_company?: string,
     duration_quantity: number,
     duration_type: "hour" | "day" | "week" | "month" | "year",
     images: string[]
     customer: CustomerSchema,
     vehicle: VehicleSchema,
-    items: ServiceOrderItem[] | []
+    items: ServiceOrderItem[] | [],
+    service_order_items?: ServiceOrderItem[] | []
 }
 
 export type ServiceOrderItem = {

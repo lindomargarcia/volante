@@ -61,7 +61,7 @@ export const PAGE_LIMIT = 15
 
 export const USE_QUERY_CONFIGS = {
     retry: 2,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
     initialPageParam: 1,
 }

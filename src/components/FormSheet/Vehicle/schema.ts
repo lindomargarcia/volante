@@ -6,7 +6,10 @@ const DEFAULT_VEHICLE_VALUES = {
     brand: "",
     model: "",
     year: "",
-    color: ""
+    color: "",
+    fuel: "",
+    km: "",
+    chassi: ""
 }
 
 const vehicleSchema = z.object({
@@ -15,7 +18,10 @@ const vehicleSchema = z.object({
   brand: z.string().min(1, {message: 'Campo obrigatório'}),
   model: z.string().min(1, {message: 'Campo obrigatório'}),
   year: z.string().or(z.literal("")),
-  color: z.string().toLowerCase()
+  color: z.string().toLowerCase(),
+  km: z.string().optional(),
+  fuel: z.string().optional(),
+  chassi: z.string().optional()
 })
   
 type VehicleSchema = z.infer<typeof vehicleSchema>

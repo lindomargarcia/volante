@@ -23,7 +23,7 @@ export default function ConfirmButton({title, message, children, onConfirm, vari
                 {title && <h4 className="font-medium text-sm leading-none">{title}</h4>}
                 {message && <p className="text-sm text-muted-foreground">{message}</p>}
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end mt-4">
                 <Button size={"sm"} onClick={onConfirm}>Sim</Button>
             </div>
         </PopoverContent>

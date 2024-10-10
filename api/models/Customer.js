@@ -19,6 +19,10 @@ export const Customer = db.define('customer', {
     type: DataTypes.STRING(15),
     allowNull: true
   },
+  address: {
+    type: DataTypes.STRING,
+    allowNull: true
+  }
 }, {
   tableName: 'customers'
 });

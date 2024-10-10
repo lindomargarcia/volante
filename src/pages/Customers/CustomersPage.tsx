@@ -5,7 +5,7 @@ import { USE_QUERY_CONFIGS } from "@/data/constants/utils"
 import useDebounce from "@/hooks/useDebounce"
 import { isToday } from "@/lib/utils"
 import { useInfiniteQuery } from "@tanstack/react-query"
-import { Mail, Phone } from "lucide-react"
+import { Home, Mail, Phone } from "lucide-react"
 
 
 export default function CustomersPage() {
@@ -30,12 +30,17 @@ export default function CustomersPage() {
         {customersData.map((customer: any) => (
           <Card className="min-h-[110px]" key={customer.id}>
             {isToday(new Date(customer.createdAt)) && <Card.Badge>Novo</Card.Badge>}
-            <Card.Header fallback={customer?.name?.substring(0,1)} title={customer.name} description={customer.cpf || customer.phone || customer.email}>
-              <Card.HeaderActions>
+            <Card.Header fallback={customer?.name?.substring(0,1) || '?'} title={customer.name || 'Nome não informado'} description={customer.cpf || 'CPF não informado'}>
+              {/* <Card.HeaderActions>
                 <Card.Action icon={<Mail size={18}/>}/>
                 <Card.Action icon={<Phone size={18}/>}/>
-              </Card.HeaderActions>
+              </Card.HeaderActions> */}
             </Card.Header>
+            <Card.Content>
+              <p className="flex gap-2 text-sm mb-1"><Phone size={18}/>{customer.phone || '(00) 00000000'}</p>
+              <p className="flex gap-2 text-sm"><Mail size={18}/>{customer.email || 'não@informado.com'}</p>
+              <p className="flex gap-2 text-sm mt-1"><Home size={18}/>{customer.address || 'não informado'}</p>
+            </Card.Content>
           </Card>
         ))}
         </Card.Container>

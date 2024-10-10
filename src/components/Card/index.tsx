@@ -3,14 +3,14 @@ import { ButtonHTMLAttributes, ReactNode } from "react";
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-interface IProps{
+interface IProps extends React.HTMLAttributes<HTMLDivElement>{
     children?: ReactNode,
     className?: string
 }
 
-export default function Card({children, className}: IProps) {
+export default function Card({children, className, ...props}: IProps) {
   return (
-    <BasicCard className={`rounded-lg flex flex-col flex-1 relative active:scale-95 transition hover:border-[--theme-highlight] hover:shadow-lg hover:shadow-[--theme-highlight-100] ${className}`}>
+    <BasicCard {...props} className={`rounded-lg flex flex-col flex-1 relative active:scale-95 transition hover:border-[--theme-highlight] hover:shadow-lg hover:shadow-[--theme-highlight-100] ${className}`}>
         {children}
     </BasicCard>
   )
@@ -56,9 +56,9 @@ Card.Content = ({children}: {children: ReactNode}) => {
     )
 }
 
-Card.HeaderActions = ({children}: {children: ReactNode}) => {
+Card.HeaderActions = ({children, className}: {children: ReactNode, className?: string}) => {
     return (
-        <div className="flex items-center justify-center">
+        <div className={`flex items-center justify-center h-full ${className}`}>
             {children}
         </div>
     )
@@ -67,9 +67,9 @@ Card.HeaderActions = ({children}: {children: ReactNode}) => {
 interface ActionProps extends ButtonHTMLAttributes<HTMLButtonElement>{
     icon: ReactNode,
 }
-Card.Action = ({icon, ...rest}: ActionProps) => {
+Card.Action = ({icon, className, ...rest}: ActionProps) => {
     return (
-        <button {...rest} className="p-2 m-0 rounded-full hover:bg-gray-200 transition">
+        <button {...rest} className={`p-2 m-0 rounded-full hover:bg-gray-200 transition ${className}`}>
             {icon}
         </button>
     );

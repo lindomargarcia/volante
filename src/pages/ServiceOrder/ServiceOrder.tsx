@@ -1,4 +1,4 @@
-import { Car, File, Save, User } from "lucide-react";
+import { Car, Check, File, Save, User, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
@@ -21,27 +21,27 @@ import { CAR_ACTIONS, ICarSelectionValue, IChangeValue } from "@/components/CarP
 import { COLORS } from "@/data/constants/colors";
 import { useServiceOrderStore } from "@/hooks/useServiceOrder";
 import { deleteServiceOrderItem, putServiceOrderAPI } from "@/data/api/ServiceOrderAPI";
+import ConfirmButton from "@/components/ConfirmButton/ConfirmButton";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
-  const {id, customer,vehicle,items,car_map,status, setCustomer,setVehicle,setItems,setCarMap,setStatus} = useServiceOrderStore()
+  const {id, customer,vehicle,service_order_items,car_map,status, setCustomer,setVehicle,setItems,setCarMap,setStatus} = useServiceOrderStore()
 
   const handleNewSOItem = async (newItem: ServiceOrderItem) => {
-    toast.message("Novo item adicionado com sucesso!")
-    setItems([newItem, ...items])
+    // toast.message("Novo item adicionado com sucesso!")
+    setItems([newItem, ...service_order_items])
   }
 
   const handleChangeItem = (changedItem: ServiceOrderItem) => {
-    const updatedItems = items.map((item) => {
+    const updatedItems = service_order_items.map((item) => {
       return (item.id === changedItem.id) ? changedItem : item
     })
     setItems(updatedItems)
   }
 
   const handleRemoveItem = (deletedItem: ServiceOrderItem) => {
-    deleteServiceOrderItem(deletedItem.id).then((data) => {
-      console.log(data)
-      const updatedItems = items.filter((item) => (item.id !== deletedItem.id))
+    deleteServiceOrderItem(deletedItem.id).then(() => {
+      const updatedItems = service_order_items.filter((item) => (item.id !== deletedItem.id))
       setItems(updatedItems)
     })
   }
@@ -50,8 +50,7 @@ function ServiceOrderPage() {
     if(selected.action.value === CAR_ACTIONS.DAMAGE) return
 
     const newItem: ServiceOrderItem = {id: '389', description: selected.action.value + ' ' + selected.car_part, discount: 0, quantity: 1, total: 50, type: selected.action.value, insurance_coverage: 0, value: 50}
-    setItems([newItem, ...items])
-    console.log(selected)
+    setItems([newItem, ...service_order_items])
     setCarMap(data)
   }
 
@@ -60,12 +59,14 @@ function ServiceOrderPage() {
   }
 
   const handleOnSave = () => {
-    console.log({id, customer, vehicle, items, status})
-    putServiceOrderAPI({id, customer, vehicle, items, status}).then((data) => {
-      console.log(data)
-      data?.customer && setCustomer(data?.customer)
-      data?.vehicle && setVehicle(data?.vehicle)
-      toast.message("Salvo com sucesso!")
+    putServiceOrderAPI({id, customer, vehicle, service_order_items, status}).then((data) => {
+      if(data){
+        data?.customer && setCustomer(data?.customer)
+        data?.vehicle && setVehicle(data?.vehicle)
+        toast.message("Salvo com sucesso!", { icon: <Check/>})
+      }else{
+        toast.message("Erro ao salvar", { icon: <X/>})
+      }
     })
   }
 
@@ -90,7 +91,7 @@ function ServiceOrderPage() {
               <div className="flex flex-col gap-4">
                 <Card className="px-4 rounded-lg">
                   <CustomerForm 
-                    onSubmit={setCustomer}
+                    onSubmit={(field, value) => {setCustomer({...customer, [field]: value})}}
                     onDelete={() => setCustomer(DEFAULT_CUSTOMER_VALUE)}
                     isPending={false}
                     data={customer}
@@ -98,7 +99,7 @@ function ServiceOrderPage() {
                 </Card>
                 <Card className="px-4 rounded-lg">
                   <VehicleForm 
-                    onSubmit={setVehicle}
+                    onSubmit={(field, value) => {setVehicle({...vehicle, [field]: value})}}
                     onDelete={() => setVehicle(DEFAULT_VEHICLE_VALUES)}
                     isPending={false}
                     data={vehicle}
@@ -111,27 +112,36 @@ function ServiceOrderPage() {
 
         {/* right Side */}
         <div className="flex flex-1 flex-col">
-          <ServiceOrderHeader status={status} onStatusChange={setStatus}/>
+          <ServiceOrderHeader id={id} status={status} onStatusChange={setStatus}/>
           <ServiceOrderItems 
-            data={items}
+            data={service_order_items}
             onAddItem={handleNewSOItem}
             onChangeItem={handleChangeItem}
             onRemoveItem={handleRemoveItem}
           />
-          <div className="flex mt-6 justify-end items-end gap-3">
-            <Modal 
-              trigger={<Button variant="outline"><File size={18} className="mr-2"/>PDF</Button>}
-              title='Orçamento'
-              subtitle='Envie ou imprima para seu cliente'
-              className="min-h-[calc(100vh-180px)]"
-              async={true}>
-                <PDFViewer className="w-full min-h-[calc(100vh-180px)]">
-                  <ServiceOrderPDF data={{customer, vehicle, items, status}}/>
-                </PDFViewer>
-            </Modal>
-            <Button onClick={handleOnSave}>
-              <Save size={18} className="mr-2"/>Salvar
-            </Button>
+          <div className="flex mt-6 justify-between items-end gap-3">
+            <ConfirmButton
+              message="Deseja começar um novo orçamento do zero?"
+              title="Resetar"
+              variant={"destructive"}
+              onConfirm={() => window.location.reload()}>
+               Limpar
+            </ConfirmButton>
+            <div className="flex gap-4">
+              <Modal 
+                trigger={<Button onClick={handleOnSave} variant="outline"><File size={18} className="mr-2"/>PDF</Button>}
+                title='Orçamento'
+                subtitle='Envie ou imprima para seu cliente'
+                className="min-h-[calc(100vh-180px)]"
+                async={true}>
+                  <PDFViewer className="w-full min-h-[calc(100vh-180px)]">
+                    <ServiceOrderPDF data={{customer, vehicle, service_order_items, status}}/>
+                  </PDFViewer>
+              </Modal>
+              <Button onClick={handleOnSave}>
+                <Save size={18} className="mr-2"/>Salvar
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -141,17 +151,18 @@ function ServiceOrderPage() {
 
 interface IServiceOrderHearderProps {
   status: any,
+  id: string,
   onStatusChange: (status: string) => void
 }
 
-const ServiceOrderHeader = ({status, onStatusChange}: IServiceOrderHearderProps) => {
+const ServiceOrderHeader = ({id, status, onStatusChange}: IServiceOrderHearderProps) => {
   return(
     <header className="flex items-center pb-4">
       <div className="flex gap-10 flex-1">
         <div>
           <h1 className="text-2xl font-semibold">Orçamento</h1>
           <p className="text-sm text-muted-foreground">
-            Informe abaixo os serviços que serão realizados no veículo
+            {id ? "Id: " + id : "Informe abaixo os serviços que serão realizados no veículo" }
           </p>
         </div>
       </div>

@@ -15,6 +15,7 @@ import { BADGE_COLORS } from "@/data/constants/colors";
 import { ReactNode } from "react";
 import { Trash2Icon } from "lucide-react";
 import { nanoid } from 'nanoid/non-secure'
+import ConfirmButton from "../ConfirmButton/ConfirmButton";
 interface ServiceOrderItemProps {
     data: ServiceOrderItem[];
     onAddItem: (newItem: ServiceOrderItem) => Promise<void>;
@@ -43,7 +44,7 @@ const ServiceOrderItems = ({ data, onAddItem, onChangeItem, onRemoveItem }: Serv
                 <li className="w-[62px]">Qtd.</li>
                 <li className="w-[94px]">Valor</li>
                 <li className="w-[70px]">Desc.</li>
-                <li className="w-[180px]">Total</li>
+                <li className="w-[170px] mr-[42px]">Total</li>
             </ul>
             <ServiceOrderItems.List data={data} renderItem={item => (
                 <ServiceOrderItems.ListItem key={item.id} item={item} onChange={onChangeItem} onDelete={onRemoveItem}/>
@@ -123,18 +124,16 @@ ServiceOrderItems.ListItem = ({ item, onChange, onDelete }: { item: ServiceOrder
     }
     
     return (
-    <li className="flex gap-2 py-2 rounded-md pr-4 hover:bg-zinc-100">
-        <span className={`w-[10px] h-[10px] ml-4 mt-[6px] ${BADGE_COLORS[item.type]} rounded-full`} />
-        <div className="flex-1">
+    <li className="flex items-center gap-2 py-2 rounded-md pr-4 hover:bg-zinc-100">
+        <span className={`w-[10px] h-[10px] pl-4 ml-4 ${BADGE_COLORS[item.type]} rounded-full`} />
+        <div className="flex flex-col flex-1">
             <input
                 className="font-medium h-full w-full px-2 bg-transparent rounded"
                 type="text"
                 value={item.description}
                 onChange={(e) => handleOnChange('description', e.target.value)}
             />
-            {/* <h1 className="text-slate-500">
-                Aqui caso haja algum detalhe
-            </h1> */}
+            {/* <h1 className="text-sm text-slate-500">{item.id}</h1> */}
         </div>
         <div className="flex-1 flex items-center justify-end gap-2 mr-4">
             <input
@@ -174,10 +173,13 @@ ServiceOrderItems.ListItem = ({ item, onChange, onDelete }: { item: ServiceOrder
             )}
         </div>
         <div className="flex items-center align-middle">
-            <Trash2Icon size={20} 
-                className="opacity-0 stroke-red-500  h-full hover:opacity-100 active:scale-90"
-                onClick={() => onDelete(item)}
-                />
+            <ConfirmButton
+                message="Deseja realmente excluir esse item?"
+                title="Excluir item"
+                variant={'link'}
+                onConfirm={() => onDelete(item)}>
+                    <Trash2Icon size={20} className="opacity-0 stroke-red-500  h-full hover:opacity-100 active:scale-90"/>
+            </ConfirmButton>
         </div>
     </li>
 )};
@@ -191,7 +193,7 @@ ServiceOrderItems.Footer = ({ total, subtotal, parts, services, discount }: { to
         <span className="flex gap-8 text-right">
             <PriceTag id='pieces-price' label='Peças' value={currencyFormat(parts, "currency")} />
             <PriceTag id='services-price' label='Serviços' value={currencyFormat(services, "currency")} />
-            <PriceTag id='total-price' label='Total' value={currencyFormat(total, "currency")}/>
+            <PriceTag id='total-price' label='Total' className={`${(total < 0) && 'text-red-500'}`} value={currencyFormat(total, "currency")}/>
         </span>
     </div>
 );

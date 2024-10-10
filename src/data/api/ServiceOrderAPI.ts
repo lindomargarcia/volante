@@ -1,22 +1,22 @@
-import { DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema"
-import { DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema"
-import { STATUS_SERVICE_ORDER, ServiceOrder } from "@/pages/ServiceOrder/types"
+import { ServiceOrder } from "@/pages/ServiceOrder/types"
 
-export async function getServiceOrderAPI(): Promise<ServiceOrder>{
-    return {
-        id: crypto.randomUUID(),
-        status: STATUS_SERVICE_ORDER.PENDING,
-        created_at: new Date().toJSON(),
-        last_saved_at: new Date().toJSON(),
-        customer: DEFAULT_CUSTOMER_VALUE,
-        vehicle: DEFAULT_VEHICLE_VALUES,
-        images: [],
-        insurance_company: '',
-        duration_quantity: 0,
-        duration_type: 'day',
-        items: []
-    }
-}
+// export async function getServiceOrderAPI(): Promise<ServiceOrder>{
+//     return {
+//         id: crypto.randomUUID(),
+//         status: STATUS_SERVICE_ORDER.PENDING,
+//         created_at: new Date().toJSON(),
+//         last_saved_at: new Date().toJSON(),
+//         customer: DEFAULT_CUSTOMER_VALUE,
+//         vehicle: DEFAULT_VEHICLE_VALUES,
+//         images: [],
+//         insurance_company: '',
+//         duration_quantity: 0,
+//         duration_type: 'day',
+//         items: []
+//     }
+// }
+
+export const getServiceOrderAPI = (searchValue = '', page = 1) => fetch('http://localhost:2000/service_orders/search?searchValue=' + searchValue + '&page=' + page).then(res => res.json());
 
 // export async function putServiceOrderItemAPI(data: ServiceOrderItem){
 //     return 
@@ -37,11 +37,14 @@ export async function putServiceOrderAPI(data: Partial<ServiceOrder>){
             'Content-Type': "application/json"
         },
         body:JSON.stringify({...data})
-    }).then(res => res.json())
+    }).then(res => res.ok && res.json())
 }
 
 export async function deleteServiceOrderItem(id: string){
     return fetch('http://localhost:2000/service_order_items/' + id, {
-        method: 'DELETE'
-    }).then(res => res.json())
+        method: 'DELETE',
+        headers: {
+            'Accept': "application/json"
+        },
+    })
 }

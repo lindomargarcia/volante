@@ -1,3 +1,6 @@
+import { CAR_FUELS } from '@/data/constants/carBrands';
+import { COLORS } from '@/data/constants/colors';
+import useSOPrices from '@/hooks/useSOPrices';
 import { currencyFormat } from '@/lib/utils';
 import { ServiceOrder } from '@/pages/ServiceOrder/types';
 import { Page, Text, View, Document, StyleSheet, Image, Svg, Line } from '@react-pdf/renderer';
@@ -53,6 +56,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Helvetica-Bold',
     textTransform: 'uppercase'
   },
+  titleRight:{
+    fontFamily: 'Helvetica-Bold',
+    textTransform: 'uppercase',
+    textAlign: 'right'
+  },
   title2:{
     fontFamily: 'Helvetica-Bold',
     textTransform: "capitalize",
@@ -64,13 +72,13 @@ const styles = StyleSheet.create({
   },
   itemText: {
     textAlign: 'right',
-    width: 90
+    width: 60
   },
   itemTitle: {
     textTransform: 'uppercase',
     fontFamily: 'Helvetica-Bold',
     textAlign: 'right',
-    width: 90
+    width: 60
   },
   expiration:{
     fontFamily: "Helvetica-Oblique",
@@ -87,6 +95,7 @@ interface ServiceOrderPDFProps {
 }
 export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
     const todayDate = new Date()
+    const prices = useSOPrices(data?.service_order_items || [])
 
     return (
     <Document>
@@ -99,7 +108,7 @@ export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
                 <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (`${pageNumber} / ${totalPages}`)}/>
             </View>
         </View>
-
+        <Text style={{...styles.title, fontSize: 12, textAlign: 'center', marginVertical: 8}}>Orçamento Veicular</Text>
         <View style={{...styles.container, justifyContent: 'space-between'}}>
             <View>
                 <Text style={styles.title}>{data?.customer?.name || 'Cliente anônimo'}</Text>
@@ -108,53 +117,69 @@ export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
                 {data?.customer?.phone && <Text><Text style={styles.title2}>Telefone: </Text>{data?.customer?.phone}</Text>}
             </View>
             <View>
-                {data?.vehicle?.brand && <Text style={styles.title}>{`${data?.vehicle?.brand} ${data?.vehicle?.model}`}</Text>}
-                {data?.vehicle?.plate && <Text><Text style={styles.title2}>Placa: </Text>{data?.vehicle?.plate}</Text>}
-                {data?.vehicle?.color && <Text><Text style={styles.title2}>Cor: </Text>{data?.vehicle?.color}</Text>}
-                {data?.vehicle?.year && <Text><Text style={styles.title2}>Ano: </Text>{data?.vehicle?.year}</Text>}
+                <Text style={styles.title}>{(data?.vehicle?.model || data?.vehicle?.brand) ? `${data?.vehicle?.brand} ${data?.vehicle?.model}` : 'Veículo não informado'}</Text>
+                <View style={{display: 'flex', flexDirection: 'row', gap: '8px'}}>
+                  {data?.vehicle?.year && <Text><Text style={styles.title2}>Ano: </Text>{data?.vehicle?.year || 'não informado'}</Text>}
+                  {data?.vehicle?.plate && <Text><Text style={styles.title2}>Placa: </Text>{String(data?.vehicle?.plate || 'Sem Placa').toUpperCase()}</Text>}
+                </View>
+                <View style={{display: 'flex', flexDirection: 'row', gap: '8px'}}>
+                {data?.vehicle?.color && <Text><Text style={styles.title2}>Cor: </Text>{COLORS.find(i => (i.value === data?.vehicle?.color))?.label || "não informada"}</Text>}
+                  {data?.vehicle?.fuel && <Text><Text style={styles.title2}>Combustível: </Text>{CAR_FUELS.find(i => i.value === data?.vehicle?.fuel)?.label || 'não informado'}</Text>}
+                </View>
+                <View style={{display: 'flex', flexDirection: 'row', gap: '8px'}}>
+                  {data?.vehicle?.km && <Text><Text style={styles.title2}>Km: </Text>{data?.vehicle?.km || 'não informado'}</Text>}
+                  {data?.vehicle?.chassi && <Text><Text style={styles.title2}>Chassi: </Text>{data?.vehicle?.chassi || 'não informado'}</Text>}
+                </View>
             </View>
             <View style={{width: 130}}>
-                <Text style={styles.title}>Endereço</Text>
-                <Text>Endereço não informado</Text>
+                <Text style={{...styles.title, textAlign: 'right'}}>{data?.customer?.address ? 'Endereço' : 'Endereço não informado'}</Text>
+                {data?.customer?.address && <Text style={{textAlign: 'right'}}>{data?.customer?.address || "não informado"}</Text>}
             </View>
         </View>
-        <Text style={{...styles.title, fontSize: 12, textAlign: 'center', marginVertical: 8}}>Orçamento Veicular</Text>
         <View style={styles.body}>
             <View style={{flexDirection: 'row', minHeight: 12, backgroundColor: '#EFEFEF',paddingHorizontal: 12, paddingVertical: 4, marginBottom: 8}}>
                 <Text style={{...styles.itemTitle,textAlign: 'left', flex: 1}}>Item</Text>
                 <Text style={styles.itemTitle}>Qtd.</Text>
                 <Text style={styles.itemTitle}>Valor</Text>
                 <Text style={styles.itemTitle}>Subtotal</Text>
+                <Text style={styles.itemTitle}>Desconto</Text>
                 <Text style={styles.itemTitle}>Total</Text>
             </View>
-            {data?.items?.map(item => (
+            {data?.service_order_items?.map(item => (
                 <View style={{flexDirection: 'row', minHeight: 12, paddingHorizontal: 12}}>
                     <Text style={{...styles.itemText, flex: 1, textAlign: 'left'}}>{item.description}</Text>
                     <Text style={styles.itemText}>{item.quantity}</Text>
-                    <Text  style={styles.itemText}>{currencyFormat(item.value, 'currency')}</Text>
-                    <Text style={styles.itemText}>{currencyFormat(item.value * item.quantity, 'currency')}</Text>
-                    <Text style={styles.itemText}>{currencyFormat((item.value * item.quantity) - item.discount, 'currency')}</Text>
+                    <Text  style={styles.itemText}>{currencyFormat(item.value)}</Text>
+                    <Text style={styles.itemText}>{currencyFormat(item.value * item.quantity)}</Text>
+                    <Text style={styles.itemText}>{currencyFormat(item.discount)}</Text>
+                    <Text style={styles.itemText}>{currencyFormat((item.value * item.quantity) - item.discount)}</Text>
                 </View>
             ))}
         </View>
 
         <View style={styles.container}>
-            <View>
-                <Text style={styles.title}>Peças</Text>
-                <Text>R$ 0,00</Text>
+          <View>
+              <Text style={styles.title}>Subtotal</Text>
+              <Text>{currencyFormat(prices.subtotal, 'currency')}</Text>
+          </View>
+          <View style={{flex: 1}}>
+              <Text style={styles.title}>Descontos</Text>
+              <Text>{currencyFormat(prices.totalDiscountPrice, 'currency')}</Text>
+          </View>
+          <View style={{flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end', gap: '8px'}}>
+            <View style={{textAlign: 'right', alignItems: 'flex-end'}}>
+                <Text style={styles.titleRight}>Peças</Text>
+                <Text style={{textAlign: 'right'}}>{currencyFormat(prices.totalPartsPrice, 'currency')}</Text>
             </View>
-            <View>
-                <Text style={styles.title}>Serviços</Text>
-                <Text>R$ 0,00</Text>
+            <View style={{textAlign: 'right', alignItems: 'flex-end'}}>
+                <Text style={styles.titleRight}>Serviços</Text>
+                <Text style={{textAlign: 'right'}}>{currencyFormat(prices.totalServicesPrice, 'currency')}</Text>
             </View>
-            <View>
-                <Text style={styles.title}>Descontos</Text>
-                <Text>R$ 0,00</Text>
+            <View style={{textAlign: 'right', alignItems: 'flex-end'}}>
+              <Text style={styles.titleRight}>Valor Total</Text>
+              <Text style={{textAlign: 'center'}}>{currencyFormat(prices.totalPrice, 'currency')}</Text>
             </View>
-            <View style={{flex: 1, textAlign: 'right'}}>
-                <Text style={styles.title}>Valor Total</Text>
-                <Text>R$ 0,00</Text>
-            </View>
+          </View>
         </View>
 
         <View style={{padding: 12}}>
@@ -180,10 +205,10 @@ export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
                 </View>
             </View>
             <View style={styles.signContainer}>
-                <Text>______________________</Text>
-                <Text style={{marginTop: 6, fontFamily: 'Helvetica-Bold', marginBottom: 24}}>assinatura da oficina</Text>
-                <Text>______________________</Text>
-                <Text style={{marginTop: 6, fontFamily: 'Helvetica-Bold'}}>assinatura do cliente</Text>
+                <Text>____________________________________</Text>
+                <Text style={{marginTop: 6, marginRight: 42, fontFamily: 'Helvetica-Bold', marginBottom: 24}}>Assinatura da Oficina</Text>
+                <Text>____________________________________</Text>
+                <Text style={{marginTop: 6, marginRight: 42, fontFamily: 'Helvetica-Bold'}}>Assinatura do Cliente</Text>
             </View>
         </View>
         <View style={styles.footer} fixed>
