@@ -1,4 +1,5 @@
 import { ServiceOrder } from "@/pages/ServiceOrder/types"
+import { BASE_URL } from "@/routes/const";
 
 // export async function getServiceOrderAPI(): Promise<ServiceOrder>{
 //     return {
@@ -16,7 +17,7 @@ import { ServiceOrder } from "@/pages/ServiceOrder/types"
 //     }
 // }
 
-export const getServiceOrderAPI = (searchValue = '', page = 1) => fetch('http://localhost:2000/service_orders/search?searchValue=' + searchValue + '&page=' + page).then(res => res.json());
+export const getServiceOrderAPI = (searchValue = '', page = 1) => fetch(BASE_URL + 'service_orders/search?searchValue=' + searchValue + '&page=' + page).then(res => res.json());
 
 // export async function putServiceOrderItemAPI(data: ServiceOrderItem){
 //     return 
@@ -31,7 +32,7 @@ export const getServiceOrderAPI = (searchValue = '', page = 1) => fetch('http://
 // }
 
 export async function putServiceOrderAPI(data: Partial<ServiceOrder>){
-    return fetch('http://localhost:2000/service_orders', {
+    return fetch(`${BASE_URL}service_orders`, {
         method: 'POST',
         headers: {
             'Content-Type': "application/json"
@@ -41,7 +42,7 @@ export async function putServiceOrderAPI(data: Partial<ServiceOrder>){
 }
 
 export async function deleteServiceOrderItem(id: string){
-    return fetch('http://localhost:2000/service_order_items/' + id, {
+    return fetch(`${BASE_URL}service_order_items/` + id, {
         method: 'DELETE',
         headers: {
             'Accept': "application/json"

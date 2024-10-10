@@ -1,4 +1,4 @@
-import { Car, Check, File, Printer, Save, User, X } from "lucide-react";
+import { Car, Check, File, Save, User, X } from "lucide-react";
 import {useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
@@ -22,7 +22,6 @@ import { COLORS } from "@/data/constants/colors";
 import { useServiceOrderStore } from "@/hooks/useServiceOrder";
 import { deleteServiceOrderItem, putServiceOrderAPI } from "@/data/api/ServiceOrderAPI";
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton";
-import { writeTextFile, BaseDirectory } from '@tauri-apps/api/fs';
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')

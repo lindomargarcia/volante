@@ -208,10 +208,10 @@ export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
           <View style={{flex: 1, gap: 12}}>
               <View>
                   <Text style={styles.title}>Formas de pagamento</Text>
-                  <Text>50% de entrada da mão de obra e o restante parcelado em até 3 vezes no cartão, sem juros, para orçamentos acima de R$ 500,00.
-                      Pagamento à vista com 5% de desconto para orçamentos acima de R$ 1.000,00.
-                      Aceitamos Pix pelo CNPJ 04.367.737.0001-06.</Text>
-                  <Text>O pagamento para peças é exclusivamente à vista.</Text>
+                  <Text>50% de entrada da mão de obra e o restante parcelado em até 3 vezes no cartão, sem juros ( para orçamentos acima de R$ 500,00 ).
+                      Pagamento à vista no PIX com 5% de desconto.
+                      Chave PIX: CNPJ 04.367.737.0001-06.</Text>
+                  <Text>O pagamento do valor das peças é exclusivamente à vista.</Text>
               </View>
               <View>
                   <Text style={styles.title}>Avisos</Text>
