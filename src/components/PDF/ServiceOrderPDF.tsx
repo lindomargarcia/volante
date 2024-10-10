@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
 });
 
 interface ServiceOrderPDFProps {
-    data?: Partial<ServiceOrder>
+    data?: Partial<ServiceOrder>,
 }
 export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
   const todayDate = new Date();
@@ -107,7 +107,7 @@ export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
   const lastPageIndex =  paginatedItems.length - 1
 
   return (
-  <Document>
+  <Document author='Geração 2000 - Centro Técnico de Reparos Automotivos'> 
     {paginatedItems.map((serviceOrderItems, pageIndex) => (
       <Page key={pageIndex} size="A4" style={styles.page} bookmark={"Geração 2000"}>
       {/* Header da Página */}

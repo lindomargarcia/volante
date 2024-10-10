@@ -1,4 +1,4 @@
-import { Car, Check, File, Save, User, X } from "lucide-react";
+import { Car, Check, File, Printer, Save, User, X } from "lucide-react";
 import {useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import FileSelect from "@/components/ui/fileSelect";
@@ -11,7 +11,7 @@ import { VehicleSchema, DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Ve
 import { toast } from "sonner";
 import StatusDropDown from "@/components/BadgeDropDown/BadgeDropDown";
 import { SO_STATUS_LIST } from "@/data/constants/utils";
-import { PDFViewer } from "@react-pdf/renderer";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { ServiceOrderPDF } from "@/components/PDF/ServiceOrderPDF";
 import { Modal } from "@/components/Modal/Modal";
 import CarServiceSelector from "@/components/CarPartsSelector";
@@ -22,9 +22,11 @@ import { COLORS } from "@/data/constants/colors";
 import { useServiceOrderStore } from "@/hooks/useServiceOrder";
 import { deleteServiceOrderItem, putServiceOrderAPI } from "@/data/api/ServiceOrderAPI";
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton";
+import { writeTextFile, BaseDirectory } from '@tauri-apps/api/fs';
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
+
   const {id, customer,vehicle,service_order_items,car_map,status, setCustomer,setVehicle,setItems,setCarMap,setStatus, reset} = useServiceOrderStore()
 
   const queryParams = new URLSearchParams(location.search);
@@ -159,6 +161,11 @@ function ServiceOrderPage() {
                     <ServiceOrderPDF data={{customer, vehicle, service_order_items, status}}/>
                   </PDFViewer>
               </Modal>}
+              <PDFDownloadLink fileName={`${vehicle.model} ${customer.name} `} document={<ServiceOrderPDF data={{customer, vehicle, service_order_items, status}}/>}>
+                <Button variant={'outline'}>
+                  <Save size={18} className="mr-2"/>Download
+                </Button>
+              </PDFDownloadLink>
               <Button onClick={handleOnSave}>
                 <Save size={18} className="mr-2"/>Salvar
               </Button>
