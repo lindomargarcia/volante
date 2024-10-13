@@ -19,6 +19,7 @@ export function VehicleForm({data, onSubmit}: IVehicleSheetsProps) {
   const [year, setYear] = useState(data?.year || '')
   const [km, setKm] = useState(data?.km || '')
   const [chassi, setChassi] = useState(data?.chassi || '')
+  const OPTION_COLORS = COLORS
 
   const queryParams = new URLSearchParams(location.search);
   const editMode = queryParams.get('edit');
@@ -55,7 +56,7 @@ export function VehicleForm({data, onSubmit}: IVehicleSheetsProps) {
         <div className="flex gap-2">
           <Input disabled={disabled} label="Modelo" value={model || ''} placeholder="Digite aqui..." onChange={(e) => setModel(e.target.value || '')} onBlur={() => onSubmit('model', model)}/>
           <Input disabled={disabled} label="Ano" value={year || ''} placeholder="2024" onChange={(e) => setYear(e.target.value || '')} onBlur={() => onSubmit('year', year)}/>
-          <SelectOption disabled={disabled} value={data?.color || ''} label="Cor" placeholder="Selecione..." options={COLORS} onChange={(value) => onSubmit('color', value || "")}/>
+          <SelectOption disabled={disabled} value={data?.color || ''} label="Cor" placeholder="Selecione..." options={OPTION_COLORS} onChange={(value) => onSubmit('color', value || "")}/>
         </div>
         <div className="flex gap-2">
           <Input disabled={disabled} label="Km" value={km || ''} placeholder="Digite aqui..." onChange={(e) => setKm(e.target.value || '')} onBlur={() => onSubmit('km', km)}/>
