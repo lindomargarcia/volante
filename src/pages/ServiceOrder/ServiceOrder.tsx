@@ -1,27 +1,28 @@
-import { Car, Check, File, Save, User, X } from "lucide-react";
+import { Check, File, Save, User, X } from "lucide-react";
 import {useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import FileSelect from "@/components/ui/fileSelect";
+// import FileSelect from "@/components/ui/fileSelect";
 import { CustomerForm } from "@/components/FormSheet/Customer";
 import { VehicleForm } from "@/components/FormSheet/Vehicle";
 import ServiceOrderItems from "../../components/ServiceOrderItems/ServiceOrderItems";
 import { ServiceOrderItem } from "./types";
 import { DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
-import { VehicleSchema, DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema";
+import { DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema";
 import { toast } from "sonner";
 import StatusDropDown from "@/components/BadgeDropDown/BadgeDropDown";
 import { SO_STATUS_LIST } from "@/data/constants/utils";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { ServiceOrderPDF } from "@/components/PDF/ServiceOrderPDF";
 import { Modal } from "@/components/Modal/Modal";
-import CarServiceSelector from "@/components/CarPartsSelector";
+// import CarServiceSelector from "@/components/CarPartsSelector";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { CAR_ACTIONS, ICarSelectionValue, IChangeValue } from "@/components/CarPartsSelector/types";
-import { COLORS } from "@/data/constants/colors";
+// import { CAR_ACTIONS, ICarSelectionValue, IChangeValue } from "@/components/CarPartsSelector/types";
+// import { COLORS } from "@/data/constants/colors";
 import { useServiceOrderStore } from "@/hooks/useServiceOrder";
 import { deleteServiceOrderItem, putServiceOrderAPI } from "@/data/api/ServiceOrderAPI";
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton";
+// import { useForm } from "react-hook-form";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
@@ -56,17 +57,17 @@ function ServiceOrderPage() {
     })
   }
 
-  const handleCarMapChange = async (selected: IChangeValue, data: ICarSelectionValue) => {
-    if(selected.action.value === CAR_ACTIONS.DAMAGE) return
+  // const handleCarMapChange = async (selected: IChangeValue, data: ICarSelectionValue) => {
+  //   if(selected.action.value === CAR_ACTIONS.DAMAGE) return
 
-    const newItem: ServiceOrderItem = {id: '389', description: selected.action.value + ' ' + selected.car_part, discount: 0, quantity: 1, total: 50, type: selected.action.value, insurance_coverage: 0, value: 50}
-    setItems([newItem, ...service_order_items])
-    setCarMap(data)
-  }
+  //   const newItem: ServiceOrderItem = {id: '389', description: selected.action.value + ' ' + selected.car_part, discount: 0, quantity: 1, total: 50, type: selected.action.value, insurance_coverage: 0, value: 50}
+  //   setItems([newItem, ...service_order_items])
+  //   setCarMap(data)
+  // }
 
-  const getVehicleColor = (vehicle: VehicleSchema) => {
-    return COLORS.find(color => color.value === vehicle?.color)?.code || "#000"
-  }
+  // const getVehicleColor = (vehicle: VehicleSchema) => {
+  //   return COLORS.find(color => color.value === vehicle?.color)?.code || "#000"
+  // }
 
   const handleOnSave = () => {
     putServiceOrderAPI({id, customer, vehicle, service_order_items, status}).then((data) => {
@@ -94,34 +95,34 @@ function ServiceOrderPage() {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex-1 flex gap-12">
+      <div className="flex-1 flex gap-4">
         {/* Left side */}
-        <div className="flex w-[500px] flex-col gap-4">
+        <div className="flex w-[430px] flex-col gap-4">
         {/* <CarServiceSelector/> */}
           <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
             <TabsList>
               <TabsTrigger value="customer"><User className="w-[18px] mr-2"/>Dados Pessoais</TabsTrigger>
-              <TabsTrigger value="damage"><Car className="w-[18px] mr-2"/>Mapa Veicular</TabsTrigger>
+              {/* <TabsTrigger value="damage"><Car className="w-[18px] mr-2"/>Mapa Veicular</TabsTrigger> */}
             </TabsList>
-            <TabsContent value="damage" hidden={activeTab !== 'damage'} forceMount>
+            {/* <TabsContent value="damage" hidden={activeTab !== 'damage'} forceMount>
               <CarServiceSelector color={getVehicleColor(vehicle)} value={car_map} onChange={handleCarMapChange}/>
               <Card className="p-4 rounded-lg mt-3">
                 <FileSelect label="Imagens"/>
               </Card>
-            </TabsContent>
+            </TabsContent> */}
             <TabsContent value="customer">
               <div className="flex flex-col gap-4">
                 <Card className="px-4 rounded-lg">
                   <CustomerForm 
-                    onSubmit={onCustomerFieldChange}
+                    onFormSubmit={onCustomerFieldChange}
                     onDelete={() => setCustomer(DEFAULT_CUSTOMER_VALUE)}
                     isPending={false}
                     data={customer}
                   />
                 </Card>
                 <Card className="px-4 rounded-lg">
-                  <VehicleForm 
-                    onSubmit={onVehicleFieldChange}
+                  <VehicleForm
+                    onFormSubmit={onVehicleFieldChange}
                     onDelete={() => setVehicle(DEFAULT_VEHICLE_VALUES)}
                     isPending={false}
                     data={vehicle}

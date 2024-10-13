@@ -20,7 +20,7 @@ const MENU_LINKS = [
   //   icon: <Home size={23}/>
   // },
   {
-    path: ROUTER_PATHS.HOME,
+    path: ROUTER_PATHS.SERVICE_ORDER,
     element: <ServiceOrderPage/>,
     label: 'Novo',
     icon: <FilePlus size={23}/>

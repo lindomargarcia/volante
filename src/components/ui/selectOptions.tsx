@@ -1,5 +1,6 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "./label";
+import { forwardRef } from "react";
 
 interface SelectOptionProps{
     value?: string,
@@ -8,15 +9,16 @@ interface SelectOptionProps{
     className?: string,
     label?: string,
     disabled?: boolean,
-    onChange?: (value: string) => void
+    onChange?: (value: string) => void,
+    props?: any
 }
  
-const SelectOption = ({value, placeholder,options, className, disabled, label, onChange}: SelectOptionProps) => {
+const SelectOption = forwardRef(({value, placeholder,options, className, disabled, label, onChange, props}: SelectOptionProps, ref: any) => {
     return ( 
         <span className="flex flex-1 flex-col">
         {label && <Label className={`text-sm mb-1 ${disabled && 'text-muted-foreground'}`}>{label}</Label>}
-        <Select disabled={disabled} defaultValue={value} value={value} onValueChange={onChange}>
-            <SelectTrigger className={className}>
+        <Select disabled={disabled} defaultValue={value} value={value} onValueChange={onChange} {...props}>
+            <SelectTrigger className={className} ref={ref}>
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
             <SelectContent>
@@ -35,6 +37,6 @@ const SelectOption = ({value, placeholder,options, className, disabled, label, o
         </Select>
         </span>
      );
-}
+})
  
 export default SelectOption;

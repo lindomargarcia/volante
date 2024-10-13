@@ -1,7 +1,8 @@
 import { PatternFormat } from 'react-number-format';
 import { Label } from '../ui/label';
+import { forwardRef } from 'react';
 
-export default function MaskedInput({mask, maskChar = "_", label, disabled, ...props}: any) {
+const MaskedInput = forwardRef(({mask, maskChar = "_", label, disabled, ...props}: any, ref: any) => {
   return (
     <span className='flex flex-col flex-1'>
     {label && <Label className={`text-sm mb-1 ${disabled && 'text-muted-foreground'}`}>{label}</Label>}
@@ -14,4 +15,6 @@ export default function MaskedInput({mask, maskChar = "_", label, disabled, ...p
     />
     </span>
   )
-}
+})
+
+export default MaskedInput
