@@ -6,8 +6,8 @@ import { CustomerForm } from "@/components/FormSheet/Customer";
 import { VehicleForm } from "@/components/FormSheet/Vehicle";
 import ServiceOrderItems from "../../components/ServiceOrderItems/ServiceOrderItems";
 import { ServiceOrderItem } from "./types";
-import { DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
-import { DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema";
+import { CustomerSchema, DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
+import { DEFAULT_VEHICLE_VALUES, VehicleSchema } from "@/components/FormSheet/Vehicle/schema";
 import { toast } from "sonner";
 import StatusDropDown from "@/components/BadgeDropDown/BadgeDropDown";
 import { SO_STATUS_LIST } from "@/data/constants/utils";
@@ -29,6 +29,7 @@ function ServiceOrderPage() {
 
   const {id, customer,vehicle,service_order_items,car_map,status, setCustomer,setVehicle,setItems,setCarMap,setStatus, reset} = useServiceOrderStore()
 
+  console.log(customer, vehicle)
   const queryParams = new URLSearchParams(location.search);
   const editMode = queryParams.get('edit');
 
@@ -81,16 +82,12 @@ function ServiceOrderPage() {
     })
   }
 
-  const onCustomerFieldChange = (field: string, value: string) => {
-    let newCustomer = customer
-    newCustomer[field] = value
-    setCustomer(newCustomer)
+  const onCustomerFieldChange = (customerData: CustomerSchema) => {
+    setCustomer(customerData)
   }
 
-  const onVehicleFieldChange = (field: string, value: string) => {
-    let newVehicle = vehicle
-    newVehicle[field] = value
-    setVehicle(newVehicle)
+  const onVehicleFieldChange = (vehicleData: VehicleSchema) => {
+    setVehicle(vehicleData)
   }
 
   return (
@@ -114,7 +111,7 @@ function ServiceOrderPage() {
               <div className="flex flex-col gap-4">
                 <Card className="px-4 rounded-lg">
                   <CustomerForm 
-                    onFormSubmit={onCustomerFieldChange}
+                    onChange={onCustomerFieldChange}
                     onDelete={() => setCustomer(DEFAULT_CUSTOMER_VALUE)}
                     isPending={false}
                     data={customer}
@@ -122,7 +119,7 @@ function ServiceOrderPage() {
                 </Card>
                 <Card className="px-4 rounded-lg">
                   <VehicleForm
-                    onFormSubmit={onVehicleFieldChange}
+                    onChange={onVehicleFieldChange}
                     onDelete={() => setVehicle(DEFAULT_VEHICLE_VALUES)}
                     isPending={false}
                     data={vehicle}
