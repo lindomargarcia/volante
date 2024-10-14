@@ -24,12 +24,12 @@ export const SO_STATUS_LIST: {value: STATUS_SERVICE_ORDER, label: string, color:
     },{
         value: STATUS_SERVICE_ORDER.TODO,
         label: 'Na oficina',
-        color: 'bg-blue-400',
+        color: 'bg-amber-500',
         linked: [STATUS_SERVICE_ORDER.DOING, STATUS_SERVICE_ORDER.READY, STATUS_SERVICE_ORDER.BLOCKED, STATUS_SERVICE_ORDER.DONE]
     },{
         value: STATUS_SERVICE_ORDER.DOING,
         label: 'Executando',
-        color: 'bg-sky-500',
+        color: 'bg-green-500',
         linked: [STATUS_SERVICE_ORDER.TODO, STATUS_SERVICE_ORDER.READY, STATUS_SERVICE_ORDER.BLOCKED, STATUS_SERVICE_ORDER.DONE]
     },{
         value: STATUS_SERVICE_ORDER.READY,
