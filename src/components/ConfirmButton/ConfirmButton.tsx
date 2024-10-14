@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
@@ -13,8 +13,15 @@ interface ConfirmButtonProps{
 }
 
 export default function ConfirmButton({title, message, children, onConfirm, variant, disabled}: ConfirmButtonProps) {
-  return (
-    <Popover>
+    const [isPopoverOpen, setPopoverOpen] = useState(false);
+
+    const handleConfirm = () => {
+        onConfirm();
+        setPopoverOpen(false);
+    };
+
+    return (
+    <Popover open={isPopoverOpen} onOpenChange={setPopoverOpen}>
         <PopoverTrigger asChild>
             <Button type="button" variant={variant} disabled={disabled}>{children}</Button>
         </PopoverTrigger>
@@ -24,9 +31,9 @@ export default function ConfirmButton({title, message, children, onConfirm, vari
                 {message && <p className="text-sm text-muted-foreground">{message}</p>}
             </div>
             <div className="flex justify-end mt-4">
-                <Button size={"sm"} onClick={onConfirm}>Sim</Button>
+                <Button size={"sm"} onClick={handleConfirm}>Sim</Button>
             </div>
         </PopoverContent>
     </Popover>
-  )
+    )
 }

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { CustomerForm } from "@/components/FormSheet/Customer";
 import { VehicleForm } from "@/components/FormSheet/Vehicle";
 import ServiceOrderItems from "../../components/ServiceOrderItems/ServiceOrderItems";
-import { ServiceOrderItem } from "./types";
+import { ServiceOrderItem, STATUS_SERVICE_ORDER } from "./types";
 import { CustomerSchema, DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
 import { DEFAULT_VEHICLE_VALUES, VehicleSchema } from "@/components/FormSheet/Vehicle/schema";
 import { toast } from "sonner";
@@ -22,11 +22,12 @@ import { Card } from "@/components/ui/card";
 import { useServiceOrderStore } from "@/hooks/useServiceOrder";
 import { deleteServiceOrderItem, putServiceOrderAPI } from "@/data/api/ServiceOrderAPI";
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton";
+import { nanoid } from "nanoid/non-secure";
 // import { useForm } from "react-hook-form";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
-  const {id, customer,vehicle,service_order_items,status, setCustomer,setVehicle,setItems,setStatus, reset} = useServiceOrderStore()
+  const {id, customer,vehicle,service_order_items,status, setId, setCustomer,setVehicle,setItems,setStatus, reset} = useServiceOrderStore()
 
   useEffect(() => {
     return () => {
@@ -85,6 +86,15 @@ function ServiceOrderPage() {
     setVehicle(vehicleData)
   }
 
+  const onDuplicateClick = () => {
+    const newOSId = nanoid()
+    setId(newOSId)
+    setStatus(STATUS_SERVICE_ORDER.PENDING)
+    const duplicatedItems = service_order_items.map(item => ({...item, id: nanoid(), serviceOrderId: newOSId }))
+    setItems(duplicatedItems)
+    toast.message('Duplicado com sucesso!')
+  }
+
   return (
     <div className="h-full flex flex-col">
       <div className="flex-1 flex gap-4">
@@ -135,13 +145,22 @@ function ServiceOrderPage() {
             onRemoveItem={handleRemoveItem}
           />
           <div className="flex mt-6 justify-between items-end gap-3">
-            <ConfirmButton
-              message="Deseja começar um novo orçamento do zero?"
-              title="Resetar"
-              variant={"destructive"}
-              onConfirm={() => window.location.reload()}>
-               Resetar
-            </ConfirmButton>
+            <div className="flex gap-3">
+              <ConfirmButton
+                message="Deseja começar um novo orçamento do zero?"
+                title="Resetar"
+                variant={"destructive"}
+                onConfirm={() => reset()}>
+                Resetar
+              </ConfirmButton>
+              <ConfirmButton
+                message="Deseja começar um novo orçamento para a mesma pessoa e veículo?"
+                title="Duplicar"
+                variant={"outline"}
+                onConfirm={onDuplicateClick}>
+                Duplicar
+              </ConfirmButton>
+            </div>
             <div className="flex gap-4">
               {service_order_items.length > 0 && <><Modal 
                 trigger={<Button onClick={handleOnSave} variant="outline"><File size={18} className="mr-2"/>PDF</Button>}
