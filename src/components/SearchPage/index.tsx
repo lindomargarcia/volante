@@ -12,7 +12,7 @@ export default function SearchPage({children}: any) {
 
 SearchPage.Title = ({children}: {children: string}) => {
     return (
-        <h1 className="text-2xl">{children}</h1>
+        <h1 className="text-2xl font-bold">{children}</h1>
     )
 }
 

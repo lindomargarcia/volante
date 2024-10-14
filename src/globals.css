@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: "plate";
-  src: url("../public/assets/fonts/plate.ttf");
+  src: url("../assets/fonts/plate.ttf");
 }
  
 @layer base {
