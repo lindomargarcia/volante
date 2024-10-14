@@ -172,19 +172,19 @@ function ServiceOrderPage() {
 
 interface IServiceOrderHearderProps {
   status: any,
-  id: string,
+  id?: string,
   onStatusChange: (status: string) => void
 }
 
-const ServiceOrderHeader = ({id, status, onStatusChange}: IServiceOrderHearderProps) => {
+const ServiceOrderHeader = ({status, onStatusChange}: IServiceOrderHearderProps) => {
   return(
     <header className="flex items-center pb-4">
-      <div className="flex gap-10 flex-1">
+      <div className="flex flex-1">
         <div>
           <h1 className="text-2xl font-semibold">Orçamento</h1>
-          <p className="text-sm text-muted-foreground">
+          {/* <p className="text-sm text-muted-foreground">
             {id ? "Id: " + id : "Informe abaixo os serviços que serão realizados no veículo" }
-          </p>
+          </p> */}
         </div>
       </div>
       <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={onStatusChange}/>
