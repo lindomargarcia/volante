@@ -1,5 +1,6 @@
 import Card from "@/components/Card"
 import SearchPage from "@/components/SearchPage"
+import CarPlate from "@/components/ui/plate"
 import { getVehiclesAPI } from "@/data/api/VehiclesAPI"
 import { CAR_FUELS } from "@/data/constants/carBrands"
 import { COLORS } from "@/data/constants/colors"
@@ -36,7 +37,7 @@ export default function VehiclesPage() {
               title={(vehicle.brand || vehicle.model) ? `${vehicle.brand} ${vehicle.model}` : 'Sem Veículo'}
               description={String(vehicle.year || '').toUpperCase()}
             >
-            {vehicle.plate && <p className="uppercase border rounded border-blue-500 font-bold px-2">{vehicle.plate}</p>}
+            <CarPlate plate={vehicle.plate || ''}/>
             </Card.Header>
             {isToday(new Date(vehicle.updatedAt)) && <Card.Badge> </Card.Badge>}
             <Card.Content>

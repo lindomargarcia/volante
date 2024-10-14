@@ -1,7 +1,7 @@
 import { Crosshair, HammerIcon } from "lucide-react"
 import { ToggleGroup, ToggleGroupItem } from "../ui/toggle-group"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import SprayGun from "@/assets/svg/spray_gun"
+import SprayGun from "public/assets/svg/spray_gun"
 import { CAR_ACTIONS, ICarAction, SEVERITY_STATUS } from "../CarPartsSelector/types"
 
 interface IProps {

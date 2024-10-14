@@ -23,8 +23,8 @@ export const SO_STATUS_LIST: {value: STATUS_SERVICE_ORDER, label: string, color:
         linked: [STATUS_SERVICE_ORDER.TODO, STATUS_SERVICE_ORDER.DOING, STATUS_SERVICE_ORDER.READY, STATUS_SERVICE_ORDER.BLOCKED, STATUS_SERVICE_ORDER.DONE]
     },{
         value: STATUS_SERVICE_ORDER.TODO,
-        label: 'Estacionado',
-        color: 'bg-orange-400',
+        label: 'Na oficina',
+        color: 'bg-blue-400',
         linked: [STATUS_SERVICE_ORDER.DOING, STATUS_SERVICE_ORDER.READY, STATUS_SERVICE_ORDER.BLOCKED, STATUS_SERVICE_ORDER.DONE]
     },{
         value: STATUS_SERVICE_ORDER.DOING,

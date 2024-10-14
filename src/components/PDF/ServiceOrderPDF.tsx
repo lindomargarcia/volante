@@ -112,7 +112,7 @@ export const ServiceOrderPDF = ({data}: ServiceOrderPDFProps) => {
       <Page key={pageIndex} size="A4" style={styles.page} bookmark={"Geração 2000"}>
       {/* Header da Página */}
       <View style={styles.header} fixed>
-          <Image src={'src/assets/company_logo.png'} style={styles.logo}/>
+          <Image src={'../public/assets/company_logo.png'} style={styles.logo}/>
           <View style={{flex: 1}}>
               <Text>{Intl.DateTimeFormat('pt-BR', {dateStyle: 'long'}).format(todayDate)}</Text>
               <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (`${pageNumber} / ${totalPages}`)}/>

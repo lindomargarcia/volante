@@ -1,6 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "plate";
+  src: url("../public/assets/fonts/plate.ttf");
+}
  
 @layer base {
   :root {
