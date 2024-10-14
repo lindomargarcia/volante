@@ -24,7 +24,7 @@ export default function SquadPage() {
 
   return (
     <SearchPage>
-      <SearchPage.Title>Minha Equipe</SearchPage.Title>
+      <SearchPage.Title>Equipe</SearchPage.Title>
       <SearchPage.SearchBar placeholder="Pesquise os membros da sua equipe aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
       <Card.Container>
         {squadData.map((squadMember: any) => (

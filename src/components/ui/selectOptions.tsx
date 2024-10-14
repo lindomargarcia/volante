@@ -10,12 +10,13 @@ interface SelectOptionProps{
     label?: string,
     disabled?: boolean,
     onChange?: (value: any) => void,
-    props?: any
+    props?: any,
+    containerFlex?: string,
 }
  
-const SelectOption = forwardRef(({value, placeholder,options, className, disabled, label, onChange, props}: SelectOptionProps, ref: any) => {
+const SelectOption = forwardRef(({value, placeholder,options, className, disabled, label, onChange, containerFlex = '1', props}: SelectOptionProps, ref: any) => {
     return ( 
-        <span className="flex flex-1 flex-col">
+        <span className={`flex flex-${containerFlex} flex-col`}>
         {label && <Label className={`text-sm mb-1 ${disabled && 'text-muted-foreground'}`}>{label}</Label>}
         <Select disabled={disabled} value={value} {...props} onValueChange={onChange} >
             <SelectTrigger className={className} ref={ref}>

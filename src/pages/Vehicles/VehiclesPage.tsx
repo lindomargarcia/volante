@@ -28,7 +28,7 @@ export default function VehiclesPage() {
 
   return (
     <SearchPage>
-      <SearchPage.Title>Veículos cadastrados</SearchPage.Title>
+      <SearchPage.Title>Veículos</SearchPage.Title>
       <SearchPage.SearchBar placeholder="Pesquise os veículos aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
       <Card.Container>
         {vehiclesData?.map((vehicle: any) => (

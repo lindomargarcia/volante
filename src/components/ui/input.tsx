@@ -6,7 +6,8 @@ import { Label } from "./label"
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string,
-    disabled?: boolean
+    disabled?: boolean,
+    children?: React.ReactNode
   }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(

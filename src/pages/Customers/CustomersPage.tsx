@@ -24,7 +24,7 @@ export default function CustomersPage() {
 
   return (
     <SearchPage>
-      <SearchPage.Title>Meus Clientes</SearchPage.Title>
+      <SearchPage.Title>Clientes</SearchPage.Title>
       <SearchPage.SearchBar placeholder="Pesquise seus clientes aqui..." onChange={(e) => {setSearchValue(e.target.value)}}/>
       <Card.Container>
         {customersData.map((customer: any) => (

@@ -17,7 +17,7 @@ import { BASE_URL } from "@/routes/const";
 //     }
 // }
 
-export const getServiceOrderAPI = (searchValue = '', page = 1) => fetch(BASE_URL + 'service_orders/search?searchValue=' + searchValue + '&page=' + page).then(res => res.json());
+export const getServiceOrderAPI = (searchValue = '', page = 1, filter: 'vehicle' | 'customer' = 'vehicle') => fetch(BASE_URL + `service_orders/search?${filter}=` + searchValue + '&page=' + page).then(res => res.json());
 
 // export async function putServiceOrderItemAPI(data: ServiceOrderItem){
 //     return 

@@ -16,9 +16,10 @@ SearchPage.Title = ({children}: {children: string}) => {
     )
 }
 
-SearchPage.SearchBar = ({className,...props}: InputProps) => {
+SearchPage.SearchBar = ({className, children,...props}: InputProps) => {
     return (
-        <div className='flex my-4'>
+        <div className='my-4 flex'>
+            {children}
             <Input type="text" className={"flex-1 p-6 " + className} {...props} />
         </div>
     )

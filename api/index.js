@@ -239,45 +239,60 @@ api.get('/suppliers/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_L
 createBasicCRUD('Insurance Company', 'insurance_companies', InsuranceCompany)
 createBasicCRUD('Service Order', 'service_orders', ServiceOrder, ['put', 'delete', 'get_all'])
 
-api.get('/service_orders/search', async ({query: {page = INITIAL_PAGE, limit = PAGE_LIMIT, searchValue = ''}}, reply) => {
-    try{
-        const {count, rows} = await ServiceOrder.findAndCountAll({
+api.get('/service_orders/search', async ({ query: { page = INITIAL_PAGE, limit = PAGE_LIMIT, vehicle = '', customer = '' } }, reply) => {
+    try {
+        const { count, rows } = await ServiceOrder.findAndCountAll({
             limit,
             offset: getPaginationOffset(page, limit),
             order: [['updatedAt', 'DESC']],
-            include:[
+            include: [
                 {
                     model: Customer,
-                    attributes: ['id', 'name', 'cpf', 'phone', 'email', 'address']
+                    attributes: ['id', 'name', 'cpf', 'phone', 'email', 'address'],
+                    where: customer ? {
+                        [Op.or]: [
+                            { name: { [Op.like]: `%${customer}%` } },
+                            { cpf: { [Op.like]: `%${customer}%` } },
+                            { phone: { [Op.like]: `%${customer}%` } },
+                            { email: { [Op.like]: `%${customer}%` } },
+                        ]
+                    } : null,
+                    required: Boolean(customer)
                 },
                 {
                     model: Vehicle,
-                    attributes: ['id', 'plate','chassi', 'brand', 'model', 'year','color', 'km', 'fuel']
+                    attributes: ['id', 'plate', 'chassi', 'brand', 'model', 'year', 'color', 'km', 'fuel'],
+                    where: vehicle ? {
+                        [Op.or]: [
+                            { plate: { [Op.like]: `%${vehicle}%` } },
+                            { brand: { [Op.like]: `%${vehicle}%` } },
+                            { model: { [Op.like]: `%${vehicle}%` } }
+                        ]
+                    } : null,
+                    required: Boolean(vehicle)
                 },
                 {
                     model: ServiceOrderItem,
-                    attributes: ['serviceOrderId', 'id', 'description','value','quantity','discount','total', 'type']
+                    attributes: ['serviceOrderId', 'id', 'description', 'value', 'quantity', 'discount', 'total', 'type']
                 }
             ],
-            where: {
-                [Op.or]: [
-                    { id: { [Op.like]: `%${searchValue}%` } }
-                ]
-            }
-        })
+            // Remove o where global do ServiceOrder, aplicando busca apenas no Vehicle
+        });
+
         const response = {
             data: rows,
             meta: {
                 page: Number(page),
                 totalItems: count,
-                totalPages: Math.ceil(count/limit)
+                totalPages: Math.ceil(count / limit)
             }
-        }
+        };
+
         reply.status(200).send(response);
-    }catch(error){
-        reply.status(500).send({error: error.message})
+    } catch (error) {
+        reply.status(500).send({ error: error.message });
     }
-})
+});
 
 
 api.post('/service_orders', async (request, reply) => {
