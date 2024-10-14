@@ -23,7 +23,10 @@ import { Input } from "@/components/ui/input";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
-  const {id, customer,vehicle,service_order_items,status, startDate, endDate, setId, setCustomer,setVehicle,setItems,setStatus, setStartDate, setEndDate, reset} = useServiceOrderStore()
+  const {
+    id, customer,vehicle,service_order_items,status, startAt, endAt, note,
+    setId, setCustomer,setVehicle,setItems,setStatus, setStartDate, setEndDate, setNote, reset
+  } = useServiceOrderStore()
 
   useEffect(() => {
     return () => {
@@ -63,7 +66,7 @@ function ServiceOrderPage() {
   // }
 
   const handleOnSave = () => {
-    putServiceOrderAPI({id, customer, vehicle, service_order_items, status, startDate, endDate}).then((data) => {
+    putServiceOrderAPI({id, customer, vehicle, service_order_items, status, startAt, endAt, note}).then((data) => {
       if(data){
         data?.customer && setCustomer(data?.customer)
         data?.vehicle && setVehicle(data?.vehicle)
@@ -125,8 +128,9 @@ function ServiceOrderPage() {
                     data={vehicle}
                   />
                 </Card>
-                <Card className="flex flex-col p-4 rounded-lg gap-4">
-                  <Input label="Anotação"/>
+                <Card className="flex flex-col p-4 rounded-lg gap-1">
+                  <span className="text-sm font-medium m-0 p-0">Anotações</span>
+                  <textarea className="border m-0 p-2 rounded" value={note} onChange={(e) => setNote(e.target.value)}/>
                 </Card>
               </div>
             </TabsContent>
@@ -141,9 +145,9 @@ function ServiceOrderPage() {
               <h1 className="text-2xl font-semibold">Orçamento</h1>
             </div>
             <div className="flex gap-4 items-center">
-              <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}/>
+              <Input type="date" value={startAt ? new Date(startAt).toISOString().split('T')[0] : ''} onChange={(e) => setStartDate(e.target.value)}/>
               <p>até</p>
-              <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
+              <Input type="date" value={endAt ? new Date(endAt).toISOString().split('T')[0] : ''} onChange={(e) => setEndDate(e.target.value)}/>
             </div>
             <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={setStatus}/>
           </header>

@@ -37,11 +37,15 @@ export const ServiceOrder = db.define("ServiceOrder", {
             key: 'id'
         }
     },
-    durationQuantity:{
-        type: DataTypes.NUMBER,
+    startAt:{
+        type: DataTypes.DATE,
         allowNull: true
     },
-    durationType:{
+    endAt:{
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    note:{
         type: DataTypes.STRING,
         allowNull: true
     }

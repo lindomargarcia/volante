@@ -293,9 +293,9 @@ api.post('/service_orders', async (request, reply) => {
             const [customer] = await Customer.upsert(request.body.customer, {transaction: t})
             const [vehicle] = await Vehicle.upsert(request?.body?.vehicle, {transaction: t})
             
-            const {status, insuranceCompanyId, durationQuantity, durationType, service_order_items} = request.body
+            const {status, insuranceCompanyId, service_order_items, startAt, endAt, note} = request.body
 
-            const newSO = await ServiceOrder.upsert({id: request?.body?.id, status, customerId: customer.id, vehicleId: vehicle.id, insuranceCompanyId, durationQuantity, durationType},{transaction: t})
+            const newSO = await ServiceOrder.upsert({id: request?.body?.id, status, customerId: customer.id, vehicleId: vehicle.id, insuranceCompanyId, startAt, endAt, note},{transaction: t})
             let createdItems = []
 
             if (service_order_items && service_order_items.length > 0) {
@@ -308,7 +308,7 @@ api.post('/service_orders', async (request, reply) => {
                 }
             }
 
-            reply.status(200).send({...newSO.dataValues, service_order_items: createdItems, customer, vehicle})
+            reply.status(200).send({...newSO.dataValues, service_order_items: createdItems, customer, vehicle, note})
         }catch(error){
             console.log(error)
             await t.rollback()
