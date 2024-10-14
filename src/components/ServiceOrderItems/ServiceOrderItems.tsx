@@ -43,7 +43,7 @@ const ServiceOrderItems = ({ data, onAddItem, onChangeItem, onRemoveItem }: Serv
                 <li className="w-[62px]">Qtd.</li>
                 <li className="w-[94px]">Valor</li>
                 <li className="w-[70px]">Desc.</li>
-                <li className="w-[170px] mr-[42px]">Total</li>
+                <li className="w-[170px] mr-[68px]">Total</li>
             </ul>
             <ServiceOrderItems.List data={data} renderItem={item => (
                 <ServiceOrderItems.ListItem key={item.id} item={item} onChange={onChangeItem} onDelete={onRemoveItem}/>
@@ -100,7 +100,7 @@ interface ServiceOrderListProps {
 }
 
 ServiceOrderItems.List = ({ data, renderItem }: ServiceOrderListProps) => (
-    <ol className="relative flex border m-[-17px] flex-col p-4 mt-4 flex-1 select-none">
+    <ol className="relative flex border m-[-17px] flex-col p-2 mt-4 flex-1 select-none">
         <div className="overflow-y-scroll max-h-[calc(100vh-440px)] flex-1">
             {data.map(renderItem)}
         </div>
@@ -178,7 +178,7 @@ ServiceOrderItems.ListItem = ({ item, onChange, onDelete }: { item: ServiceOrder
 )};
 
 ServiceOrderItems.Footer = ({ total, subtotal, parts, services, discount }: { total: number; subtotal: number; parts: number; services: number; discount: number }) => (
-    <div className="flex justify-between pl-3 pr-3 mt-8">
+    <div className="flex justify-between mt-8">
         <span className="flex flex-1 gap-8">
             <PriceTag id='total-price' label='Subotal' value={currencyFormat(subtotal, "currency")}/>
             <PriceTag id='discounts-price' label='Descontos' value={currencyFormat(discount, "currency")} />            

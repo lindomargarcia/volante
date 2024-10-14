@@ -1,7 +1,6 @@
 import { Check, File, Save, User, X } from "lucide-react";
 import {useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-// import FileSelect from "@/components/ui/fileSelect";
 import { CustomerForm } from "@/components/FormSheet/Customer";
 import { VehicleForm } from "@/components/FormSheet/Vehicle";
 import ServiceOrderItems from "../../components/ServiceOrderItems/ServiceOrderItems";
@@ -14,20 +13,17 @@ import { SO_STATUS_LIST } from "@/data/constants/utils";
 import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { ServiceOrderPDF } from "@/components/PDF/ServiceOrderPDF";
 import { Modal } from "@/components/Modal/Modal";
-// import CarServiceSelector from "@/components/CarPartsSelector";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-// import { CAR_ACTIONS, ICarSelectionValue, IChangeValue } from "@/components/CarPartsSelector/types";
-// import { COLORS } from "@/data/constants/colors";
 import { useServiceOrderStore } from "@/hooks/useServiceOrder";
 import { deleteServiceOrderItem, putServiceOrderAPI } from "@/data/api/ServiceOrderAPI";
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton";
 import { nanoid } from "nanoid/non-secure";
-// import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
-  const {id, customer,vehicle,service_order_items,status, setId, setCustomer,setVehicle,setItems,setStatus, reset} = useServiceOrderStore()
+  const {id, customer,vehicle,service_order_items,status, startDate, endDate, setId, setCustomer,setVehicle,setItems,setStatus, setStartDate, setEndDate, reset} = useServiceOrderStore()
 
   useEffect(() => {
     return () => {
@@ -67,7 +63,7 @@ function ServiceOrderPage() {
   // }
 
   const handleOnSave = () => {
-    putServiceOrderAPI({id, customer, vehicle, service_order_items, status}).then((data) => {
+    putServiceOrderAPI({id, customer, vehicle, service_order_items, status, startDate, endDate}).then((data) => {
       if(data){
         data?.customer && setCustomer(data?.customer)
         data?.vehicle && setVehicle(data?.vehicle)
@@ -96,10 +92,9 @@ function ServiceOrderPage() {
   }
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="flex-1 flex gap-4">
+    <div className="h-full gap-2 flex">
         {/* Left side */}
-        <div className="flex w-[430px] flex-col gap-4">
+        <div className="flex w-[430px] overflow-scroll flex-col gap-4 pb-14 pt-[7px]">
         {/* <CarServiceSelector/> */}
           <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
             <TabsList>
@@ -113,7 +108,7 @@ function ServiceOrderPage() {
               </Card>
             </TabsContent> */}
             <TabsContent value="customer">
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
                 <Card className="px-4 rounded-lg">
                   <CustomerForm 
                     onChange={onCustomerFieldChange}
@@ -130,6 +125,9 @@ function ServiceOrderPage() {
                     data={vehicle}
                   />
                 </Card>
+                <Card className="flex flex-col p-4 rounded-lg gap-4">
+                  <Input label="Anotação"/>
+                </Card>
               </div>
             </TabsContent>
           </Tabs>
@@ -137,7 +135,19 @@ function ServiceOrderPage() {
 
         {/* right Side */}
         <div className="flex flex-1 flex-col">
-          <ServiceOrderHeader id={id} status={status} onStatusChange={setStatus}/>
+
+          <header className="flex items-center pb-4 gap-4">
+            <div className="flex flex-1">
+              <h1 className="text-2xl font-semibold">Orçamento</h1>
+            </div>
+            <div className="flex gap-4 items-center">
+              <Input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)}/>
+              <p>até</p>
+              <Input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)}/>
+            </div>
+            <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={setStatus}/>
+          </header>
+  
           <ServiceOrderItems 
             data={service_order_items}
             onAddItem={handleNewSOItem}
@@ -184,30 +194,8 @@ function ServiceOrderPage() {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }
 
-interface IServiceOrderHearderProps {
-  status: any,
-  id?: string,
-  onStatusChange: (status: string) => void
-}
-
-const ServiceOrderHeader = ({status, onStatusChange}: IServiceOrderHearderProps) => {
-  return(
-    <header className="flex items-center pb-4">
-      <div className="flex flex-1">
-        <div>
-          <h1 className="text-2xl font-semibold">Orçamento</h1>
-          {/* <p className="text-sm text-muted-foreground">
-            {id ? "Id: " + id : "Informe abaixo os serviços que serão realizados no veículo" }
-          </p> */}
-        </div>
-      </div>
-      <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={onStatusChange}/>
-    </header>
-  )
-}
 export default ServiceOrderPage;

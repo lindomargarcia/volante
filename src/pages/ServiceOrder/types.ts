@@ -9,6 +9,8 @@ export type ServiceOrder = {
     status: STATUS_SERVICE_ORDER,
     createdAt: string,
     updatedAt?: string,
+    startDate: string,
+    endDate?: string,
     insurance_company?: string,
     duration_quantity: number,
     duration_type: "hour" | "day" | "week" | "month" | "year",
