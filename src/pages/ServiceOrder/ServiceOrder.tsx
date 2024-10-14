@@ -26,15 +26,10 @@ import ConfirmButton from "@/components/ConfirmButton/ConfirmButton";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
-
-  const {id, customer,vehicle,service_order_items,car_map,status, setCustomer,setVehicle,setItems,setCarMap,setStatus, reset} = useServiceOrderStore()
-
-  console.log(customer, vehicle)
-  const queryParams = new URLSearchParams(location.search);
-  const editMode = queryParams.get('edit');
+  const {id, customer,vehicle,service_order_items,status, setCustomer,setVehicle,setItems,setStatus, reset} = useServiceOrderStore()
 
   useEffect(() => {
-    if(!editMode){
+    return () => {
       reset()
     }
   }, [])

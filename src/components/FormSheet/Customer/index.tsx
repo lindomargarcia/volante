@@ -12,7 +12,7 @@ interface ICustomerSheetsProps {
 }
 
 export function CustomerForm({data, onChange, disabled = false}: ICustomerSheetsProps) {
-  const { register, handleSubmit, control } = useForm({defaultValues: data})
+  const { register, handleSubmit, control } = useForm({values: data})
 
   const onSubmit = (data: any) => {
     onChange(data)

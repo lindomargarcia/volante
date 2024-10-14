@@ -14,7 +14,7 @@ interface IVehicleSheetsProps {
 }
 
 export function VehicleForm({data, onChange, disabled = false}: IVehicleSheetsProps) {
-  const {  register, handleSubmit, control } = useForm({defaultValues: data})
+  const {  register, handleSubmit, control } = useForm({values: data})
   const onSubmit = (data: any) => {
     onChange(data)
   }
