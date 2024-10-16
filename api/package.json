@@ -20,6 +20,7 @@
   },
   "type": "module",
   "devDependencies": {
+    "@flydotio/dockerfile": "latest",
     "esbuild": "^0.24.0"
   }
 }
