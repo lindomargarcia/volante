@@ -18,7 +18,7 @@ export default function Card({children, className, ...props}: IProps) {
 
 Card.Container = ({children}: {children: ReactNode}) => {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-[repeat(2,minmax(320px,1fr))] lg:grid-cols-[repeat(3,minmax(320px,1fr))] xl:grid-cols-[repeat(4,minmax(320px,1fr))] content-start gap-2 flex-wrap overflow-y-scroll">
+        <div className="grid grid-cols-1 md:grid-cols-[repeat(2,minmax(320px,1fr))] lg:grid-cols-[repeat(3,minmax(320px,1fr))] xl:grid-cols-[repeat(4,minmax(320px,1fr))] content-start flex-1 gap-2 flex-wrap overflow-y-scroll">
             {children}
         </div>
     )
