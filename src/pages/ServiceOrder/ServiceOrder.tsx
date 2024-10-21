@@ -5,8 +5,6 @@ import { CustomerForm } from "@/components/FormSheet/Customer";
 import { VehicleForm } from "@/components/FormSheet/Vehicle";
 import ServiceOrderItems from "../../components/ServiceOrderItems/ServiceOrderItems";
 import { ServiceOrderItem, STATUS_SERVICE_ORDER } from "./types";
-import { CustomerSchema, DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
-import { DEFAULT_VEHICLE_VALUES, VehicleSchema } from "@/components/FormSheet/Vehicle/schema";
 import { toast } from "sonner";
 import StatusDropDown from "@/components/BadgeDropDown/BadgeDropDown";
 import { SO_STATUS_LIST } from "@/data/constants/utils";
@@ -20,17 +18,17 @@ import { deleteServiceOrderItem, putServiceOrderAPI } from "@/data/api/ServiceOr
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton";
 import { nanoid } from "nanoid/non-secure";
 import { Input } from "@/components/ui/input";
+import { FormProvider, useForm } from "react-hook-form";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<'customer' | 'damage' | string>('customer')
-  const {
-    id, customer,vehicle,service_order_items,status, startAt, endAt, note,
-    setId, setCustomer,setVehicle,setItems,setStatus, setStartDate, setEndDate, setNote, reset
+  const {id, customer, vehicle, status, setId, setCustomer, setVehicle, service_order_items, setItems, setStatus
   } = useServiceOrderStore()
+  const methods = useForm()
 
   useEffect(() => {
     return () => {
-      reset()
+      // reset()
     }
   }, [])
 
@@ -65,7 +63,9 @@ function ServiceOrderPage() {
   //   return COLORS.find(color => color.value === vehicle?.color)?.code || "#000"
   // }
 
-  const handleOnSave = () => {
+  const handleOnSave = (data: any) => {
+    return console.log(data)
+    const { customer, vehicle, service_order_items, status, startAt, endAt, note } = data
     putServiceOrderAPI({id, customer, vehicle, service_order_items, status, startAt, endAt, note}).then((data) => {
       if(data){
         data?.customer && setCustomer(data?.customer)
@@ -75,14 +75,6 @@ function ServiceOrderPage() {
         toast.message("Erro ao salvar", { icon: <X/>})
       }
     })
-  }
-
-  const onCustomerFieldChange = (customerData: CustomerSchema) => {
-    setCustomer(customerData)
-  }
-
-  const onVehicleFieldChange = (vehicleData: VehicleSchema) => {
-    setVehicle(vehicleData)
   }
 
   const onDuplicateClick = () => {
@@ -95,110 +87,106 @@ function ServiceOrderPage() {
   }
 
   return (
-    <div className="h-full gap-2 flex">
-        {/* Left side */}
-        <div className="flex w-[430px] overflow-scroll flex-col gap-4 pb-14 pt-[7px]">
-        {/* <CarServiceSelector/> */}
-          <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
-            <TabsList>
-              <TabsTrigger value="customer"><User className="w-[18px] mr-2"/>Dados Pessoais</TabsTrigger>
-              {/* <TabsTrigger value="damage"><Car className="w-[18px] mr-2"/>Mapa Veicular</TabsTrigger> */}
-            </TabsList>
-            {/* <TabsContent value="damage" hidden={activeTab !== 'damage'} forceMount>
-              <CarServiceSelector color={getVehicleColor(vehicle)} value={car_map} onChange={handleCarMapChange}/>
-              <Card className="p-4 rounded-lg mt-3">
-                <FileSelect label="Imagens"/>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(handleOnSave)} className="h-fullgap-2 flex-1 flex flex-wrap">
+      {/* Left side */}
+      <div className="flex w-[400px] overflow-scroll flex-col gap-4 pb-14 pt-[7px]">
+      {/* <CarServiceSelector/> */}
+        <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
+          <TabsList>
+            <TabsTrigger value="customer"><User className="w-[18px] mr-2"/>Dados Pessoais</TabsTrigger>
+            {/* <TabsTrigger value="damage"><Car className="w-[18px] mr-2"/>Mapa Veicular</TabsTrigger> */}
+          </TabsList>
+          {/* <TabsContent value="damage" hidden={activeTab !== 'damage'} forceMount>
+            <CarServiceSelector color={getVehicleColor(vehicle)} value={car_map} onChange={handleCarMapChange}/>
+            <Card className="p-4 rounded-lg mt-3">
+              <FileSelect label="Imagens"/>
+            </Card>
+          </TabsContent> */}
+          <TabsContent value="customer">
+            <div className="flex flex-col gap-2">
+              <Card className="px-4 rounded-lg">
+                <CustomerForm 
+                  isPending={false}
+                />
               </Card>
-            </TabsContent> */}
-            <TabsContent value="customer">
-              <div className="flex flex-col gap-2">
-                <Card className="px-4 rounded-lg">
-                  <CustomerForm 
-                    onChange={onCustomerFieldChange}
-                    onDelete={() => setCustomer(DEFAULT_CUSTOMER_VALUE)}
-                    isPending={false}
-                    data={customer}
-                  />
-                </Card>
-                <Card className="px-4 rounded-lg">
-                  <VehicleForm
-                    onChange={onVehicleFieldChange}
-                    onDelete={() => setVehicle(DEFAULT_VEHICLE_VALUES)}
-                    isPending={false}
-                    data={vehicle}
-                  />
-                </Card>
-                <Card className="flex flex-col p-4 rounded-lg gap-1">
-                  <span className="text-sm font-medium m-0 p-0">Anotações</span>
-                  <textarea className="border m-0 p-2 rounded" value={note} onChange={(e) => setNote(e.target.value)}/>
-                </Card>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+              <Card className="px-4 rounded-lg">
+                <VehicleForm
+                  isPending={false}
+                />
+              </Card>
+              <Card className="flex flex-col p-4 rounded-lg gap-1">
+                <span className="text-sm font-medium m-0 p-0">Anotações</span>
+                <textarea className="border m-0 p-2 rounded" {...methods.register('note')}/>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
 
-        {/* right Side */}
-        <div className="flex flex-1 flex-col">
+      {/* right Side */}
+      <div className="flex flex-1 flex-col">
 
-          <header className="flex items-center pb-4 gap-4">
-            <div className="flex flex-1">
-              <h1 className="text-2xl font-semibold">Orçamento</h1>
-            </div>
-            <div className="flex gap-4 items-center">
-              <Input type="date" value={startAt ? new Date(startAt).toISOString().split('T')[0] : ''} onChange={(e) => setStartDate(e.target.value)}/>
-              <p>até</p>
-              <Input type="date" value={endAt ? new Date(endAt).toISOString().split('T')[0] : ''} onChange={(e) => setEndDate(e.target.value)}/>
-            </div>
-            <StatusDropDown value={status} title="Situação atual" options={SO_STATUS_LIST} onChange={setStatus}/>
-          </header>
-  
-          <ServiceOrderItems 
-            data={service_order_items}
-            onAddItem={handleNewSOItem}
-            onChangeItem={handleChangeItem}
-            onRemoveItem={handleRemoveItem}
-          />
-          <div className="flex mt-6 justify-between items-end gap-3">
-            <div className="flex gap-3">
-              <ConfirmButton
-                message="Deseja começar um novo orçamento do zero?"
-                title="Resetar"
-                variant={"destructive"}
-                onConfirm={() => reset()}>
-                Resetar
-              </ConfirmButton>
-              <ConfirmButton
-                message="Deseja começar um novo orçamento para a mesma pessoa e veículo?"
-                title="Duplicar"
-                variant={"outline"}
-                onConfirm={onDuplicateClick}>
-                Duplicar
-              </ConfirmButton>
-            </div>
-            <div className="flex gap-4">
-              {service_order_items.length > 0 && <><Modal 
-                trigger={<Button onClick={handleOnSave} variant="outline"><File size={18} className="mr-2"/>PDF</Button>}
-                title='Orçamento'
-                subtitle='Envie ou imprima para seu cliente'
-                className="min-h-[calc(100vh-180px)]"
-                async={true}>
-                  <PDFViewer className="w-full min-h-[calc(100vh-180px)]">
-                    <ServiceOrderPDF data={{customer, vehicle, service_order_items, status}}/>
-                  </PDFViewer>
-              </Modal>
-              <PDFDownloadLink fileName={`${vehicle.model} ${customer.name} `} document={<ServiceOrderPDF data={{customer, vehicle, service_order_items, status}}/>}>
-                <Button variant={'outline'}>
-                  <Save size={18} className="mr-2"/>Download
-                </Button>
-              </PDFDownloadLink>
-              </>}
-              <Button onClick={handleOnSave}>
-                <Save size={18} className="mr-2"/>Salvar
+        <header className="flex items-center pb-4 gap-4">
+          <div className="flex flex-1">
+            <h1 className="text-2xl font-semibold">Orçamento</h1>
+          </div>
+          <div className="flex gap-4 items-center">
+            <Input type="date" {...methods.register('startAt')}/>
+            <p>até</p>
+            <Input type="date" {...methods.register('endAt')}/>
+          </div>
+          <StatusDropDown value={methods.watch('status', STATUS_SERVICE_ORDER.PENDING)} title="Situação atual" options={SO_STATUS_LIST} onChange={value => methods.setValue('status', value)}/>
+        </header>
+
+        <ServiceOrderItems 
+          data={service_order_items}
+          onAddItem={handleNewSOItem}
+          onChangeItem={handleChangeItem}
+          onRemoveItem={handleRemoveItem}
+        />
+        <div className="flex mt-6 justify-between items-end gap-3">
+          <div className="flex gap-3">
+            <ConfirmButton
+              message="Deseja começar um novo orçamento do zero?"
+              title="Resetar"
+              variant={"destructive"}
+              onConfirm={() => console.log('reset')}>
+              Resetar
+            </ConfirmButton>
+            <ConfirmButton
+              message="Deseja começar um novo orçamento para a mesma pessoa e veículo?"
+              title="Duplicar"
+              variant={"outline"}
+              onConfirm={onDuplicateClick}>
+              Duplicar
+            </ConfirmButton>
+          </div>
+          <div className="flex gap-4">
+            {service_order_items.length > 0 && <><Modal 
+              trigger={<Button onClick={handleOnSave} variant="outline"><File size={18} className="mr-2"/>PDF</Button>}
+              title='Orçamento'
+              subtitle='Envie ou imprima para seu cliente'
+              className="min-h-[calc(100vh-180px)]"
+              async={true}>
+                <PDFViewer className="w-full min-h-[calc(100vh-180px)]">
+                  <ServiceOrderPDF data={{customer, vehicle, service_order_items, status}}/>
+                </PDFViewer>
+            </Modal>
+            <PDFDownloadLink fileName={`${vehicle.model} ${customer.name} `} document={<ServiceOrderPDF data={{customer, vehicle, service_order_items, status}}/>}>
+              <Button variant={'outline'}>
+                <Save size={18} className="mr-2"/>Download
               </Button>
-            </div>
+            </PDFDownloadLink>
+            </>}
+            <Button type="submit">
+              <Save size={18} className="mr-2"/>Salvar
+            </Button>
           </div>
         </div>
-    </div>
+      </div>
+      </form>
+    </FormProvider>
   );
 }
 

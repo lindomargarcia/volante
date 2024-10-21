@@ -75,7 +75,7 @@ const router = createBrowserRouter([
     element: 
       <div className="flex-1 flex bg-zinc-50">
         <Menu links={MENU_LINKS}/>
-        <div className="rounded-2xl ml-0 p-4 m-2 flex-1">
+        <div className="rounded-2xl ml-0 p-4 m-2 flex-1 overflow-scroll">
           <Outlet/>
         </div>
       </div>,
