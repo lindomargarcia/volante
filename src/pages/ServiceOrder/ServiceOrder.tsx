@@ -223,7 +223,7 @@ function ServiceOrderPage() {
       <div className="flex flex-1 flex-col">
         <header className="flex items-center pb-4 gap-4">
           <div className="flex flex-1">
-            <h1 className="text-2xl font-semibold">Orçamento</h1>
+            <h1 className="text-2xl font-bold">Novo orçamento</h1>
           </div>
           <div className="flex gap-4 items-center">
             <Input type="date" {...methods.register("startAt")} />

@@ -73,9 +73,9 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: 
-      <div className="flex-1 flex bg-zinc-900">
+      <div className="flex-1 flex bg-white">
         <Menu links={MENU_LINKS}/>
-        <div className="p-8 m-0 bg-white flex-1 overflow-scroll">
+        <div className="rounded p-8 pl-2 flex-1 overflow-scroll">
           <Outlet/>
         </div>
       </div>,
