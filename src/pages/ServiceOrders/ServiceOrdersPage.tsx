@@ -57,7 +57,7 @@ export default function SearchServiceOrdersPage() {
           </Card>
         ))}
       </Card.Container>
-        <SearchPage.LoadMore visible={hasNextPage} loading={isFetchingNextPage} onClick={() => fetchNextPage()} >Ver mais</SearchPage.LoadMore>
+      <SearchPage.LoadMore visible={hasNextPage} loading={isFetchingNextPage} onClick={() => fetchNextPage()} >Ver mais</SearchPage.LoadMore>
     </SearchPage>
   )
 }

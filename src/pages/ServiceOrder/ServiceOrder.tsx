@@ -129,7 +129,7 @@ function ServiceOrderPage() {
   };
 
   return (
-    <div className="h-full flex gap-8 flex-wrap flex-row-reverse">
+    <div className="h-full flex gap-8 pb-8 flex-wrap flex-row-reverse">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleOnSave)}>
           {/* Left side */}

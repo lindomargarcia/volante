@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 import { Button } from "../ui/button";
 import { LogOut } from "lucide-react";
 // import Logo from "@/assets/svg/logo";
-import logo from "/assets/app-logo.png"
+// import logo from "/assets/app-logo.png"
 
 const MenuNavLinkVariant = cva('flex items-center gap-2 w-[160px] p-3 rounded-xl text-sm transition hover:bg-zinc-200 hover:text-black', {
     variants: {
@@ -27,7 +27,7 @@ const Menu = ({links}: MenuProps) => {
   return (
     <nav className="select-none flex flex-col items-center justify-center py-8">
         {/* <Logo size={32} color="var(--theme-highlight)"/> */}
-        <svg width="100" height="40" viewBox="0 0 819 171" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="80" height="40" viewBox="0 0 819 171" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M57.27 126.76L96.83 40.28H144.9L77.74 169.31H21.62L0 40.28H48.07L57.27 126.76Z" fill="black"/>
             <path d="M183.405 170.92C172.212 170.92 162.245 168.697 153.505 164.25C144.919 159.803 138.249 153.517 133.495 145.39C128.742 137.263 126.365 127.757 126.365 116.87C126.365 102.15 129.815 88.81 136.715 76.85C143.769 64.89 153.429 55.5367 165.695 48.79C177.962 42.0433 191.685 38.67 206.865 38.67C218.059 38.67 227.949 40.8933 236.535 45.34C245.275 49.7867 252.022 56.15 256.775 64.43C261.682 72.5567 264.135 82.0633 264.135 92.95C264.135 107.823 260.609 121.24 253.555 133.2C246.502 145.007 236.842 154.283 224.575 161.03C212.309 167.623 198.585 170.92 183.405 170.92ZM190.305 132.05C195.672 132.05 200.425 130.363 204.565 126.99C208.859 123.617 212.079 119.247 214.225 113.88C216.525 108.513 217.675 102.993 217.675 97.32C217.675 90.88 215.989 85.9733 212.615 82.6C209.395 79.2267 205.179 77.54 199.965 77.54C194.445 77.54 189.615 79.2267 185.475 82.6C181.489 85.9733 178.345 90.3433 176.045 95.71C173.899 101.077 172.825 106.673 172.825 112.5C172.825 118.94 174.435 123.847 177.655 127.22C180.875 130.44 185.092 132.05 190.305 132.05Z" fill="black"/>
             <path d="M331.236 0.110004L301.106 169.31H255.796L285.926 0.110004H331.236Z" fill="black"/>

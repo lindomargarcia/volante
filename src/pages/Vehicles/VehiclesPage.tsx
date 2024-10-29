@@ -32,7 +32,7 @@ export default function VehiclesPage() {
           <Card key={vehicle.id}>
             <Card.Header
               title={(vehicle.brand || vehicle.model) ? `${vehicle.brand} ${vehicle.model}` : 'Sem Veículo'}
-              description={String(vehicle.year || '').toUpperCase()}
+              description={String(vehicle.year).toUpperCase()}
             >
             <CarPlate plate={vehicle.plate || ''}/>
             </Card.Header>
