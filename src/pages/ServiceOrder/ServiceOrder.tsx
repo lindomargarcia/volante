@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { FormProvider, useForm } from "react-hook-form";
 import { DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
 import { DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema";
+import Textarea from "@/components/ui/textarea";
 
 type FormValues = {
   // newItem: ServiceOrderItem;
@@ -49,29 +50,29 @@ function ServiceOrderPage() {
     },
   });
 
+  const serviceOrderItems  = methods.watch('service_order_items')
   useEffect(() => {
     return () => {
       // reset()
     };
   }, []);
 
-  const handleNewSOItem = async (newItem: ServiceOrderItem) => {
-    // toast.message("Novo item adicionado com sucesso!")
-    // setItems([newItem, ...service_order_items])
+  const handleOnAddItem = async (newItem: ServiceOrderItem) => {
+    toast.message("Novo item adicionado com sucesso!")
+    methods.setValue('service_order_items', [newItem, ...serviceOrderItems])
   };
 
   const handleChangeItem = (changedItem: ServiceOrderItem) => {
-    // const updatedItems = service_order_items.map((item) => {
-    //   return (item.id === changedItem.id) ? changedItem : item
-    // })
-    // setItems(updatedItems)
+    const index = serviceOrderItems.findIndex((item) => (item.id === changedItem.id))
+    let updatedServiceOrderItems = serviceOrderItems
+    updatedServiceOrderItems[index] = changedItem
+    methods.setValue('service_order_items', updatedServiceOrderItems)
   };
 
-  const handleRemoveItem = (deletedItem: ServiceOrderItem) => {
-    // deleteServiceOrderItem(deletedItem.id).then(() => {
-    //   const updatedItems = service_order_items.filter((item) => (item.id !== deletedItem.id))
-    //   setItems(updatedItems)
-    // })
+  const handleOnRemoveItem = (deletedItem: ServiceOrderItem) => {
+    deleteServiceOrderItem(deletedItem.id).then(() => {
+      methods.setValue('service_order_items', serviceOrderItems.filter((item) => (item.id !== deletedItem.id)) || [])
+    })
   };
 
   // const handleCarMapChange = async (selected: IChangeValue, data: ICarSelectionValue) => {
@@ -158,8 +159,7 @@ function ServiceOrderPage() {
                     <VehicleForm isPending={false} />
                   </Card>
                   <Card className="flex flex-col p-4 rounded-lg gap-1">
-                    <span className="text-sm font-medium m-0 p-0"> Anotações </span>
-                    <textarea className="border m-0 p-2 rounded" {...methods.register("note")}/>
+                    <Textarea label="Anotações" {...methods.register("note")} placeholder="Ex: Avarias, acordos com o cliente..."/>
                   </Card>
                 </div>
               </TabsContent>
@@ -186,7 +186,7 @@ function ServiceOrderPage() {
                 </ConfirmButton>
               </div>
               <div className="flex gap-4">
-                {methods.watch("service_order_items").length > 0 && (
+                {methods.watch("service_order_items").length > 0 && false && (
                   <>
                     <Modal
                       trigger={
@@ -239,10 +239,10 @@ function ServiceOrderPage() {
         </header>
 
         <ServiceOrderItems
-          data={methods.watch("service_order_items")}
-          onAddItem={handleNewSOItem}
+          data={serviceOrderItems}
+          onAddItem={handleOnAddItem}
           onChangeItem={handleChangeItem}
-          onRemoveItem={handleRemoveItem}
+          onRemoveItem={handleOnRemoveItem}
         />
       </div>
     </div>

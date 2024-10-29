@@ -3,6 +3,7 @@ import MaskedInput from "@/components/MaskedInput/MaskedInput"
 import { MASKS } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Controller, useFormContext } from "react-hook-form"
+import Textarea from "@/components/ui/textarea"
 interface ICustomerSheetsProps {
   data?: CustomerSchema,
   onChange?: (data: CustomerSchema) => void
@@ -34,7 +35,7 @@ export function CustomerForm({disabled = false}: ICustomerSheetsProps) {
         />
       </div>
       <Input disabled={disabled} {...register('customer.email')}  type="email" label="Email" placeholder="Digite aqui..." />
-      <Input disabled={disabled} {...register('customer.address')}  type="text" label="Endereço" placeholder="Digite aqui..." />
+      <Textarea label="Endereço" {...register("customer.address")} placeholder="Digite aqui..." />
       {/* <SheetFooter className="mt-4 justify-between">
         {!(data?.id) && <Button type="submit">Salvar</Button>}
         {data?.name && <ConfirmButton 
