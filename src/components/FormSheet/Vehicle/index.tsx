@@ -20,19 +20,6 @@ export function VehicleForm({disabled = false}: IVehicleSheetsProps) {
     <div className="grid gap-4 py-4">
       <div className="flex gap-2">
         <Input {...register('vehicle.plate')} disabled={disabled} label="Placa" placeholder="ABC-1D23"  className={'uppercase'} />
-        <Controller 
-          name='vehicle.brand'
-          control={control}
-          render={({field}) => (
-            <SelectOption {...field} disabled={disabled} label="Marca" placeholder="Selecione..." options={CAR_BRANDS} onChange={(value) => {
-              field.onChange(value)
-            }}  />
-          )}  
-        />
-      </div>
-      <div className="flex gap-2">
-        <Input disabled={disabled} {...register('vehicle.model')} label="Modelo" placeholder="Digite aqui..." />
-        <Input disabled={disabled} {...register('vehicle.year')} label="Ano" placeholder="2024"/>
         <Controller
           name="vehicle.color"
           control={control}
@@ -44,8 +31,21 @@ export function VehicleForm({disabled = false}: IVehicleSheetsProps) {
         />
       </div>
       <div className="flex gap-2">
-        <Input disabled={disabled} label="Km" {...register('vehicle.km')} placeholder="Digite aqui..."/>
-        <Input disabled={disabled} label="Chassi" {...register('vehicle.chassi')} placeholder="Ex: 1HGCM82633A123456" />
+      <Controller 
+          name='vehicle.brand'
+          control={control}
+          render={({field}) => (
+            <SelectOption {...field} disabled={disabled} label="Marca" placeholder="Selecione..." options={CAR_BRANDS} onChange={(value) => {
+              field.onChange(value)
+            }}  />
+          )}  
+        />
+        <Input disabled={disabled} {...register('vehicle.model')} label="Modelo" placeholder="Digite aqui..." />
+      </div>
+      <div className="flex gap-2">
+        <Input disabled={disabled} {...register('vehicle.year')} label="Ano" placeholder="2024"/>
+        {/* <Input disabled={disabled} label="Km" {...register('vehicle.km')} placeholder="Digite aqui..."/> */}
+        {/* <Input disabled={disabled} label="Chassi" {...register('vehicle.chassi')} placeholder="Ex: 1HGCM82633A123456" /> */}
         <Controller
           name="vehicle.fuel"
           control={control}

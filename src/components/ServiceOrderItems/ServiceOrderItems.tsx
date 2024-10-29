@@ -22,10 +22,6 @@ interface ServiceOrderItemProps {
     onRemoveItem: (item: ServiceOrderItem) => void
 }
 
-const defaultServiceOrder: ServiceOrderItem = {
-   id: nanoid(), description: "", value: 0, discount: 0, quantity: 1, type: "BODYWORK", insurance_coverage: 0, total: 0
-};
-
 const ServiceOrderItems = ({ data, onAddItem, onChangeItem, onRemoveItem }: ServiceOrderItemProps) => {
     const { subtotal, totalPrice, totalDiscountPrice, totalPartsPrice, totalServicesPrice } = useSOPrices(data);
 
@@ -59,14 +55,20 @@ const ServiceOrderItems = ({ data, onAddItem, onChangeItem, onRemoveItem }: Serv
     );
 };
 
+const defaultServiceOrder: ServiceOrderItem = {
+    id: nanoid(10), description: "", value: 0, discount: 0, quantity: 1, type: "BODYWORK", insurance_coverage: 0, total: 0
+ };
+
 ServiceOrderItems.Form = ({ onSubmit }: { onSubmit: (data: ServiceOrderItem) => void }) => {
     const form = useForm<ServiceOrderItem>({ defaultValues: defaultServiceOrder });
-    const resetForm = () => form.reset(defaultServiceOrder);
+    const resetForm = () => form.reset({...defaultServiceOrder, id: nanoid(10)});
 
     const handleOnSubmit = (data: ServiceOrderItem) => {
         onSubmit(data);
         resetForm();
-        form.setFocus("description");
+        setTimeout(() => {
+            form.setFocus("description");
+        }, 500)
     };
 
     return (
