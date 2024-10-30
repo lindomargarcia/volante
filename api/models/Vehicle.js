@@ -8,31 +8,31 @@ export const Vehicle = db.define('vehicle', {
     },
     brand: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     model: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     year: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true
     },
     color: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     km: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     fuel: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     chassi: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     }
 },{
     tableName: 'vehicles'
