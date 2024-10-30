@@ -1,3 +1,1 @@
-// export const BASE_URL = 'https://gxcg5wjf-2000.brs.devtunnels.ms/'
-export const BASE_URL = 'https://api-volante.fly.dev/'
-// http://localhost:2000/
+export const BASE_URL = import.meta.env.DEV ? "http://localhost:3000/" : "https://api-volante.fly.dev/"
