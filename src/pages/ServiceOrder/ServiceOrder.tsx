@@ -1,10 +1,10 @@
 import { Check, File, Save, User, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CustomerForm } from "@/components/FormSheet/Customer";
 import { VehicleForm } from "@/components/FormSheet/Vehicle";
 import ServiceOrderItems from "../../components/ServiceOrderItems/ServiceOrderItems";
-import { ServiceOrderItem, STATUS_SERVICE_ORDER } from "./types";
+import { ServiceOrder, ServiceOrderItem, STATUS_SERVICE_ORDER } from "./types";
 import { toast } from "sonner";
 import StatusDropDown from "@/components/BadgeDropDown/BadgeDropDown";
 import { SO_STATUS_LIST } from "@/data/constants/utils";
@@ -13,33 +13,22 @@ import { ServiceOrderPDF } from "@/components/PDF/ServiceOrderPDF";
 import { Modal } from "@/components/Modal/Modal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import { useServiceOrderStore } from "@/hooks/useServiceOrder";
 import {deleteServiceOrderItem,putServiceOrderAPI} from "@/data/api/ServiceOrderAPI";
-import ConfirmButton from "@/components/ConfirmButton/ConfirmButton";
-import { nanoid } from "nanoid/non-secure";
 import { Input } from "@/components/ui/input";
 import { FormProvider, useForm } from "react-hook-form";
 import { DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
 import { DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema";
 import Textarea from "@/components/ui/textarea";
-
-type FormValues = {
-  // newItem: ServiceOrderItem;
-  service_order_items: ServiceOrderItem[];
-  customer: typeof DEFAULT_CUSTOMER_VALUE;
-  vehicle: typeof DEFAULT_VEHICLE_VALUES;
-  status?: STATUS_SERVICE_ORDER;
-  startAt?: Date;
-  endAt?: Date;
-  note?: string;
-};
+import { nanoid } from "nanoid/non-secure";
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<"customer" | "damage" | string>("customer");
-  const {id,customer,vehicle,status,setId,setCustomer,setVehicle,setItems,setStatus} = useServiceOrderStore();
+  const [pdfData, setPdfData] = useState<ServiceOrder>();
+  const pdfFileName = `${pdfData?.vehicle?.brand}_${pdfData?.vehicle?.model}_${pdfData?.customer?.name}`
 
-  const methods = useForm<FormValues>({
+  const methods = useForm<ServiceOrder>({
     defaultValues: {
+      id: nanoid(8),
       service_order_items: [],
       customer: DEFAULT_CUSTOMER_VALUE,
       vehicle: DEFAULT_VEHICLE_VALUES,
@@ -51,14 +40,8 @@ function ServiceOrderPage() {
   });
 
   const serviceOrderItems  = methods.watch('service_order_items')
-  useEffect(() => {
-    return () => {
-      // reset()
-    };
-  }, []);
 
   const handleOnAddItem = async (newItem: ServiceOrderItem) => {
-    toast.message("Novo item adicionado com sucesso!")
     methods.setValue('service_order_items', [newItem, ...serviceOrderItems])
   };
 
@@ -87,30 +70,11 @@ function ServiceOrderPage() {
   //   return COLORS.find(color => color.value === vehicle?.color)?.code || "#000"
   // }
 
-  const handleOnSave = (data: any) => {
-    return console.log(data);
-    const {
-      customer,
-      vehicle,
-      service_order_items,
-      status,
-      startAt,
-      endAt,
-      note,
-    } = data;
-    putServiceOrderAPI({
-      id,
-      customer,
-      vehicle,
-      service_order_items,
-      status,
-      startAt,
-      endAt,
-      note,
-    }).then((data) => {
+  const handleOnSave = (serviceOrder: any) => {
+    putServiceOrderAPI(serviceOrder).then((data) => {
       if (data) {
-        data?.customer && setCustomer(data?.customer);
-        data?.vehicle && setVehicle(data?.vehicle);
+        methods.setValue('customer', data?.customer)
+        methods.setValue('vehicle', data?.vehicle)
         toast.message("Salvo com sucesso!", { icon: <Check /> });
       } else {
         toast.message("Erro ao salvar", { icon: <X /> });
@@ -118,16 +82,16 @@ function ServiceOrderPage() {
     });
   };
 
-  const onDuplicateClick = () => {
-    const newOSId = nanoid();
-    setId(newOSId);
-    setStatus(STATUS_SERVICE_ORDER.PENDING);
-    const duplicatedItems = methods
-      .watch("service_order_items")
-      .map((item) => ({ ...item, id: nanoid(), serviceOrderId: newOSId }));
-    setItems(duplicatedItems);
-    toast.message("Duplicado com sucesso!");
-  };
+  // const onDuplicateClick = () => {
+    // const newOSId = nanoid();
+    // setId(newOSId);
+    // setStatus(STATUS_SERVICE_ORDER.PENDING);
+    // const duplicatedItems = methods
+    //   .watch("service_order_items")
+    //   .map((item) => ({ ...item, id: nanoid(), serviceOrderId: newOSId }));
+    // setItems(duplicatedItems);
+    // toast.message("Duplicado com sucesso!");
+  // };
 
   return (
     <div className="h-full flex gap-8 pb-8 flex-wrap flex-row-reverse">
@@ -150,7 +114,7 @@ function ServiceOrderPage() {
                 <FileSelect label="Imagens"/>
               </Card>
               </TabsContent> */}
-              <TabsContent value="customer" className="h-[calc(100vh-150px)] flex-1 overflow-scroll">
+              <TabsContent value="customer" className="h-[calc(100vh-160px)] flex-1 overflow-scroll">
                 <div className="flex flex-col gap-2">
                   <Card className="px-4 rounded-lg">
                     <CustomerForm isPending={false} />
@@ -166,54 +130,44 @@ function ServiceOrderPage() {
             </Tabs>
 
             {/* Botões */}
-            <div className="flex justify-between items-end gap-3 mt-4">
-              <div className="flex gap-3">
-                <ConfirmButton
+            <div className="flex justify-between items-end gap-4 mt-4 pt-4" onMouseEnter={() => setPdfData(methods.getValues())}>
+              {/* <div> */}
+                {/* <ConfirmButton
                   message="Deseja começar um novo orçamento do zero?"
                   title="Resetar"
                   variant={"destructive"}
                   onConfirm={() => console.log("reset")}
                 >
                   Resetar
-                </ConfirmButton>
-                <ConfirmButton
+                </ConfirmButton> */}
+                {/* <ConfirmButton
                   message="Deseja começar um novo orçamento para a mesma pessoa e veículo?"
                   title="Duplicar"
                   variant={"outline"}
                   onConfirm={onDuplicateClick}
                 >
                   Duplicar
-                </ConfirmButton>
+                </ConfirmButton> */}
+              {/* </div> */}
+              <div className="flex gap-2">
+                <Modal
+                  trigger={<Button disabled={serviceOrderItems.length <= 0} onClick={() => setPdfData(methods.getValues())} variant="outline"><File size={18}/>PDF</Button>}
+                  title="Orçamento"
+                  subtitle="Envie ou imprima para seu cliente"
+                  className="min-h-[calc(100vh-180px)]"
+                  async={true}
+                >
+                  <PDFViewer showToolbar={true} className="w-full min-h-[calc(100vh-180px)]">
+                    <ServiceOrderPDF data={pdfData} filename={pdfFileName}/>
+                  </PDFViewer>
+                </Modal>
+                <PDFDownloadLink
+                  fileName={pdfFileName}
+                  document={<ServiceOrderPDF data={pdfData}/>}>
+                  <Button variant={"outline"} disabled={serviceOrderItems.length <= 0} type="button"><Save size={18} />Download</Button>
+                </PDFDownloadLink>
               </div>
-              <div className="flex gap-4">
-                {methods.watch("service_order_items").length > 0 && false && (
-                  <>
-                    <Modal
-                      trigger={
-                        <Button onClick={handleOnSave} variant="outline"><File size={18} className="mr-2" />PDF</Button>
-                      }
-                      title="Orçamento"
-                      subtitle="Envie ou imprima para seu cliente"
-                      className="min-h-[calc(100vh-180px)]"
-                      async={true}
-                    >
-                      <PDFViewer className="w-full min-h-[calc(100vh-180px)]">
-                        <ServiceOrderPDF
-                          data={{customer,vehicle,service_order_items: methods.watch("service_order_items"),status}}
-                        />
-                      </PDFViewer>
-                    </Modal>
-                    <PDFDownloadLink
-                      fileName={`${vehicle.model} ${customer.name} `}
-                      document={
-                        <ServiceOrderPDF data={{customer: methods.watch("customer"),vehicle: methods.watch("vehicle"),service_order_items: methods.watch("service_order_items"),status: methods.watch("status")}}/>
-                      }>
-                      <Button variant={"outline"}><Save size={18} className="mr-2" />Download</Button>
-                    </PDFDownloadLink>
-                  </>
-                )}
-                <Button type="submit" onClick={() => methods.handleSubmit(handleOnSave)}><Save size={18} className="mr-2" />Salvar</Button>
-              </div>
+              <Button type="submit"><Save size={18} className="mr-2" />Salvar</Button>
             </div>
           </div>
         </form>

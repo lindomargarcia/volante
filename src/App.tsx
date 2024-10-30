@@ -88,7 +88,7 @@ function App() {
   return (
     <div className="bg-slate-50 flex-1 flex">
       <RouterProvider router={router}/>
-      <Toaster position="bottom-right"  closeButton/>
+      <Toaster position="top-right"  closeButton/>
     </div>
   );
 }
