@@ -61,10 +61,10 @@ export const SO_STATUS_LIST: {value: STATUS_SERVICE_ORDER, label: string, color:
 export const PAGE_LIMIT = 15
 
 export const USE_QUERY_CONFIGS = {
-    retry: 1,
-    refetchOnWindowFocus: true,
+    retry: 0,
+    refetchOnWindowFocus: false,
     refetchOnMount: true,
-    initialPageParam: 1,
+    initialPageParam: 1
 }
 
 export const CAR_SERVICES = [
