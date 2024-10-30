@@ -4,7 +4,7 @@ import { Toaster } from "./components/ui/sonner";
 import { createBrowserRouter, Link, Outlet, RouterProvider } from "react-router-dom";
 import Menu from "./components/Menu/Menu";
 import { ROUTER_PATHS } from "./routes/routes";
-import { Car, FilePlus, FolderSearch, User } from "lucide-react";
+import { Car, FilePlus, FolderSearch, Home, User } from "lucide-react";
 import VehiclesPage from "./pages/Vehicles/VehiclesPage";
 import CustomersPage from "./pages/Customers/CustomersPage";
 // import CatalogPage from "./pages/Catalog/CatalogPage";
@@ -13,12 +13,12 @@ import CustomersPage from "./pages/Customers/CustomersPage";
 import SearchServiceOrdersPage from "./pages/ServiceOrders/ServiceOrdersPage";
 
 const MENU_LINKS = [
-  // {
-  //   path: ROUTER_PATHS.HOME,
-  //   element: <h1 className="h-full w-full align-text-middle text-zinc-400 text-center py-[33%]">Home</h1>,
-  //   label: 'Início',
-  //   icon: <Home size={23}/>
-  // },
+  {
+    path: ROUTER_PATHS.HOME,
+    element: <h1 className="h-full w-full align-text-middle text-zinc-400 text-xl text-center py-[30%]">Volante, você na direção da sua oficina</h1>,
+    label: 'Início',
+    icon: <Home size={23}/>
+  },
   {
     path: ROUTER_PATHS.SERVICE_ORDER + '/new',
     element: <ServiceOrderPage/>,
@@ -73,9 +73,9 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: 
-      <div className="flex-1 flex bg-zinc-50">
+      <div className="flex-1 flex bg-zinc-50 divide-x">
         <Menu links={MENU_LINKS}/>
-        <div className="rounded p-8 pl-2 pb-0 flex-1 overflow-scroll">
+        <div className="rounded p-8 pb-0 flex-1 overflow-scroll">
           <Outlet/>
         </div>
       </div>,
@@ -92,7 +92,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <div className="bg-slate-50 flex-1 flex">
+    <div className="bg-zinc-50 flex-1 flex">
       <RouterProvider router={router}/>
       <Toaster position="top-right"  closeButton/>
     </div>
