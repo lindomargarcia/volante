@@ -1,5 +1,5 @@
 import { Check, File, Save, User, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CustomerForm } from "@/components/FormSheet/Customer";
 import { VehicleForm } from "@/components/FormSheet/Vehicle";
@@ -20,11 +20,27 @@ import { DEFAULT_CUSTOMER_VALUE } from "@/components/FormSheet/Customer/schema";
 import { DEFAULT_VEHICLE_VALUES } from "@/components/FormSheet/Vehicle/schema";
 import Textarea from "@/components/ui/textarea";
 import { nanoid } from "nanoid/non-secure";
+import { useLocation, useParams } from "react-router-dom";
+
 
 function ServiceOrderPage() {
   const [activeTab, setActiveTab] = useState<"customer" | "damage" | string>("customer");
   const [pdfData, setPdfData] = useState<ServiceOrder>();
   const pdfFileName = `${pdfData?.vehicle?.brand}_${pdfData?.vehicle?.model}_${pdfData?.customer?.name}`
+  const { id } = useParams()
+  const location = useLocation()
+
+  useEffect(() => {
+    console.log('executou')
+    if(id){
+      const editingServiceOrder: ServiceOrder = location?.state?.service_order
+      Object.entries(editingServiceOrder).forEach(([key, value]) => {
+        methods.setValue(key as keyof ServiceOrder, value);
+      });
+    }else if(location.pathname === '/service-order/new'){
+      methods.reset()
+    }
+  }, [id])
 
   const methods = useForm<ServiceOrder>({
     defaultValues: {
@@ -177,7 +193,7 @@ function ServiceOrderPage() {
       <div className="flex flex-1 flex-col">
         <header className="flex items-center pb-4 gap-4">
           <div className="flex flex-1">
-            <h1 className="text-2xl font-bold">Novo orçamento</h1>
+            <h1 className="text-2xl font-bold">{id ?  `Orçamento ${methods.getValues('id')}` : 'Novo orçamento'}</h1>
           </div>
           <div className="flex gap-4 items-center">
             <Input type="date" {...methods.register("startAt")} />

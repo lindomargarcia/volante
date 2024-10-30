@@ -20,7 +20,7 @@ const MENU_LINKS = [
   //   icon: <Home size={23}/>
   // },
   {
-    path: ROUTER_PATHS.SERVICE_ORDER,
+    path: ROUTER_PATHS.SERVICE_ORDER + '/new',
     element: <ServiceOrderPage/>,
     label: 'Novo',
     icon: <FilePlus size={23}/>
@@ -80,8 +80,14 @@ const router = createBrowserRouter([
         </div>
       </div>,
     errorElement: <h1>404 not found page <Link to={"/"}>Voltar</Link></h1>,
-    children: MENU_LINKS
-  },
+    children: [...MENU_LINKS.map(link => ({
+      path: link.path,
+      element: link.element,
+    })), {
+      path: `${ROUTER_PATHS.SERVICE_ORDER}/:id`,
+      element: <ServiceOrderPage/>
+    }]
+  }
 ])
 
 function App() {
