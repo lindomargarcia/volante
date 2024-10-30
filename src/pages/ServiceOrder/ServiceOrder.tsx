@@ -30,18 +30,6 @@ function ServiceOrderPage() {
   const { id } = useParams()
   const location = useLocation()
 
-  useEffect(() => {
-    console.log('executou')
-    if(id){
-      const editingServiceOrder: ServiceOrder = location?.state?.service_order
-      Object.entries(editingServiceOrder).forEach(([key, value]) => {
-        methods.setValue(key as keyof ServiceOrder, value);
-      });
-    }else if(location.pathname === '/service-order/new'){
-      methods.reset()
-    }
-  }, [id])
-
   const methods = useForm<ServiceOrder>({
     defaultValues: {
       id: nanoid(8),
@@ -49,11 +37,25 @@ function ServiceOrderPage() {
       customer: DEFAULT_CUSTOMER_VALUE,
       vehicle: DEFAULT_VEHICLE_VALUES,
       status: STATUS_SERVICE_ORDER.PENDING,
-      startAt: undefined,
-      endAt: undefined,
+      startAt: "",
+      endAt: "",
       note: "",
     },
   });
+
+  useEffect(() => {
+    if(id){
+      const editingServiceOrder: ServiceOrder = location?.state?.service_order
+      Object.entries(editingServiceOrder).forEach(([key, value]) => {
+        if(['startAt', 'endAt'].includes(key)){
+          return methods.setValue(key as keyof ServiceOrder, String(value).substring(0,10));
+        }
+        methods.setValue(key as keyof ServiceOrder, value);
+      });
+    }else if(location.pathname === '/service-order/new'){
+      methods.reset()
+    }
+  }, [id])
 
   const serviceOrderItems  = methods.watch('service_order_items')
 
